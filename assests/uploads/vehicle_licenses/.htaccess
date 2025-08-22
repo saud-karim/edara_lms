@@ -1,0 +1,27 @@
+# Allow access to image files
+<Files ~ "\.(jpg|jpeg|png|gif)$">
+    Order allow,deny
+    Allow from all
+</Files>
+
+# Prevent access to PHP files
+<Files ~ "\.php$">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Set proper MIME types for images
+AddType image/jpeg .jpg .jpeg
+AddType image/png .png
+AddType image/gif .gif
+
+# Prevent directory browsing
+Options -Indexes
+
+# Security headers for images
+<IfModule mod_headers.c>
+    <FilesMatch "\.(jpg|jpeg|png|gif)$">
+        Header set X-Content-Type-Options nosniff
+        Header set X-Frame-Options DENY
+    </FilesMatch>
+</IfModule> 

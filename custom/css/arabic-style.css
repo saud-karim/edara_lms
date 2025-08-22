@@ -1,0 +1,1176 @@
+/* 
+ * ملف CSS مخصص لتحسين التصميم العربي
+ * License Management System - نظام إدارة التراخيص
+ */
+
+/* الخط الأساسي والاتجاه */
+body {
+    font-family: 'Cairo', 'Tahoma', 'Arial', sans-serif !important;
+    direction: rtl;
+    text-align: right;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* تحسين شريط التنقل للعربية */
+.navbar {
+    direction: rtl;
+}
+
+.navbar-brand {
+    float: right !important;
+    margin-right: 0 !important;
+    margin-left: 15px !important;
+}
+
+.navbar-nav {
+    float: left !important;
+}
+
+.navbar-nav > li {
+    float: right !important;
+}
+
+.navbar-right {
+    float: left !important;
+}
+
+.navbar-left {
+    float: right !important;
+}
+
+/* تحسين ترتيب عناصر الناف بار حسب المطلوب */
+.navbar-nav.navbar-left {
+    float: left !important; /* قائمة المستخدم على الشمال */
+}
+
+.navbar-nav.navbar-right {
+    float: right !important; /* القوائم الرئيسية على اليمين */
+}
+
+.navbar-nav.navbar-left > li {
+    float: left !important;
+}
+
+.navbar-nav.navbar-right > li {
+    float: right !important;
+}
+
+/* أيقونة المستخدم كأول عنصر على اليمين */
+.navbar-nav.navbar-right > li:first-child {
+    border-right: none;
+}
+
+/* تحسين القوائم المنسدلة */
+.dropdown-menu {
+    right: 0 !important;
+    left: auto !important;
+    text-align: right;
+}
+
+/* تحسين القائمة المنسدلة للمستخدم على الشمال */
+.navbar-nav.navbar-left .dropdown-menu {
+    left: 0 !important;
+    right: auto !important;
+}
+
+.dropdown-toggle .caret {
+    margin-left: 2px !important;
+    margin-right: 0 !important;
+}
+
+/* تحسين البوتون والأزرار */
+.btn {
+    font-family: 'Cairo', 'Tahoma', 'Arial', sans-serif;
+    font-weight: 500;
+}
+
+.btn .glyphicon,
+.btn .fa {
+    margin-left: 5px !important;
+    margin-right: 0 !important;
+}
+
+/* تحسين الجداول */
+.table {
+    direction: rtl;
+}
+
+.table th,
+.table td {
+    text-align: right !important;
+    vertical-align: middle !important;
+}
+
+.table th:first-child,
+.table td:first-child {
+    border-right: none !important;
+}
+
+.table th:last-child,
+.table td:last-child {
+    border-left: none !important;
+}
+
+/* تحسين الألوان والخلفيات */
+.panel-heading {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: white !important;
+    border: none !important;
+}
+
+.panel-heading h4 {
+    color: white !important;
+    margin: 0;
+    font-weight: 600;
+}
+
+.panel-default {
+    border: 1px solid #e3e3e3;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* تحسين النماذج */
+.form-control {
+    direction: rtl;
+    text-align: right;
+    font-family: 'Cairo', 'Tahoma', 'Arial', sans-serif;
+}
+
+.form-control::placeholder {
+    text-align: right;
+    color: #999;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #333;
+}
+
+/* تحسين التنبيهات والرسائل */
+.alert {
+    direction: rtl;
+    text-align: right;
+    font-family: 'Cairo', 'Tahoma', 'Arial', sans-serif;
+    border-radius: 6px;
+    border: none;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.alert .close {
+    float: left !important;
+    margin-right: 0 !important;
+    margin-left: -21px !important;
+}
+
+/* تحسين النوافذ المنبثقة */
+.modal-header {
+    direction: rtl;
+    text-align: right;
+}
+
+.modal-title {
+    font-family: 'Cairo', 'Tahoma', 'Arial', sans-serif;
+    font-weight: 600;
+}
+
+.modal-body {
+    direction: rtl;
+    text-align: right;
+    font-family: 'Cairo', 'Tahoma', 'Arial', sans-serif;
+}
+
+.modal-footer {
+    direction: rtl;
+    text-align: left !important;
+}
+
+.modal-footer .btn {
+    margin-left: 5px !important;
+    margin-right: 0 !important;
+}
+
+/* تحسين الباجات والملصقات */
+.label {
+    font-family: 'Cairo', 'Tahoma', 'Arial', sans-serif;
+    font-weight: 500;
+    padding: 0.3em 0.6em;
+    border-radius: 4px;
+}
+
+.badge {
+    font-family: 'Cairo', 'Tahoma', 'Arial', sans-serif;
+    font-weight: 500;
+}
+
+/* تحسين الترقيم */
+.pagination {
+    direction: ltr;
+}
+
+.pagination > li > a,
+.pagination > li > span {
+    font-family: 'Cairo', 'Tahoma', 'Arial', sans-serif;
+}
+
+/* تحسين الأيقونات */
+.glyphicon,
+.fa {
+    margin-left: 5px !important;
+    margin-right: 0 !important;
+}
+
+/* تحسين التخطيط للشاشات الصغيرة */
+@media (max-width: 768px) {
+    .navbar-nav {
+        margin: 7.5px 0;
+    }
+    
+    .navbar-nav > li > a {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        text-align: right;
+    }
+    
+    /* ترتيب القوائم في الموبايل */
+    .navbar-nav.navbar-left,
+    .navbar-nav.navbar-right {
+        float: none !important;
+    }
+    
+    .navbar-nav.navbar-left > li,
+    .navbar-nav.navbar-right > li {
+        float: none !important;
+    }
+
+    
+    .table-responsive {
+        border: none;
+    }
+    
+    .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+}
+
+/* تحسينات خاصة بلوحة التحكم */
+.dashboard-stats {
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-card .stat-icon {
+    font-size: 3em;
+    opacity: 0.3;
+    float: left;
+    margin-top: -10px;
+}
+
+.stat-card .stat-number {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+.stat-card .stat-label {
+    color: #666;
+    font-size: 1.1em;
+    margin-top: 5px;
+}
+
+/* تحسين حالة التراخيص */
+.license-status {
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.license-status.active {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.license-status.expiring {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.license-status.expired {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* تحسين صفحة تسجيل الدخول */
+.login-container {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.login-container .form-group {
+    margin-bottom: 25px;
+}
+
+.login-container .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.login-container .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* تحسين شريط التحميل */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    font-family: 'Cairo', 'Tahoma', 'Arial', sans-serif;
+}
+
+.loading-spinner {
+    text-align: center;
+}
+
+.loading-spinner .fa-spin {
+    color: #667eea;
+    margin-bottom: 15px;
+}
+
+/* تحسين التمرير */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
+}
+
+/* تحسين الأنيمايشن */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* تحسين الطباعة */
+@media print {
+    .navbar,
+    .btn,
+    .panel-heading,
+    .modal {
+        display: none !important;
+    }
+    
+    body {
+        font-size: 12pt;
+        color: black !important;
+        background: white !important;
+    }
+    
+    .table {
+        border-collapse: collapse !important;
+    }
+    
+    .table th,
+    .table td {
+        border: 1px solid #ddd !important;
+        padding: 8px !important;
+    }
+}
+
+/* إضافات خاصة للمشاريع المستقبلية */
+.content-wrapper {
+    min-height: calc(100vh - 120px);
+    padding: 20px 0;
+}
+
+.page-header {
+    border-bottom: 2px solid #eee;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+}
+
+.page-header h1 {
+    color: #333;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* تحسين النصوص */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Cairo', 'Tahoma', 'Arial', sans-serif;
+    font-weight: 600;
+    color: #333;
+}
+
+p, span, div {
+    font-family: 'Cairo', 'Tahoma', 'Arial', sans-serif;
+}
+
+/* تحسين الروابط */
+a {
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+/* تحسين الحقول المطلوبة */
+.required {
+    color: #e74c3c;
+    font-weight: bold;
+    margin-left: 3px;
+}
+
+/* تحسين رسائل الخطأ */
+.error-message {
+    color: #e74c3c;
+    font-size: 0.9em;
+    margin-top: 5px;
+    font-weight: 500;
+}
+
+.success-message {
+    color: #27ae60;
+    font-size: 0.9em;
+    margin-top: 5px;
+    font-weight: 500;
+}
+
+/* جعل جميع النصوص في بطاقات الإحصائيات بيضاء */
+.stat-box {
+    color: white !important;
+}
+
+.stat-box * {
+    color: white !important;
+}
+
+.stat-box .stat-number {
+    color: white !important;
+    font-weight: bold;
+    font-size: 2.5rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.stat-box div {
+    color: white !important;
+    font-size: 1.1rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.stat-box .stat-text {
+    color: white !important;
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    margin-top: 8px;
+}
+
+.stat-box .btn {
+    color: #333 !important;
+    background-color: rgba(255,255,255,0.9) !important;
+    border-color: rgba(255,255,255,0.9) !important;
+    font-weight: 600;
+}
+
+.stat-box .btn:hover {
+    color: #000 !important;
+    background-color: white !important;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+
+/* جعل نصوص رسالة الترحيب في لوحة التحكم بيضاء */
+.dashboard-stats {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.dashboard-stats h2 {
+    color: white !important;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    margin-bottom: 15px;
+}
+
+.dashboard-stats p {
+    color: white !important;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    font-size: 1.1rem;
+    margin-bottom: 0;
+}
+
+.dashboard-stats strong {
+    color: white !important;
+}
+
+/* Status Badge Colors - توحيد ألوان الحالات في جميع الصفحات */
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    text-align: center;
+    min-width: 80px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+}
+
+.status-active {
+    background-color: #5cb85c !important;
+    color: white !important;
+}
+
+.status-expiring {
+    background-color: #f0ad4e !important;
+    color: white !important;
+}
+
+.status-expired {
+    background-color: #d9534f !important;
+    color: white !important;
+}
+
+/* Action Buttons Enhancement */
+.btn-group-sm .btn {
+    margin-left: 2px;
+    border-radius: 3px;
+}
+
+.btn-group-sm .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    transition: all 0.2s ease;
+}
+
+/* License Image Styles */
+.license-image {
+    max-height: 300px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.license-image:hover {
+    border-color: #428bca;
+    box-shadow: 0 0 10px rgba(66, 139, 202, 0.5);
+}
+
+/* License Image Container */
+.license-image-container {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    background-color: #f9f9f9;
+}
+
+.current-image {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.current-image img {
+    border: 2px solid #ddd;
+    border-radius: 4px;
+}
+
+.image-preview-new {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.image-preview-new img {
+    border: 2px solid #5cb85c;
+    border-radius: 4px;
+}
+
+/* ==================================
+   RESPONSIVE DESIGN IMPROVEMENTS
+   تحسينات التصميم المتجاوب
+   ================================== */
+
+/* شاشات الهواتف الذكية (أقل من 768px) */
+@media (max-width: 767px) {
+    
+    /* تحسين النصوص والخطوط */
+    body {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+    
+    h1 { font-size: 24px; }
+    h2 { font-size: 20px; }
+    h3 { font-size: 18px; }
+    h4 { font-size: 16px; }
+    h5 { font-size: 14px; }
+    
+    /* تحسين شريط التنقل للهواتف */
+    .navbar-header {
+        padding: 8px 15px;
+    }
+    
+    .navbar-brand {
+        font-size: 16px;
+        padding: 15px 10px;
+    }
+    
+    .navbar-nav {
+        margin: 0;
+    }
+    
+    .navbar-nav > li > a {
+        padding: 12px 15px;
+        font-size: 14px;
+    }
+    
+    .dropdown-menu {
+        position: static !important;
+        float: none !important;
+        width: 100%;
+        margin-top: 0;
+        border: 0;
+        box-shadow: none;
+        border-radius: 0;
+    }
+    
+    /* تحسين الـ Panels */
+    .panel {
+        margin-bottom: 15px;
+        border-radius: 6px;
+    }
+    
+    .panel-heading {
+        padding: 10px 15px;
+    }
+    
+    .panel-heading h4 {
+        font-size: 16px;
+        margin: 0;
+    }
+    
+    .panel-body {
+        padding: 15px;
+    }
+    
+    /* تحسين الجداول للهواتف */
+    .table-responsive {
+        border: none;
+        margin-bottom: 0;
+    }
+    
+    .table {
+        font-size: 12px;
+        margin-bottom: 0;
+    }
+    
+    .table th,
+    .table td {
+        padding: 8px 4px;
+        white-space: nowrap;
+        vertical-align: middle;
+    }
+    
+    .table th {
+        font-size: 11px;
+        background-color: #f5f5f5;
+    }
+    
+    /* إخفاء أعمدة معينة في الشاشات الصغيرة */
+    .table .hidden-xs {
+        display: none !important;
+    }
+    
+    /* تحسين أزرار الإجراءات */
+    .btn-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2px;
+    }
+    
+    .btn-xs {
+        padding: 4px 6px;
+        font-size: 10px;
+        line-height: 1.2;
+    }
+    
+    .btn-sm {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+    
+    /* تحسين النماذج */
+    .form-group {
+        margin-bottom: 15px;
+    }
+    
+    .form-control {
+        height: 38px;
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+    
+    .form-control-lg {
+        height: 44px;
+        padding: 10px 16px;
+        font-size: 16px;
+    }
+    
+    /* تحسين الأزرار */
+    .btn {
+        padding: 8px 12px;
+        font-size: 14px;
+        margin: 2px;
+    }
+    
+    .btn-lg {
+        padding: 10px 16px;
+        font-size: 16px;
+        margin: 4px 2px;
+    }
+    
+    /* تحسين الإحصائيات */
+    .stat-box {
+        padding: 15px;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+    
+    .stat-box h2,
+    .stat-box h3 {
+        font-size: 24px;
+        margin-bottom: 5px;
+    }
+    
+    /* تحسين المسافات */
+    .row {
+        margin-left: -10px;
+        margin-right: -10px;
+    }
+    
+    .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1,
+    .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2,
+    .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3,
+    .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4,
+    .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5,
+    .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6,
+    .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7,
+    .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8,
+    .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9,
+    .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10,
+    .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11,
+    .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    
+    /* تحسين صور التراخيص */
+    .license-image {
+        max-height: 200px;
+        max-width: 100%;
+        height: auto;
+    }
+    
+    /* تحسين الـ pagination */
+    .pagination > li > a,
+    .pagination > li > span {
+        padding: 6px 8px;
+        font-size: 12px;
+    }
+    
+    /* تحسين الـ alerts */
+    .alert {
+        padding: 10px 15px;
+        margin-bottom: 15px;
+        font-size: 13px;
+    }
+    
+    /* تحسين الـ modals */
+    .modal-dialog {
+        margin: 10px;
+        width: auto;
+    }
+    
+    .modal-header {
+        padding: 15px;
+    }
+    
+    .modal-body {
+        padding: 15px;
+    }
+    
+    .modal-footer {
+        padding: 15px;
+    }
+    
+    /* إخفاء العناصر غير المهمة في الشاشات الصغيرة */
+    .hidden-mobile {
+        display: none !important;
+    }
+    
+    /* تحسين الـ dashboard stats */
+    .dashboard-stats {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .dashboard-stats h2 {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+    
+    /* تحسين قائمة الـ breadcrumb */
+    .breadcrumb {
+        padding: 8px 15px;
+        margin-bottom: 15px;
+        font-size: 12px;
+    }
+    
+    /* تحسين الـ input groups */
+    .input-group {
+        margin-bottom: 15px;
+    }
+    
+    .input-group-btn > .btn {
+        padding: 8px 12px;
+    }
+}
+
+/* شاشات التابلت (768px - 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+    
+    body {
+        font-size: 14px;
+    }
+    
+    .container {
+        width: 100%;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    /* تحسين الجداول للتابلت */
+    .table th,
+    .table td {
+        padding: 10px 6px;
+        font-size: 13px;
+    }
+    
+    /* تحسين الأزرار */
+    .btn-group-sm > .btn,
+    .btn-sm {
+        padding: 5px 8px;
+        font-size: 12px;
+    }
+    
+    /* تحسين الـ panels */
+    .panel-body {
+        padding: 20px;
+    }
+    
+    /* تحسين الإحصائيات */
+    .stat-box {
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .stat-box h2,
+    .stat-box h3 {
+        font-size: 28px;
+    }
+}
+
+/* شاشات الحاسوب المحمول (992px - 1199px) */
+@media (min-width: 992px) and (max-width: 1199px) {
+    
+    .container {
+        width: 970px;
+    }
+    
+    /* تحسين الجداول */
+    .table th,
+    .table td {
+        padding: 12px 8px;
+    }
+    
+    /* تحسين الإحصائيات */
+    .stat-box h2,
+    .stat-box h3 {
+        font-size: 32px;
+    }
+}
+
+/* شاشات الحاسوب الكبيرة (أكبر من 1200px) */
+@media (min-width: 1200px) {
+    
+    .container {
+        width: 1170px;
+    }
+    
+    /* تحسين الجداول */
+    .table th,
+    .table td {
+        padding: 15px 10px;
+    }
+    
+    /* تحسين الإحصائيات */
+    .stat-box h2,
+    .stat-box h3 {
+        font-size: 36px;
+    }
+}
+
+/* تحسينات خاصة لاتجاه RTL */
+@media (max-width: 767px) {
+    
+    /* تحسين ترتيب الأعمدة في الهواتف */
+    .col-xs-12 {
+        margin-bottom: 15px;
+    }
+    
+    /* تحسين الـ form في الهواتف */
+    .form-horizontal .control-label {
+        text-align: right;
+        margin-bottom: 5px;
+    }
+    
+    .form-horizontal .form-group {
+        margin-left: 0;
+        margin-right: 0;
+    }
+    
+    /* تحسين الأزرار في الهواتف */
+    .btn-block {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    /* تحسين الـ input group في الهواتف */
+    .input-group {
+        display: block;
+    }
+    
+    .input-group .form-control {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+    
+    .input-group-btn {
+        width: 100%;
+    }
+    
+    .input-group-btn > .btn {
+        width: 100%;
+    }
+}
+
+/* تحسينات لحل مشاكل التمرير الأفقي */
+@media (max-width: 767px) {
+    
+    body {
+        overflow-x: hidden;
+    }
+    
+    .container,
+    .container-fluid {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    
+    .row {
+        margin-left: -5px;
+        margin-right: -5px;
+    }
+    
+    [class*="col-"] {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    
+    /* تحسين الجداول الطويلة */
+    .table-responsive {
+        border: 0;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .table-responsive > .table {
+        margin-bottom: 0;
+        min-width: 600px; /* عرض أدنى للجدول */
+    }
+    
+    /* تحسين الـ navbar للهواتف */
+    .navbar-collapse {
+        border-top: 1px solid #e7e7e7;
+        margin-top: 0;
+        padding-left: 0;
+        padding-right: 0;
+    }
+    
+    .navbar-nav {
+        margin: 0;
+    }
+    
+    .navbar-nav > li {
+        float: none;
+    }
+    
+    .navbar-nav > li > a {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        line-height: 20px;
+    }
+    
+    .navbar-nav .dropdown-menu {
+        position: static;
+        float: none;
+        width: auto;
+        margin-top: 0;
+        background-color: transparent;
+        border: 0;
+        box-shadow: none;
+    }
+    
+    .navbar-nav .dropdown-menu > li > a {
+        padding: 5px 15px 5px 25px;
+    }
+}
+
+/* تحسينات لطباعة الصفحات */
+@media print {
+    
+    /* إخفاء عناصر غير مرغوبة في الطباعة */
+    .navbar,
+    .sidebar,
+    .btn,
+    .pagination,
+    .modal,
+    .hidden-print {
+        display: none !important;
+    }
+    
+    /* تحسين النصوص للطباعة */
+    body {
+        color: #000 !important;
+        background: #fff !important;
+        font-size: 12pt;
+        line-height: 1.4;
+    }
+    
+    .panel {
+        border: 1px solid #ccc;
+        margin-bottom: 20px;
+    }
+    
+    .table {
+        border-collapse: collapse;
+    }
+    
+    .table th,
+    .table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+    
+    /* إظهار URLs للروابط */
+    a[href]:after {
+        content: " (" attr(href) ")";
+        font-size: 10pt;
+        color: #666;
+    }
+}
+
+/* تحسينات للشاشات عالية الدقة */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    
+    /* تحسين حدود العناصر */
+    .btn,
+    .form-control,
+    .panel {
+        border-width: 0.5px;
+    }
+    
+    /* تحسين الأيقونات */
+    .glyphicon {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+
+/* تحسينات لوضعية الشاشة الأفقية في الهواتف */
+@media (max-width: 767px) and (orientation: landscape) {
+    
+    .navbar-header {
+        padding: 5px 15px;
+    }
+    
+    .navbar-brand {
+        padding: 10px;
+        font-size: 14px;
+    }
+    
+    .panel-heading {
+        padding: 8px 15px;
+    }
+    
+    .btn {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+} 
