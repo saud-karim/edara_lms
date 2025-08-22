@@ -1,0 +1,61 @@
+# Temporary and debug files
+debug_*.php
+test_*.php
+*_backup.php
+*_temp.php
+fix_*.php
+check_*.php
+
+# Log files
+*.log
+error.log
+
+# Configuration files with sensitive data
+config/config_local.php
+config/database_local.php
+
+# Uploaded files (optional - you may want to track some)
+# assests/uploads/
+# assests/uploads/licenses/
+# assests/uploads/personal_licenses/
+# assests/uploads/vehicle_licenses/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Windows Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Node modules (if any)
+node_modules/
+
+# Composer vendor (included but you might want to exclude in production)
+# vendor/
+
+# Backup files
+*.bak
+*.backup
+*.sql.backup
+
+# Batch files used for cleanup
+cleanup_*.bat 
