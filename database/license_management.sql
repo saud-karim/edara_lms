@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 20, 2025 at 08:25 PM
+-- Generation Time: Aug 25, 2025 at 09:24 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -469,7 +469,8 @@ INSERT INTO `personal_licenses` (`license_id`, `license_number`, `full_name`, `i
 (37, '20202', 'علي', '2025-01-01', '2027-02-01', 7, 14, 1, 'assests/uploads/personal_licenses/front_68a4c66353131_1755629155.jpeg', 'assests/uploads/personal_licenses/back_68a4c66353780_1755629155.jpeg', 'نالانهااا', 1, '2025-08-19 18:45:55', '2025-08-19 18:48:50'),
 (40, '20205854', 'احمد', '2024-01-01', '2025-01-01', 11, 1, 2, 'assests/uploads/personal_licenses/front_68a4c9d1923ba_1755630033.jpeg', 'assests/uploads/personal_licenses/back_68a4c9d192eb2_1755630033.jpeg', 'تنتي', 1, '2025-08-19 19:00:33', '2025-08-19 19:00:33'),
 (41, '554', 'سعوى', '2025-01-01', '2026-02-02', 18, 8, 1, 'assests/uploads/personal_licenses/front_68a4ca8d58f8a_1755630221.jpeg', 'assests/uploads/personal_licenses/back_68a4ca8d597a8_1755630221.jpeg', 'تتتت', 1, '2025-08-19 19:03:41', '2025-08-19 19:03:41'),
-(42, '4255', 'عمر', '2025-01-01', '2025-01-02', 18, 1, 26, 'assests/uploads/personal_licenses/front_68a588a3e04fb_1755678883.jpeg', 'assests/uploads/personal_licenses/back_68a5b84df0768_1755691085.jpeg', '', 1, '2025-08-20 08:34:43', '2025-08-20 11:58:05');
+(42, '4255', 'عمر', '2025-01-01', '2025-01-02', 18, 1, 26, 'assests/uploads/personal_licenses/front_68a588a3e04fb_1755678883.jpeg', 'assests/uploads/personal_licenses/back_68a5b84df0768_1755691085.jpeg', '', 1, '2025-08-20 08:34:43', '2025-08-20 11:58:05'),
+(43, '20205', 'علي', '2024-10-30', '2025-01-01', 5, 1, 28, 'assests/uploads/personal_licenses/front_68ac5103806f2_1756123395.jpeg', 'assests/uploads/personal_licenses/back_68ac5103811d4_1756123395.jpeg', '', 1, '2025-08-25 12:03:15', '2025-08-25 12:03:15');
 
 -- --------------------------------------------------------
 
@@ -627,7 +628,9 @@ INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `full_name`, `r
 (24, 'superadmin555', 'krems89528@gmail.com', '$2y$10$hC7xj3WAUxeykSWKOWy36eYdHmO.OzJGpGs6kEZSusCY.hC90kvz2', 'مدير السلامة', 'admin', 9, NULL, 1, NULL, '2025-08-13 12:00:55', '2025-08-13 12:08:36', 18),
 (25, 'superadmin24', 'krems582@gmail.com', '$2y$10$M.Abv9xhSRJ.xYIfspn2puqeV2AAq4Vc8mLjsmLoIj9vdpwllBL36', 'مدير', 'admin', 11, NULL, 1, NULL, '2025-08-14 03:30:17', '2025-08-14 11:50:34', 7),
 (26, 'saudyy', 'gawaves6@aravites.com', '$2y$10$KLEI9nPWs3Ash0lxE4XDU.VJXLZwkJt0xvQqI3.cBX1WLGePoD2B2', 'مدير السلامة', 'admin', 1, 2, 1, NULL, '2025-08-14 11:58:28', '2025-08-20 08:15:18', 2),
-(27, 'saudyyy', 'gawaves6556@aravites.com', '$2y$10$3jSrn3EC/eoj2LwO4xgqoOUSQBNZF.kny8wJJ2l7NNTOuiKbXXqV.', 'مدير السلامة', 'admin', 1, 2, 1, NULL, '2025-08-20 08:37:49', '2025-08-20 12:09:49', 17);
+(27, 'saudyyy', 'gawaves6556@aravites.com', '$2y$10$3jSrn3EC/eoj2LwO4xgqoOUSQBNZF.kny8wJJ2l7NNTOuiKbXXqV.', 'مدير السلامة', 'admin', 1, 2, 1, NULL, '2025-08-20 08:37:49', '2025-08-20 12:09:49', 17),
+(28, 'hse1', 'krem5s@gmail.com', '$2y$10$9/JdWFFQK2ZgCBjs4dq5teOGtaYkEER/26XActpqPhmunYn5wxzym', 'مدير', 'admin', 1, 2, 1, NULL, '2025-08-25 11:28:47', '2025-08-25 11:55:25', 4),
+(29, 's224', 'krejms@gmail.com', '$2y$10$pmbbY.WcY7YvHP/QWNZ3guK/8e/zy9dhgTuBuDmgs9PkUCKDvWqIq', 'مدير', 'admin', 8, 9, 1, NULL, '2025-08-25 18:39:46', '2025-08-25 18:39:46', 17);
 
 -- --------------------------------------------------------
 
@@ -863,7 +866,25 @@ INSERT INTO `user_permissions` (`user_id`, `permission_id`, `granted_by`, `grant
 (27, 24, 1, '2025-08-20 08:37:49', 1, 'تم منحها تلقائياً أثناء إنشاء المستخدم'),
 (27, 25, 1, '2025-08-20 08:37:49', 1, 'تم منحها تلقائياً أثناء إنشاء المستخدم'),
 (27, 26, 1, '2025-08-20 08:37:49', 1, 'تم منحها تلقائياً أثناء إنشاء المستخدم'),
-(27, 28, 1, '2025-08-20 08:37:49', 1, 'تم منحها تلقائياً أثناء إنشاء المستخدم');
+(27, 28, 1, '2025-08-20 08:37:49', 1, 'تم منحها تلقائياً أثناء إنشاء المستخدم'),
+(28, 5, 1, '2025-08-25 11:55:25', 1, 'تم تحديثها أثناء تعديل المستخدم'),
+(28, 6, 1, '2025-08-25 11:55:25', 1, 'تم تحديثها أثناء تعديل المستخدم'),
+(28, 7, 1, '2025-08-25 11:55:25', 1, 'تم تحديثها أثناء تعديل المستخدم'),
+(28, 8, 1, '2025-08-25 11:55:25', 1, 'تم تحديثها أثناء تعديل المستخدم'),
+(28, 23, 1, '2025-08-25 11:55:25', 1, 'تم تحديثها أثناء تعديل المستخدم'),
+(28, 24, 1, '2025-08-25 11:55:25', 1, 'تم تحديثها أثناء تعديل المستخدم'),
+(28, 25, 1, '2025-08-25 11:55:25', 1, 'تم تحديثها أثناء تعديل المستخدم'),
+(28, 26, 1, '2025-08-25 11:55:25', 1, 'تم تحديثها أثناء تعديل المستخدم'),
+(28, 28, 1, '2025-08-25 11:55:25', 1, 'تم تحديثها أثناء تعديل المستخدم'),
+(29, 5, 1, '2025-08-25 18:39:46', 1, 'تم منحها تلقائياً أثناء إنشاء المستخدم'),
+(29, 6, 1, '2025-08-25 18:39:46', 1, 'تم منحها تلقائياً أثناء إنشاء المستخدم'),
+(29, 7, 1, '2025-08-25 18:39:46', 1, 'تم منحها تلقائياً أثناء إنشاء المستخدم'),
+(29, 8, 1, '2025-08-25 18:39:46', 1, 'تم منحها تلقائياً أثناء إنشاء المستخدم'),
+(29, 23, 1, '2025-08-25 18:39:46', 1, 'تم منحها تلقائياً أثناء إنشاء المستخدم'),
+(29, 24, 1, '2025-08-25 18:39:46', 1, 'تم منحها تلقائياً أثناء إنشاء المستخدم'),
+(29, 25, 1, '2025-08-25 18:39:46', 1, 'تم منحها تلقائياً أثناء إنشاء المستخدم'),
+(29, 26, 1, '2025-08-25 18:39:46', 1, 'تم منحها تلقائياً أثناء إنشاء المستخدم'),
+(29, 28, 1, '2025-08-25 18:39:46', 1, 'تم منحها تلقائياً أثناء إنشاء المستخدم');
 
 -- --------------------------------------------------------
 
@@ -885,6 +906,36 @@ CREATE TABLE `user_permissions_view` (
 ,`granted_at` timestamp
 ,`granted_by_name` varchar(255)
 );
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_projects`
+--
+
+CREATE TABLE `user_projects` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `project_id` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `notes` text DEFAULT NULL COMMENT 'ملاحظات إضافية حول صلاحيات المشروع'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `user_projects`
+--
+
+INSERT INTO `user_projects` (`id`, `user_id`, `project_id`, `created_at`, `updated_at`, `notes`) VALUES
+(1, 2, 1, '2025-08-25 10:44:46', '2025-08-25 10:44:46', NULL),
+(2, 2, 2, '2025-08-25 10:44:46', '2025-08-25 10:44:46', NULL),
+(3, 26, 1, '2025-08-25 10:44:46', '2025-08-25 10:44:46', NULL),
+(4, 28, 19, '2025-08-25 11:28:47', '2025-08-25 11:28:47', NULL),
+(5, 28, 9, '2025-08-25 11:28:47', '2025-08-25 11:28:47', NULL),
+(6, 28, 4, '2025-08-25 11:28:47', '2025-08-25 11:28:47', NULL),
+(7, 28, 5, '2025-08-25 11:28:47', '2025-08-25 11:28:47', NULL),
+(8, 29, 4, '2025-08-25 18:39:46', '2025-08-25 18:39:46', NULL),
+(9, 29, 5, '2025-08-25 18:39:46', '2025-08-25 18:39:46', NULL);
 
 -- --------------------------------------------------------
 
@@ -945,7 +996,9 @@ INSERT INTO `vehicle_licenses` (`license_id`, `car_number`, `vehicle_type`, `iss
 (31, 'ن ت س 543', 'عربية', '2025-01-01', '2026-01-01', 11, 11, 1, 'assests/uploads/vehicle_licenses/front_689dce008c816_1755172352.jpeg', 'assests/uploads/vehicle_licenses/back_689dce008d086_1755172352.jpeg', 'ا', 1, '2025-08-14 11:52:32', '2025-08-19 17:44:04'),
 (32, 'ت ا ي 565', 'موتوسيكل', '2024-01-01', '2025-01-01', 6, 1, 1, 'assests/uploads/vehicle_licenses/front_689ddb17a82ad_1755175703.jpeg', 'assests/uploads/vehicle_licenses/back_689ddb17a9ba3_1755175703.jpeg', '', 1, '2025-08-14 12:48:23', '2025-08-19 17:44:04'),
 (33, 'ن ت ب 6585', 'عربية', '2025-01-01', '2026-01-01', 18, 1, 27, 'assests/uploads/vehicle_licenses/front_68a5ab210d37d_1755687713.jpeg', 'assests/uploads/vehicle_licenses/back_68a5ab210dd2f_1755687713.jpeg', '', 1, '2025-08-20 11:01:53', '2025-08-20 11:01:53'),
-(34, 'ى ع ن 516', 'موتوسيكل', '2025-01-01', '2026-01-01', 9, 1, 26, 'assests/uploads/vehicle_licenses/front_68a5b7933299f_1755690899.jpeg', 'assests/uploads/vehicle_licenses/back_68a5b793337ba_1755690899.jpeg', '', 1, '2025-08-20 11:54:59', '2025-08-20 11:59:20');
+(34, 'ى ع ن 516', 'موتوسيكل', '2025-01-01', '2026-01-01', 9, 1, 26, 'assests/uploads/vehicle_licenses/front_68a5b7933299f_1755690899.jpeg', 'assests/uploads/vehicle_licenses/back_68a5b793337ba_1755690899.jpeg', '', 1, '2025-08-20 11:54:59', '2025-08-20 11:59:20'),
+(35, 'ة ي 521', 'موتوسيكل', '2024-01-01', '2025-01-01', 9, 1, 28, 'assests/uploads/vehicle_licenses/front_68ac4fc6e8a32_1756123078.jpeg', 'assests/uploads/vehicle_licenses/back_68ac4fc6e9572_1756123078.jpeg', '', 1, '2025-08-25 11:57:58', '2025-08-25 11:57:58'),
+(36, 'ت ت 2521', 'موتوسيكل', '2024-01-01', '2025-01-01', 4, 8, 29, 'assests/uploads/vehicle_licenses/front_68acb489c692e_1756148873.jpeg', 'assests/uploads/vehicle_licenses/back_68acb489c78f7_1756148873.jpeg', '', 1, '2025-08-25 19:07:53', '2025-08-25 19:07:53');
 
 -- --------------------------------------------------------
 
@@ -1113,6 +1166,15 @@ ALTER TABLE `user_permissions`
   ADD KEY `idx_user_permissions_active` (`user_id`,`is_active`);
 
 --
+-- Indexes for table `user_projects`
+--
+ALTER TABLE `user_projects`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_user_project` (`user_id`,`project_id`),
+  ADD KEY `idx_user_id` (`user_id`),
+  ADD KEY `idx_project_id` (`project_id`);
+
+--
 -- Indexes for table `vehicle_licenses`
 --
 ALTER TABLE `vehicle_licenses`
@@ -1168,7 +1230,7 @@ ALTER TABLE `permissions`
 -- AUTO_INCREMENT for table `personal_licenses`
 --
 ALTER TABLE `personal_licenses`
-  MODIFY `license_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `license_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `projects`
@@ -1186,13 +1248,19 @@ ALTER TABLE `system_logs`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+
+--
+-- AUTO_INCREMENT for table `user_projects`
+--
+ALTER TABLE `user_projects`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `vehicle_licenses`
 --
 ALTER TABLE `vehicle_licenses`
-  MODIFY `license_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `license_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- Constraints for dumped tables
@@ -1240,6 +1308,13 @@ ALTER TABLE `user_permissions`
   ADD CONSTRAINT `user_permissions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `user_permissions_ibfk_2` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`permission_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `user_permissions_ibfk_3` FOREIGN KEY (`granted_by`) REFERENCES `users` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `user_projects`
+--
+ALTER TABLE `user_projects`
+  ADD CONSTRAINT `user_projects_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `user_projects_ibfk_2` FOREIGN KEY (`project_id`) REFERENCES `projects` (`project_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `vehicle_licenses`

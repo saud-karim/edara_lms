@@ -177,6 +177,43 @@ try {
     if ($result) {
         $userId = $conn->lastInsertId();
         
+        // Handle project permissions for admin users
+        if ($role === 'admin' && !empty($_POST['projects'])) {
+            $selectedProjects = array_map('intval', $_POST['projects']);
+            $selectedProjects = array_filter($selectedProjects, function($pid) { return $pid > 0; });
+            
+            if (!empty($selectedProjects)) {
+                error_log("Processing " . count($selectedProjects) . " selected projects for user $userId");
+                
+                // Insert user projects
+                $insertProjectStmt = $conn->prepare("
+                    INSERT INTO user_projects (user_id, project_id, created_at) 
+                    VALUES (?, ?, NOW())
+                ");
+                
+                $projectsGranted = 0;
+                foreach ($selectedProjects as $projectId) {
+                    // Verify project exists and is active
+                    $projectCheckStmt = $conn->prepare("SELECT project_id FROM projects WHERE project_id = ? AND is_active = 1");
+                    $projectCheckStmt->execute([$projectId]);
+                    
+                    if ($projectCheckStmt->fetch()) {
+                        $result = $insertProjectStmt->execute([$userId, $projectId]);
+                        if ($result) {
+                            $projectsGranted++;
+                            error_log("✅ Successfully granted project $projectId to user $userId");
+                        } else {
+                            error_log("❌ Failed to grant project $projectId to user $userId");
+                        }
+                    } else {
+                        error_log("⚠️ Project $projectId not found or inactive, skipping");
+                    }
+                }
+                
+                error_log("Total projects granted to user $userId: $projectsGranted");
+            }
+        }
+
         // Handle selected permissions or apply default permissions
         $permissionsToGrant = [];
         

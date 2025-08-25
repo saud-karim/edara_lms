@@ -30,16 +30,27 @@ try {
             ";
     $params = [];
     
-    // Check if user has permission to view all projects - include users with license add permissions
-    $canViewAllProjects = $userRole === 'super_admin' || 
-                         hasPermission('projects_view') || 
-                         hasPermission('licenses_add') || 
-                         hasPermission('personal_licenses_add') || 
-                         hasPermission('vehicle_licenses_add') ||
-                         ($userRole === 'admin' && (hasPermission('licenses_add') || hasPermission('personal_licenses_add') || hasPermission('vehicle_licenses_add')));
-    
-    // If user doesn't have special permissions, filter by department
-    if (!$canViewAllProjects && $userDepartment) {
+    // Super Admin sees all projects
+    if ($userRole === 'super_admin') {
+        // Use base query - no additional filtering needed
+    }
+    // Admin/Sub Admin: Filter by assigned projects only
+    elseif ($userRole === 'admin') {
+        $currentUserId = getUserId();
+        $query = "
+            SELECT DISTINCT p.project_id, p.project_name, p.project_description,
+                   COUNT(DISTINCT u.user_id) as users_count
+            FROM projects p 
+            INNER JOIN user_projects up ON p.project_id = up.project_id
+            LEFT JOIN users u ON p.project_id = u.project_id AND u.is_active = 1
+            WHERE p.is_active = 1 AND up.user_id = ?
+            GROUP BY p.project_id, p.project_name, p.project_description
+            ORDER BY p.project_name
+        ";
+        $params[] = $currentUserId;
+    }
+    // Regular users: Filter by department (unchanged)
+    elseif ($userDepartment) {
         $userDepartmentName = getUserDepartmentName();
         if ($userDepartmentName) {
             $query = "

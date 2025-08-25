@@ -420,6 +420,51 @@ h5 {
                             </div>
                         </div>
                         
+
+                        
+                        <!-- Projects Permissions Section (Admin/Sub Admin only) -->
+                        <div id="projectPermissionsSection" class="permissions-section" style="display: none;">
+                            <div class="panel panel-warning">
+                                <div class="panel-heading">
+                                    <h4><i class="glyphicon glyphicon-folder-open"></i> المشاريع المسموحة</h4>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="alert alert-warning">
+                                        <strong>مهم:</strong> حدد المشاريع التي سيتمكن هذا المدير من إضافة رخص فيها. إذا لم تحدد أي مشروع، لن يتمكن من إضافة رخص.
+                                    </div>
+                                    
+                                    <!-- Projects Counter and Actions -->
+                                    <div class="row" style="margin-bottom: 15px;">
+                                        <div class="col-md-6">
+                                            <div class="project-counter">
+                                                <strong>المشاريع المختارة: <span id="selectedProjectsCount">0</span></strong>
+                                                من <span id="totalProjectsCount">0</span> مشروع
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 text-left">
+                                            <div class="btn-group btn-group-sm">
+                                                <button type="button" class="btn btn-success" id="selectAllProjects">
+                                                    <i class="glyphicon glyphicon-check"></i> تحديد الكل
+                                                </button>
+                                                <button type="button" class="btn btn-warning" id="clearAllProjects">
+                                                    <i class="glyphicon glyphicon-unchecked"></i> إلغاء الكل
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="checkbox-group">
+                                        <div id="projectsGrid" class="permissions-grid" style="max-height: 300px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; border-radius: 4px;">
+                                            <!-- Projects will be loaded here dynamically -->
+                                            <div class="text-center text-muted" style="padding: 20px;">
+                                                <i class="glyphicon glyphicon-refresh fa-spin"></i> جاري تحميل المشاريع...
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <div class="form-group text-center">
                             <button type="submit" class="btn btn-success btn-lg" tabindex="8">
                                 <i class="glyphicon glyphicon-plus"></i> إضافة المستخدم
@@ -494,6 +539,12 @@ $(document).ready(function() {
             if (projectSelect.val()) {
                 departmentSelect.prop('disabled', false);
             }
+            // Show project permissions section for admin
+            $('#projectPermissionsSection').show();
+            // Load all projects for selection
+            if (typeof loadAllProjects === 'function') {
+                loadAllProjects();
+            }
         } else if (role === 'user') {
             // Regular users can have department for access control
             projectSelect.prop('disabled', false);
@@ -519,8 +570,19 @@ $(document).ready(function() {
         if (role) {
             permissionsSection.show();
             loadPermissions(role); // Pass role to set default permissions
+            // Show project permissions for admin
+            if (role === 'admin') {
+                $('#projectPermissionsSection').show();
+                // Load projects if function exists
+                if (typeof loadAllProjects === 'function') {
+                    setTimeout(loadAllProjects, 100); // Small delay to ensure DOM is ready
+                }
+            } else {
+                $('#projectPermissionsSection').hide();
+            }
         } else {
             permissionsSection.hide();
+            $('#projectPermissionsSection').hide();
         }
     });
     
@@ -969,11 +1031,14 @@ $(document).ready(function() {
         if (role === 'admin') {
             $('#parentAdminGroup').show();
             $('#adminTypeRow').show();
+            $('#projectPermissionsSection').show();
             loadHeadAdmins(department);
             updateAdminType();
+            loadAllProjects(); // Load projects for admin
         } else {
             $('#parentAdminGroup').hide();
             $('#adminTypeRow').hide();
+            $('#projectPermissionsSection').hide();
             $('#parent_admin_id').val('');
         }
     });
@@ -1044,6 +1109,96 @@ $(document).ready(function() {
             }
         });
     }
+
+    // ===============================
+    // Projects Permissions Functions  
+    // ===============================
+    
+    // Load all projects for admin role
+    function loadAllProjects() {
+        console.log('🔧 تحميل جميع المشاريع...');
+        
+        $.ajax({
+            url: 'php_action/get_projects.php',
+            method: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                console.log('✅ نجح تحميل المشاريع:', response);
+                
+                if (response.success && response.data) {
+                    renderProjectsGrid(response.data);
+                } else {
+                    console.error('❌ لا توجد بيانات مشاريع');
+                    $('#projectsGrid').html('<div class="text-center text-muted" style="padding: 20px;"><i class="glyphicon glyphicon-exclamation-sign"></i> لا توجد مشاريع متاحة</div>');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('❌ خطأ في تحميل المشاريع:', error);
+                $('#projectsGrid').html('<div class="text-center text-danger" style="padding: 20px;"><i class="glyphicon glyphicon-warning-sign"></i> حدث خطأ في تحميل المشاريع</div>');
+            }
+        });
+    }
+    
+    // Render projects in grid format
+    function renderProjectsGrid(projects) {
+        console.log('🎨 عرض', projects.length, 'مشروع');
+        
+        let html = '<div class="row">';
+        
+        projects.forEach(function(project) {
+            html += `
+                <div class="col-md-6 col-sm-12" style="margin-bottom: 10px;">
+                    <div class="checkbox" style="margin: 10px 0;">
+                        <label style="font-weight: normal; padding: 12px 15px; background: white; border-radius: 6px; border: 2px solid #e9ecef; cursor: pointer; display: block; min-height: 50px;">
+                            <input type="checkbox" name="projects[]" value="${project.project_id}" 
+                                   class="project-checkbox" data-project-name="${project.project_name}"
+                                   style="width: 16px; height: 16px; margin: 0 8px 0 0; float: right;"> 
+                            <strong style="color: #2d3748;">${project.project_name}</strong>
+                            ${project.project_description ? '<small style="color: #6c757d; font-size: 11px; display: block; margin-top: 5px;">' + project.project_description + '</small>' : ''}
+                        </label>
+                    </div>
+                </div>
+            `;
+        });
+        
+        html += '</div>';
+        
+        $('#projectsGrid').html(html);
+        
+        // Update counters
+        $('#totalProjectsCount').text(projects.length);
+        updateProjectsCounter();
+        
+        // Add event listeners
+        $('.project-checkbox').on('change', updateProjectsCounter);
+        
+        // Select/Clear all buttons
+        $('#selectAllProjects').off('click').on('click', function() {
+            $('.project-checkbox').prop('checked', true);
+            updateProjectsCounter();
+        });
+        
+        $('#clearAllProjects').off('click').on('click', function() {
+            $('.project-checkbox').prop('checked', false);
+            updateProjectsCounter();
+        });
+        
+        console.log('✅ تم عرض المشاريع بنجاح');
+    }
+    
+    // Update projects counter
+    function updateProjectsCounter() {
+        const selectedCount = $('.project-checkbox:checked').length;
+        $('#selectedProjectsCount').text(selectedCount);
+        
+        // Change color based on selection
+        if (selectedCount > 0) {
+            $('#selectedProjectsCount').parent().css('color', '#28a745');
+        } else {
+            $('#selectedProjectsCount').parent().css('color', '#6c757d');
+        }
+    }
+    
 });
 </script>
 

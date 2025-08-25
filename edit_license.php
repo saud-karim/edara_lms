@@ -77,9 +77,56 @@ try {
         exit;
     }
     
-    // Get all projects for dropdown
-    $projectsStmt = $conn->query("SELECT project_id, project_name FROM projects WHERE is_active = 1 ORDER BY project_name");
+    // Get projects based on user role and permissions (like add_license.php)
+    $userRole = getUserRole();
+    $currentUserId = getUserId();
+    
+    if ($userRole === 'super_admin') {
+        // Super Admin sees all projects
+        $projectsQuery = "
+            SELECT project_id, project_name, project_description
+            FROM projects 
+            WHERE is_active = 1 
+            ORDER BY project_name
+        ";
+        $projectsStmt = $conn->prepare($projectsQuery);
+        $projectsStmt->execute();
+    } elseif ($userRole === 'admin') {
+        // Admin/Sub Admin sees only assigned projects
+        $projectsQuery = "
+            SELECT DISTINCT p.project_id, p.project_name, p.project_description
+            FROM projects p 
+            INNER JOIN user_projects up ON p.project_id = up.project_id
+            WHERE p.is_active = 1 AND up.user_id = ?
+            ORDER BY p.project_name
+        ";
+        $projectsStmt = $conn->prepare($projectsQuery);
+        $projectsStmt->execute([$currentUserId]);
+    } else {
+        // Regular users see projects by department (unchanged from previous logic)
+        $userDepartmentId = getUserDepartment();
+        if ($userDepartmentId) {
+            $projectsQuery = "
+                SELECT DISTINCT p.project_id, p.project_name, p.project_description
+                FROM projects p 
+                LEFT JOIN users u ON p.project_id = u.project_id AND u.is_active = 1
+                LEFT JOIN departments d ON u.department_id = d.department_id
+                WHERE p.is_active = 1 AND d.department_id = ? AND d.is_active = 1
+                ORDER BY p.project_name
+            ";
+            $projectsStmt = $conn->prepare($projectsQuery);
+            $projectsStmt->execute([$userDepartmentId]);
+        } else {
+            // Fallback: no projects
+            $projectsStmt = $conn->prepare("SELECT project_id, project_name, project_description FROM projects WHERE 1=0");
+            $projectsStmt->execute();
+        }
+    }
+    
     $projects = $projectsStmt->fetchAll();
+    
+    // Debug log for troubleshooting
+    error_log("Edit license - User role: $userRole, User ID: $currentUserId, Projects found: " . count($projects));
     
     // Get all departments (now independent from projects)
     $departmentsStmt = $conn->query("SELECT department_id, department_name FROM departments WHERE is_active = 1 ORDER BY department_name");
