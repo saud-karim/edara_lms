@@ -654,11 +654,31 @@ include 'includes/header.php';
                                                 </small>
                                             </p>
                                         </div>
-                                        <div class="col-md-4 text-left">
-                                            <a href="view_license.php?id=<?php echo $license['license_id']; ?>&type=personal" 
-                                               class="btn btn-xs btn-default">
-                                                عرض
-                                            </a>
+                                        <div class="col-md-4 text-center">
+                                            <?php if (!empty($license['front_image_path']) && file_exists($license['front_image_path'])): ?>
+                                                <div class="license-image-container">
+                                                    <img src="<?php echo htmlspecialchars($license['front_image_path']); ?>" 
+                                                         alt="صورة الرخصة" 
+                                                         class="img-thumbnail license-thumbnail"
+                                                         style="width: 90px; height: 90px; cursor: pointer;"
+                                                         onclick="showImageModal('<?php echo htmlspecialchars($license['front_image_path']); ?>', 'رخصة قيادة - <?php echo htmlspecialchars($license['full_name']); ?>')">
+                                                    <a href="view_license.php?id=<?php echo $license['license_id']; ?>&type=personal" 
+                                                       class="btn btn-xs btn-primary floating-view-btn">
+                                                        <i class="glyphicon glyphicon-eye-open"></i>
+                                                    </a>
+                                                </div>
+                                            <?php else: ?>
+                                                <div class="no-image-container">
+                                                    <div class="no-image-placeholder">
+                                                        <i class="glyphicon glyphicon-picture text-muted" style="font-size: 30px;"></i>
+                                                        <br><span class="text-muted" style="font-size: 11px;">لا توجد صورة</span>
+                                                    </div>
+                                                    <a href="view_license.php?id=<?php echo $license['license_id']; ?>&type=personal" 
+                                                       class="btn btn-xs btn-default floating-view-btn">
+                                                        <i class="glyphicon glyphicon-eye-open"></i>
+                                                    </a>
+                                                </div>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
                                 </div>
@@ -668,7 +688,11 @@ include 'includes/header.php';
                             <a href="licenses.php?type=personal" class="btn btn-primary">عرض جميع رخص القيادة</a>
                         </div>
                     <?php else: ?>
-                        <p class="text-muted text-center">لا توجد رخص قيادة شخصية حديثة</p>
+                        <div class="empty-state text-center">
+                            <i class="glyphicon glyphicon-user" style="font-size: 48px; color: #bbb; margin-bottom: 15px;"></i>
+                            <p class="text-muted">لا توجد رخص قيادة شخصية حديثة</p>
+                            <small class="text-muted">سيتم عرض آخر الرخص المضافة هنا</small>
+                        </div>
                     <?php endif; ?>
                 </div>
             </div>
@@ -701,11 +725,31 @@ include 'includes/header.php';
                                                 </small>
                                             </p>
                                         </div>
-                                        <div class="col-md-4 text-left">
-                                            <a href="view_license.php?id=<?php echo $license['license_id']; ?>&type=vehicle" 
-                                               class="btn btn-xs btn-default">
-                                                عرض
-                                            </a>
+                                        <div class="col-md-4 text-center">
+                                            <?php if (!empty($license['front_image_path']) && file_exists($license['front_image_path'])): ?>
+                                                <div class="license-image-container">
+                                                    <img src="<?php echo htmlspecialchars($license['front_image_path']); ?>" 
+                                                         alt="صورة رخصة المركبة" 
+                                                         class="img-thumbnail license-thumbnail"
+                                                         style="width: 90px; height: 90px; cursor: pointer;"
+                                                         onclick="showImageModal('<?php echo htmlspecialchars($license['front_image_path']); ?>', 'رخصة مركبة - <?php echo htmlspecialchars($license['car_number']); ?>')">
+                                                    <a href="view_license.php?id=<?php echo $license['license_id']; ?>&type=vehicle" 
+                                                       class="btn btn-xs btn-warning floating-view-btn">
+                                                        <i class="glyphicon glyphicon-eye-open"></i>
+                                                    </a>
+                                                </div>
+                                            <?php else: ?>
+                                                <div class="no-image-container">
+                                                    <div class="no-image-placeholder">
+                                                        <i class="glyphicon glyphicon-road text-muted" style="font-size: 30px;"></i>
+                                                        <br><span class="text-muted" style="font-size: 11px;">لا توجد صورة</span>
+                                                    </div>
+                                                    <a href="view_license.php?id=<?php echo $license['license_id']; ?>&type=vehicle" 
+                                                       class="btn btn-xs btn-default floating-view-btn">
+                                                        <i class="glyphicon glyphicon-eye-open"></i>
+                                                    </a>
+                                                </div>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
                                 </div>
@@ -715,7 +759,11 @@ include 'includes/header.php';
                             <a href="licenses.php?type=vehicle" class="btn btn-warning">عرض جميع رخص المركبات</a>
                         </div>
                     <?php else: ?>
-                        <p class="text-muted text-center">لا توجد رخص مركبات حديثة</p>
+                        <div class="empty-state text-center">
+                            <i class="glyphicon glyphicon-road" style="font-size: 48px; color: #bbb; margin-bottom: 15px;"></i>
+                            <p class="text-muted">لا توجد رخص مركبات حديثة</p>
+                            <small class="text-muted">سيتم عرض آخر الرخص المضافة هنا</small>
+                        </div>
                     <?php endif; ?>
                 </div>
             </div>
@@ -725,6 +773,26 @@ include 'includes/header.php';
     <?php endif; ?>
     
 
+</div>
+
+<!-- Image Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="إغلاق">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="imageModalLabel">عرض الصورة</h4>
+            </div>
+            <div class="modal-body text-center">
+                <img id="modalImage" src="" alt="صورة الرخصة" class="img-responsive" style="max-width: 100%; height: auto;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">إغلاق</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <style>
@@ -765,18 +833,43 @@ include 'includes/header.php';
 }
 
 .list-group-item {
+    border: 1px solid #e3e6f0;
+    border-radius: 12px !important;
+    margin-bottom: 10px;
+    padding: 20px;
+    background: linear-gradient(145deg, #ffffff, #f8f9fa);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     border-left: 4px solid transparent;
-    transition: all 0.3s;
 }
 
 .list-group-item:hover {
+    transform: translateY(-2px);
     border-left-color: #3498db;
-    background-color: #f8f9fa;
+    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.15);
+    background: linear-gradient(145deg, #f8f9fa, #ffffff);
+}
+
+.list-group-item:last-child {
+    margin-bottom: 0;
+}
+
+.list-group-item .list-group-item-heading {
+    color: #2c3e50;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.list-group-item .list-group-item-text {
+    color: #6c757d;
+    line-height: 1.5;
 }
 
 .panel-heading {
-    background: linear-gradient(45deg, #3498db, #2980b9) !important;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
     color: white !important;
+    border-radius: 12px 12px 0 0;
+    padding: 20px 25px;
 }
 
 .panel-heading .panel-title {
@@ -799,6 +892,221 @@ include 'includes/header.php';
         font-size: 1.2em;
     }
 }
+
+/* License thumbnail styles */
+.license-image-container {
+    position: relative;
+    display: inline-block;
+    margin: 10px auto;
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    border-radius: 15px;
+    padding: 8px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.license-image-container:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+}
+
+.license-thumbnail {
+    width: 100px;
+    height: 100px;
+    border-radius: 12px;
+    object-fit: cover;
+    display: block;
+    border: 3px solid #fff;
+    transition: all 0.4s ease;
+    cursor: pointer;
+}
+
+.license-thumbnail:hover {
+    transform: scale(1.03);
+    border-color: #3498db;
+    box-shadow: 0 5px 20px rgba(52, 152, 219, 0.3);
+}
+
+.floating-view-btn {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    padding: 0;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: 15;
+    background: linear-gradient(145deg, #4CAF50, #45a049);
+}
+
+.floating-view-btn.btn-primary {
+    background: linear-gradient(145deg, #3498db, #2980b9);
+}
+
+.floating-view-btn.btn-warning {
+    background: linear-gradient(145deg, #f39c12, #e67e22);
+}
+
+.floating-view-btn:hover {
+    transform: scale(1.15) rotate(5deg);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+    color: white;
+}
+
+.floating-view-btn:focus,
+.floating-view-btn:active {
+    color: white;
+    outline: none;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+}
+
+.floating-view-btn i {
+    font-size: 14px;
+    line-height: 1;
+}
+
+.no-image-container {
+    position: relative;
+    display: inline-block;
+    margin: 10px auto;
+    background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+    border-radius: 15px;
+    padding: 8px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.no-image-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+.no-image-placeholder {
+    width: 100px;
+    height: 100px;
+    border: 2px dashed #bbb;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(145deg, #ffffff, #f5f5f5);
+    transition: all 0.3s ease;
+}
+
+.no-image-placeholder:hover {
+    border-color: #888;
+    background: linear-gradient(145deg, #f8f9fa, #ffffff);
+}
+
+.no-image-placeholder i {
+    margin-bottom: 5px;
+    opacity: 0.6;
+    transition: all 0.3s ease;
+}
+
+.no-image-placeholder:hover i {
+    opacity: 0.8;
+    transform: scale(1.1);
+}
+
+/* Enhanced list group */
+.list-group {
+    box-shadow: none;
+    border: none;
+    background: transparent;
+    padding: 10px 0;
+}
+
+/* Panel improvements */
+.panel-body {
+    background: linear-gradient(145deg, #fafafa, #ffffff);
+    border-radius: 0 0 12px 12px;
+    padding: 25px;
+}
+
+.panel {
+    border: none;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.panel-heading h4 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* License cards responsive */
+@media (max-width: 768px) {
+    .license-image-container,
+    .no-image-container {
+        margin: 8px auto;
+        padding: 6px;
+    }
+    
+    .license-thumbnail,
+    .no-image-placeholder {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .floating-view-btn {
+        width: 30px;
+        height: 30px;
+        top: -3px;
+        right: -3px;
+    }
+    
+    .floating-view-btn i {
+        font-size: 12px;
+    }
+    
+    .list-group-item {
+        padding: 15px;
+    }
+}
+
+/* Empty state styling */
+.empty-state {
+    padding: 40px 20px;
+    border-radius: 12px;
+    background: linear-gradient(145deg, #fafafa, #ffffff);
+    border: 2px dashed #ddd;
+    margin: 20px 0;
+    transition: all 0.3s ease;
+}
+
+.empty-state:hover {
+    border-color: #bbb;
+    background: linear-gradient(145deg, #f5f5f5, #fafafa);
+}
+
+.empty-state i {
+    transition: all 0.3s ease;
+}
+
+.empty-state:hover i {
+    transform: scale(1.1);
+    color: #999;
+}
 </style>
+
+<script>
+function showImageModal(imagePath, title) {
+    $('#modalImage').attr('src', imagePath);
+    $('#imageModalLabel').text(title);
+    $('#imageModal').modal('show');
+}
+</script>
 
 <?php include 'includes/footer.php'; ?> 

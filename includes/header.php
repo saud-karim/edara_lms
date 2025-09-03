@@ -374,7 +374,7 @@ body {
       <li><a href="email_notifications.php"><i class="glyphicon glyphicon-envelope"></i> إرسال الإشعارات</a></li>
       <li><a href="notification_history.php"><i class="glyphicon glyphicon-list-alt"></i> سجل الإشعارات</a></li>
       <li class="divider"></li>
-      <li><a href="project_emails_management.php"><i class="glyphicon glyphicon-send"></i> إيميلات المشاريع</a></li>
+      
     </ul>
   </li>
   <?php endif; ?>

@@ -354,6 +354,15 @@ include 'includes/header.php';
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-group" id="parentAdminSection" style="display: none;">
+                                    <label for="parent_admin_id">المدير المباشر</label>
+                                    <select id="parent_admin_id" name="parent_admin_id" class="form-control">
+                                        <option value="">اختر المدير المباشر (اختياري)</option>
+                                    </select>
+                                    <small class="help-block text-muted">يمكن تحديد مشرف رئيسي من نفس القسم كمدير مباشر</small>
+                                </div>
+                            </div>
                         </div>
                         
                         <!-- Projects Section -->
@@ -514,6 +523,14 @@ $(document).ready(function() {
         $('#projectPermissionsSection').show();
         $('#departmentPermissionsSection').show();
         
+        // Show parent admin section for admin role only
+        if (userRole === 'admin') {
+            $('#parentAdminSection').show();
+            setTimeout(function() {
+                loadParentAdmins(); // Load parent admins after departments are loaded
+            }, 800);
+        }
+        
         setTimeout(function() {
             loadUserProjects(<?php echo $userId; ?>);
             loadAllDepartments();
@@ -528,13 +545,24 @@ $(document).ready(function() {
         if (role === 'admin') {
             $('#projectPermissionsSection').show();
             $('#departmentPermissionsSection').show();
+            $('#parentAdminSection').show();
             loadProjects();
             loadDepartments();
             loadUserProjects(<?php echo $userId; ?>);
             loadAllDepartments();
+            loadParentAdmins(); // Load available parent admins
         } else {
             $('#projectPermissionsSection').hide();
             $('#departmentPermissionsSection').hide();
+            $('#parentAdminSection').hide();
+        }
+    });
+    
+    // Handle department change - reload parent admins when department changes
+    $('#department_id').on('change', function() {
+        const role = $('#role').val();
+        if (role === 'admin') {
+            loadParentAdmins(); // Reload parent admins for the new department
         }
     });
     
@@ -590,6 +618,40 @@ $(document).ready(function() {
             });
     }
     
+    // Load parent admins function
+    function loadParentAdmins() {
+        const currentDepartmentId = $('#department_id').val();
+        const currentParentAdminId = <?php echo $user['parent_admin_id'] ? $user['parent_admin_id'] : 'null'; ?>;
+        
+        if (!currentDepartmentId) {
+            $('#parent_admin_id').html('<option value="">اختر القسم أولاً</option>');
+            return;
+        }
+        
+        $.ajax({
+            url: 'php_action/get_parent_admins.php',
+            method: 'GET',
+            data: { department_id: currentDepartmentId },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success && response.data) {
+                    let options = '<option value="">اختر المدير المباشر (اختياري)</option>';
+                    response.data.forEach(function(admin) {
+                        const selected = currentParentAdminId == admin.user_id ? 'selected' : '';
+                        options += `<option value="${admin.user_id}" ${selected}>${admin.full_name}</option>`;
+                    });
+                    $('#parent_admin_id').html(options);
+                } else {
+                    $('#parent_admin_id').html('<option value="">لا يوجد مشرفين متاحين</option>');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('❌ Parent admins loading error:', error);
+                $('#parent_admin_id').html('<option value="">خطأ في تحميل المشرفين</option>');
+            }
+        });
+    }
+
     // Load permissions function
     function loadPermissions() {
         $.get('php_action/get_permissions_no_auth.php')
