@@ -294,6 +294,33 @@ include 'includes/header.php';
                                         </select>
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="license_category" class="control-label">فئة الرخصة</label>
+                                        <select class="form-control" id="license_category" name="license_category" tabindex="6">
+                                            <option value="رخصة مركبة" selected>رخصة مركبة</option>
+                                            <option value="تصريح مركبة">تصريح مركبة</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" id="inspection_year_row" style="display: none;">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="inspection_year" class="control-label">سنة الفحص الدوري</label>
+                                        <select class="form-control" id="inspection_year" name="inspection_year" tabindex="7">
+                                            <option value="">اختر سنة الفحص</option>
+                                            <?php 
+                                            $currentYear = date('Y');
+                                            for ($i = $currentYear - 5; $i <= $currentYear + 10; $i++) {
+                                                echo "<option value='$i'>$i</option>";
+                                            }
+                                            ?>
+                                        </select>
+                                        <small class="help-block text-info">يظهر فقط للتصاريح - اختياري</small>
+                                    </div>
+                                </div>
                             </div>
                         
                         <div class="row">
@@ -442,6 +469,29 @@ $(document).ready(function() {
     // Load initial data
     loadProjects();
     loadDepartments();
+    
+    // Handle license category change for vehicle licenses
+    $('#license_category').on('change', function() {
+        const selectedCategory = $(this).val();
+        console.log('🔄 License category changed to:', selectedCategory);
+        
+        if (selectedCategory === 'تصريح مركبة') {
+            $('#inspection_year_row').slideDown(300);
+            console.log('✅ Showing inspection year field');
+        } else {
+            $('#inspection_year_row').slideUp(300);
+            $('#inspection_year').val(''); // Clear the value
+            console.log('❌ Hiding inspection year field');
+        }
+    });
+    
+    // Initialize inspection year visibility on page load
+    const initialCategory = $('#license_category').val();
+    if (initialCategory === 'تصريح مركبة') {
+        $('#inspection_year_row').show();
+    } else {
+        $('#inspection_year_row').hide();
+    }
     
     // Car number validation for vehicle licenses
     $('#car_numbers').on('input', function() {
@@ -729,7 +779,7 @@ function loadProjects() {
 }
 
 function loadDepartments() {
-    $.get('php_action/get_unique_departments.php', function(response) {
+    $.get('php_action/get_unique_departments_updated.php', function(response) {
         if (response.success) {
             let options = '<option value="">اختر القسم</option>';
             response.data.forEach(function(department) {

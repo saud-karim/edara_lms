@@ -465,6 +465,49 @@ h5 {
                             </div>
                         </div>
                         
+                        <!-- Departments Permissions Section (Admin/Sub Admin only) -->
+                        <div id="departmentPermissionsSection" class="permissions-section" style="display: none;">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h4><i class="glyphicon glyphicon-th-large"></i> الأقسام المسموحة</h4>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="alert alert-info">
+                                        <strong>مهم:</strong> حدد الأقسام التي سيتمكن هذا المدير من إضافة رخص فيها. إذا لم تحدد أي قسم، سيتم استخدام قسمه الافتراضي فقط.
+                                    </div>
+                                    
+                                    <!-- Departments Counter and Actions -->
+                                    <div class="row" style="margin-bottom: 15px;">
+                                        <div class="col-md-6">
+                                            <div class="department-counter">
+                                                <strong>الأقسام المختارة: <span id="selectedDepartmentsCount">0</span></strong>
+                                                من <span id="totalDepartmentsCount">0</span> قسم
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 text-left">
+                                            <div class="btn-group btn-group-sm">
+                                                <button type="button" class="btn btn-success" id="selectAllDepartments">
+                                                    <i class="glyphicon glyphicon-check"></i> تحديد الكل
+                                                </button>
+                                                <button type="button" class="btn btn-warning" id="clearAllDepartments">
+                                                    <i class="glyphicon glyphicon-unchecked"></i> إلغاء الكل
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="checkbox-group">
+                                        <div id="departmentsGrid" class="permissions-grid" style="max-height: 300px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; border-radius: 4px;">
+                                            <!-- Departments will be loaded here dynamically -->
+                                            <div class="text-center text-muted" style="padding: 20px;">
+                                                <i class="glyphicon glyphicon-refresh fa-spin"></i> جاري تحميل الأقسام...
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <div class="form-group text-center">
                             <button type="submit" class="btn btn-success btn-lg" tabindex="8">
                                 <i class="glyphicon glyphicon-plus"></i> إضافة المستخدم
@@ -541,9 +584,11 @@ $(document).ready(function() {
             }
             // Show project permissions section for admin
             $('#projectPermissionsSection').show();
+            $('#departmentPermissionsSection').show();
             // Load all projects for selection
             if (typeof loadAllProjects === 'function') {
                 loadAllProjects();
+                loadAllDepartments(); // Load departments for admin
             }
         } else if (role === 'user') {
             // Regular users can have department for access control
@@ -573,16 +618,19 @@ $(document).ready(function() {
             // Show project permissions for admin
             if (role === 'admin') {
                 $('#projectPermissionsSection').show();
+                $('#departmentPermissionsSection').show();
                 // Load projects if function exists
                 if (typeof loadAllProjects === 'function') {
                     setTimeout(loadAllProjects, 100); // Small delay to ensure DOM is ready
                 }
             } else {
                 $('#projectPermissionsSection').hide();
+                $('#departmentPermissionsSection').hide();
             }
         } else {
             permissionsSection.hide();
             $('#projectPermissionsSection').hide();
+            $('#departmentPermissionsSection').hide();
         }
     });
     
@@ -605,7 +653,7 @@ $(document).ready(function() {
     
     // Load departments function
     function loadDepartments() {
-        $.get('php_action/get_unique_departments.php')
+        $.get('php_action/get_unique_departments_updated.php')
             .done(function(response) {
                 if (response.success) {
                     let options = '<option value="">اختر القسم</option>';
@@ -1032,13 +1080,16 @@ $(document).ready(function() {
             $('#parentAdminGroup').show();
             $('#adminTypeRow').show();
             $('#projectPermissionsSection').show();
+            $('#departmentPermissionsSection').show();
             loadHeadAdmins(department);
             updateAdminType();
             loadAllProjects(); // Load projects for admin
+            loadAllDepartments(); // Load departments for admin
         } else {
             $('#parentAdminGroup').hide();
             $('#adminTypeRow').hide();
             $('#projectPermissionsSection').hide();
+            $('#departmentPermissionsSection').hide();
             $('#parent_admin_id').val('');
         }
     });
@@ -1196,6 +1247,172 @@ $(document).ready(function() {
             $('#selectedProjectsCount').parent().css('color', '#28a745');
         } else {
             $('#selectedProjectsCount').parent().css('color', '#6c757d');
+        }
+    }
+    
+    // Load all departments for admin role
+    function loadAllDepartments() {
+        console.log('🔧 تحميل جميع الأقسام...');
+        
+        $.ajax({
+            url: 'php_action/get_departments_no_auth.php',
+            method: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                console.log('✅ نجح تحميل الأقسام:', response);
+                
+                if (response.success && response.data) {
+                    renderDepartmentsGrid(response.data);
+                } else {
+                    console.error('❌ لا توجد بيانات أقسام');
+                    $('#departmentsGrid').html('<div class="text-center text-muted" style="padding: 20px;"><i class="glyphicon glyphicon-exclamation-sign"></i> لا توجد أقسام متاحة</div>');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('❌ خطأ في تحميل الأقسام:', error);
+                $('#departmentsGrid').html('<div class="text-center text-danger" style="padding: 20px;"><i class="glyphicon glyphicon-warning-sign"></i> حدث خطأ في تحميل الأقسام</div>');
+            }
+        });
+    }
+    
+    // Render departments in grid format
+    function renderDepartmentsGrid(departments) {
+        console.log('🎨 عرض', departments.length, 'قسم');
+        
+        let html = '<div class="row">';
+        
+        departments.forEach(function(department) {
+            html += `
+                <div class="col-md-6 col-sm-12" style="margin-bottom: 10px;">
+                    <div class="checkbox" style="margin: 10px 0;">
+                        <label style="font-weight: normal; padding: 12px 15px; background: white; border-radius: 6px; border: 2px solid #e9ecef; cursor: pointer; display: block; min-height: 50px;">
+                            <input type="checkbox" name="departments[]" value="${department.department_id}" 
+                                   class="department-checkbox" data-department-name="${department.department_name}"
+                                   style="width: 16px; height: 16px; margin: 0 8px 0 0; float: right;"> 
+                            <strong style="color: #2d3748;">${department.department_name}</strong>
+                            ${department.department_description ? '<small style="color: #6c757d; font-size: 11px; display: block; margin-top: 5px;">' + department.department_description + '</small>' : ''}
+                        </label>
+                    </div>
+                </div>
+            `;
+        });
+        
+        html += '</div>';
+        
+        $('#departmentsGrid').html(html);
+        
+        // Update counters
+        $('#totalDepartmentsCount').text(departments.length);
+        updateDepartmentsCounter();
+        
+        // Add event listeners
+        $('.department-checkbox').on('change', updateDepartmentsCounter);
+        
+        // Select/Clear all buttons
+        $('#selectAllDepartments').off('click').on('click', function() {
+            $('.department-checkbox').prop('checked', true);
+            updateDepartmentsCounter();
+        });
+        
+        $('#clearAllDepartments').off('click').on('click', function() {
+            $('.department-checkbox').prop('checked', false);
+            updateDepartmentsCounter();
+        });
+    }
+    
+    // Update departments counter
+    function updateDepartmentsCounter() {
+        const selectedCount = $('.department-checkbox:checked').length;
+        $('#selectedDepartmentsCount').text(selectedCount);
+        
+        // Change color based on selection
+        if (selectedCount > 0) {
+            $('#selectedDepartmentsCount').parent().css('color', '#28a745');
+        } else {
+            $('#selectedDepartmentsCount').parent().css('color', '#6c757d');
+        }
+    }
+    
+    // Load all departments for admin role
+    function loadAllDepartments() {
+        console.log('🔧 تحميل جميع الأقسام...');
+        
+        $.ajax({
+            url: 'php_action/get_departments_no_auth.php',
+            method: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                console.log('✅ نجح تحميل الأقسام:', response);
+                
+                if (response.success && response.data) {
+                    renderDepartmentsGrid(response.data);
+                } else {
+                    console.error('❌ لا توجد بيانات أقسام');
+                    $('#departmentsGrid').html('<div class="text-center text-muted" style="padding: 20px;"><i class="glyphicon glyphicon-exclamation-sign"></i> لا توجد أقسام متاحة</div>');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('❌ خطأ في تحميل الأقسام:', error);
+                $('#departmentsGrid').html('<div class="text-center text-danger" style="padding: 20px;"><i class="glyphicon glyphicon-warning-sign"></i> حدث خطأ في تحميل الأقسام</div>');
+            }
+        });
+    }
+    
+    // Render departments in grid format
+    function renderDepartmentsGrid(departments) {
+        console.log('🎨 عرض', departments.length, 'قسم');
+        
+        let html = '<div class="row">';
+        
+        departments.forEach(function(department) {
+            html += `
+                <div class="col-md-6 col-sm-12" style="margin-bottom: 10px;">
+                    <div class="checkbox" style="margin: 10px 0;">
+                        <label style="font-weight: normal; padding: 12px 15px; background: white; border-radius: 6px; border: 2px solid #e9ecef; cursor: pointer; display: block; min-height: 50px;">
+                            <input type="checkbox" name="departments[]" value="${department.department_id}" 
+                                   class="department-checkbox" data-department-name="${department.department_name}"
+                                   style="width: 16px; height: 16px; margin: 0 8px 0 0; float: right;"> 
+                            <strong style="color: #2d3748;">${department.department_name}</strong>
+                            ${department.department_description ? '<small style="color: #6c757d; font-size: 11px; display: block; margin-top: 5px;">' + department.department_description + '</small>' : ''}
+                        </label>
+                    </div>
+                </div>
+            `;
+        });
+        
+        html += '</div>';
+        
+        $('#departmentsGrid').html(html);
+        
+        // Update counters
+        $('#totalDepartmentsCount').text(departments.length);
+        updateDepartmentsCounter();
+        
+        // Add event listeners
+        $('.department-checkbox').on('change', updateDepartmentsCounter);
+        
+        // Select/Clear all buttons
+        $('#selectAllDepartments').off('click').on('click', function() {
+            $('.department-checkbox').prop('checked', true);
+            updateDepartmentsCounter();
+        });
+        
+        $('#clearAllDepartments').off('click').on('click', function() {
+            $('.department-checkbox').prop('checked', false);
+            updateDepartmentsCounter();
+        });
+    }
+    
+    // Update departments counter
+    function updateDepartmentsCounter() {
+        const selectedCount = $('.department-checkbox:checked').length;
+        $('#selectedDepartmentsCount').text(selectedCount);
+        
+        // Change color based on selection
+        if (selectedCount > 0) {
+            $('#selectedDepartmentsCount').parent().css('color', '#28a745');
+        } else {
+            $('#selectedDepartmentsCount').parent().css('color', '#6c757d');
         }
     }
     

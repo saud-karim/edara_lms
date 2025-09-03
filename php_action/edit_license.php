@@ -119,6 +119,10 @@ try {
         $carLetters = trim($_POST['car_letters'] ?? '');
         $carNumber = trim($_POST['car_number'] ?? '');
         $vehicleType = $_POST['vehicle_type'] ?? '';
+        $licenseCategory = sanitizeInput($_POST['license_category'] ?? 'رخصة مركبة');
+        $inspectionYear = intval($_POST['inspection_year'] ?? 0);
+        $licenseCategory = sanitizeInput($_POST['license_category'] ?? 'رخصة مركبة');
+        $inspectionYear = intval($_POST['inspection_year'] ?? 0);
         
         // If we have combined car_number but not separate fields, split it
         if (!$carNumbers && !$carLetters && $carNumber) {
@@ -249,12 +253,12 @@ try {
         } else {
             $updateQuery = "
                 UPDATE vehicle_licenses 
-                SET car_number = ?, vehicle_type = ?, issue_date = ?, expiration_date = ?, 
+                SET car_number = ?, vehicle_type = ?, license_category = ?, inspection_year = ?, issue_date = ?, expiration_date = ?, 
                     project_id = ?, department_id = ?, front_image_path = ?, back_image_path = ?, 
                     notes = ?, updated_at = CURRENT_TIMESTAMP 
                 WHERE license_id = ?
             ";
-            $params = [$carNumber, $vehicleType, $issueDate, $expirationDate, $projectId, $departmentId,
+            $params = [$carNumber, $vehicleType, $licenseCategory, $inspectionYear > 0 ? $inspectionYear : null, $issueDate, $expirationDate, $projectId, $departmentId,
                       $frontImagePath, $backImagePath, $notes, $licenseId];
         }
         

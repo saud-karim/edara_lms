@@ -182,6 +182,10 @@ try {
         $carNumbers = trim($_POST['car_numbers'] ?? '');
         $carLetters = trim($_POST['car_letters'] ?? '');
         $vehicleType = sanitizeInput($_POST['vehicle_type'] ?? '');
+        $licenseCategory = sanitizeInput($_POST['license_category'] ?? 'رخصة مركبة');
+        $inspectionYear = intval($_POST['inspection_year'] ?? 0);
+        $licenseCategory = sanitizeInput($_POST['license_category'] ?? 'رخصة مركبة');
+        $inspectionYear = intval($_POST['inspection_year'] ?? 0);
         $issueDate = $_POST['issue_date'] ?? '';
         $expirationDate = $_POST['expiration_date'] ?? '';
         $projectId = intval($_POST['project_id'] ?? 0);
@@ -293,17 +297,19 @@ try {
             exit;
         }
         
-        // Insert vehicle license record (vehicle_licenses table doesn't have license_number column)
+        // Insert vehicle license record with new fields
         $insertStmt = $conn->prepare("
             INSERT INTO vehicle_licenses (
-                car_number, vehicle_type, issue_date, expiration_date, 
+                car_number, vehicle_type, license_category, inspection_year, issue_date, expiration_date, 
                 project_id, department_id, user_id, front_image_path, back_image_path, notes
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
         
         $result = $insertStmt->execute([
             $carNumber,
             $vehicleType,
+            $licenseCategory,
+            $inspectionYear > 0 ? $inspectionYear : null,
             $issueDate,
             $expirationDate,
             $projectId,

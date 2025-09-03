@@ -134,7 +134,6 @@ if (session_status() === PHP_SESSION_NONE) {
     }
   </style>
   <!-- jquery -->
-	<script src="assests/jquery/jquery.min.js"></script>
 	<script src="assests/jquery/jquery-3.6.0.min.js"></script>
   <!-- jquery ui -->  
   <link rel="stylesheet" href="assests/jquery-ui/jquery-ui.min.css">
@@ -374,6 +373,8 @@ body {
     <ul class="dropdown-menu">
       <li><a href="email_notifications.php"><i class="glyphicon glyphicon-envelope"></i> إرسال الإشعارات</a></li>
       <li><a href="notification_history.php"><i class="glyphicon glyphicon-list-alt"></i> سجل الإشعارات</a></li>
+      <li class="divider"></li>
+      <li><a href="project_emails_management.php"><i class="glyphicon glyphicon-send"></i> إيميلات المشاريع</a></li>
     </ul>
   </li>
   <?php endif; ?>

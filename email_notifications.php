@@ -31,12 +31,13 @@ include 'includes/header.php';
                         <div class="col-md-8">
                             <h4>إرسال إشعارات التراخيص</h4>
                             <p class="text-muted">
-                                سيتم إرسال إيميل لكل مشرف قسم يحتوي على:
+                                سيتم إرسال إشعارات موحدة تشمل:
                             </p>
                             <ul class="text-muted">
-                                <li>الرخص المنتهية في قسمه</li>
-                                <li>الرخص التي تنتهي خلال 30 يوم في قسمه</li>
+                                <li><strong>للإدارات:</strong> إيميل لكل مشرف قسم بالرخص المنتهية في قسمه</li>
+                                <li><strong>للمشاريع:</strong> إيميل لكل مشروع + إدارة بالرخص المنتهية في المشروع</li>
                                 <li>تفاصيل كل رخصة (النوع، الرقم، حامل الرخصة، تاريخ الانتهاء)</li>
+                                <li>إضافة الإيميلات الثابتة كـ CC تلقائياً</li>
                             </ul>
                         </div>
                         <div class="col-md-4 text-center">
@@ -49,6 +50,11 @@ include 'includes/header.php';
                                 <i class="glyphicon glyphicon-eye-open"></i>
                                 معاينة الإشعارات
                             </button>
+                            <br><br>
+                            <a href="manage_cc_emails.php" class="btn btn-warning">
+                                <i class="glyphicon glyphicon-envelope"></i>
+                                إدارة إيميلات CC
+                            </a>
 
                         </div>
                     </div>
@@ -252,7 +258,7 @@ function sendNotifications() {
     $('#resultsSection').hide();
     
     $.ajax({
-        url: 'php_action/send_license_notifications_new.php',
+                    url: 'php_action/send_license_notifications_separated.php',
         method: 'POST',
         dataType: 'json',
         timeout: 120000, // 120 seconds timeout
@@ -651,4 +657,6 @@ $(document).ready(function() {
 </script>
 
 <?php include 'includes/footer.php'; ?> 
- 
+  
+
+

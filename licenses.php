@@ -503,6 +503,8 @@ $(document).ready(function() {
                 <tr>
                     <td>${license.car_number}</td>
                     <td>${license.vehicle_type}</td>
+                    <td>${license.license_category || 'رخصة مركبة'}</td>
+                    <td>${license.inspection_year || '-'}</td>
                     <td>${license.department_name}</td>
                     <td>${license.project_name}</td>
                     <td>${issueDate}</td>

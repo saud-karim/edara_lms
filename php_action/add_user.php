@@ -214,6 +214,43 @@ try {
             }
         }
 
+        // Handle department permissions for admin users
+        if ($role === 'admin' && !empty($_POST['departments'])) {
+            $selectedDepartments = array_map('intval', $_POST['departments']);
+            $selectedDepartments = array_filter($selectedDepartments, function($did) { return $did > 0; });
+            
+            if (!empty($selectedDepartments)) {
+                error_log("Processing " . count($selectedDepartments) . " selected departments for user $userId");
+                
+                // Insert user departments
+                $insertDepartmentStmt = $conn->prepare("
+                    INSERT INTO user_departments (user_id, department_id, created_at) 
+                    VALUES (?, ?, NOW())
+                ");
+                
+                $departmentsGranted = 0;
+                foreach ($selectedDepartments as $departmentId) {
+                    // Verify department exists and is active
+                    $departmentCheckStmt = $conn->prepare("SELECT department_id FROM departments WHERE department_id = ? AND is_active = 1");
+                    $departmentCheckStmt->execute([$departmentId]);
+                    
+                    if ($departmentCheckStmt->fetch()) {
+                        $result = $insertDepartmentStmt->execute([$userId, $departmentId]);
+                        if ($result) {
+                            $departmentsGranted++;
+                            error_log("✅ Successfully granted department $departmentId to user $userId");
+                        } else {
+                            error_log("❌ Failed to grant department $departmentId to user $userId");
+                        }
+                    } else {
+                        error_log("⚠️ Department $departmentId not found or inactive, skipping");
+                    }
+                }
+                
+                error_log("Total departments granted to user $userId: $departmentsGranted");
+            }
+        }
+
         // Handle selected permissions or apply default permissions
         $permissionsToGrant = [];
         

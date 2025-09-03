@@ -18,7 +18,7 @@ $(document).ready(function() {
     });
     
     // Handle department change
-    $('#department').on('change', function() {
+    $('#department_id').on('change', function() {
         if ($('#role').val() === 'admin') {
             loadHeadAdmins();
         }

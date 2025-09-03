@@ -172,6 +172,16 @@ include 'includes/header.php';
                                             <td><strong>نوع المركبة:</strong></td>
                                             <td><?php echo htmlspecialchars($license['vehicle_type']); ?></td>
                                         </tr>
+                                        <tr>
+                                            <td><strong>فئة الرخصة:</strong></td>
+                                            <td><?php echo htmlspecialchars($license['license_category'] ?? 'رخصة مركبة'); ?></td>
+                                        </tr>
+                                        <?php if (!empty($license['inspection_year'])): ?>
+                                        <tr>
+                                            <td><strong>سنة الفحص الدوري:</strong></td>
+                                            <td><?php echo htmlspecialchars($license['inspection_year']); ?></td>
+                                        </tr>
+                                        <?php endif; ?>
                                     <?php endif; ?>
                                     <tr>
                                         <td><strong>المشروع:</strong></td>

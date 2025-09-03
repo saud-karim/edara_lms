@@ -33,15 +33,58 @@ try {
     ";
     
     $params = [];
+    $currentUserId = getCurrentUserId();
     
-    // Apply user role restrictions - filter by department name for admin/user
-    if ($userRole === 'admin' || $userRole === 'user') {
+    // Apply user role restrictions based on new department permissions system
+    if ($userRole === 'admin') {
+        // Admin users: show only departments they are assigned to in user_departments table
+        // First check if user_departments table exists and user has departments assigned
+        $checkUserDepts = $conn->prepare("SELECT COUNT(*) as count FROM information_schema.tables WHERE table_schema = DATABASE() AND table_name = 'user_departments'");
+        $checkUserDepts->execute();
+        $tableExists = $checkUserDepts->fetch()['count'] > 0;
+        
+        if ($tableExists) {
+            $checkUserHasDepts = $conn->prepare("
+                SELECT COUNT(*) as count 
+                FROM user_departments 
+                WHERE user_id = ?
+            ");
+            $checkUserHasDepts->execute([$currentUserId]);
+            $userHasDepts = $checkUserHasDepts->fetch()['count'] > 0;
+            
+            if ($userHasDepts) {
+                // Filter by user's assigned departments
+                $query .= " AND d.department_id IN (
+                    SELECT ud.department_id 
+                    FROM user_departments ud 
+                    WHERE ud.user_id = ?
+                )";
+                $params[] = $currentUserId;
+            } else {
+                // Fallback to old department_name logic
+                $userDepartmentName = getUserDepartmentName();
+                if ($userDepartmentName) {
+                    $query .= " AND d.department_name = ?";
+                    $params[] = $userDepartmentName;
+                }
+            }
+        } else {
+            // Fallback to old department_name logic
+            $userDepartmentName = getUserDepartmentName();
+            if ($userDepartmentName) {
+                $query .= " AND d.department_name = ?";
+                $params[] = $userDepartmentName;
+            }
+        }
+    } elseif ($userRole === 'user') {
+        // Regular users: show their default department only
         $userDepartmentName = getUserDepartmentName();
         if ($userDepartmentName) {
             $query .= " AND d.department_name = ?";
             $params[] = $userDepartmentName;
         }
     }
+    // super_admin: no restrictions - sees all departments
     
     $query .= "
         GROUP BY d.department_id, d.department_name, d.department_description

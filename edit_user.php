@@ -74,227 +74,191 @@ try {
 include 'includes/header.php';
 ?>
 
-<!-- Admin Teams JavaScript -->
-<script src="js/admin_teams_edit.js"></script>
-
-<!-- Permissions CSS -->
 <style>
-/* Enhanced form styling */
-.form-group label {
-    font-weight: bold;
-    color: #333;
+/* General permissions sections styling */
+.permissions-section { 
+    margin: 25px 0; 
 }
 
-.required {
-    color: #d9534f;
+.permissions-section .panel { 
+    border-radius: 12px; 
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1); 
+    overflow: hidden;
 }
 
-/* Button styling */
-.btn-lg {
-    padding: 10px 20px;
-    margin: 5px;
+.permissions-section .panel-heading { 
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%); 
+    color: white; 
+    padding: 20px 25px; 
+    border: none; 
 }
 
-/* Panel styling */
-.panel-heading h4 {
-    margin: 0;
-    color: #333;
+.permissions-section .panel-body { 
+    padding: 25px; 
+    background: #fafafa;
 }
 
-/* Current values highlight */
-input[readonly], select[readonly] {
-    background-color: #f5f5f5;
+/* Improved Arabic checkbox styling */
+.checkbox { 
+    margin: 10px 0; 
+    position: relative;
 }
 
-/* Permissions section styling */
-.permissions-section {
-    margin: 25px 0;
-    position: static !important;
-}
-
-.permissions-section .panel {
-    border: none;
-    border-radius: 12px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-    overflow: visible !important;
-    position: static !important;
-}
-
-.permissions-section .panel-heading {
-    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-    color: white;
-    padding: 20px 25px;
-    border: none;
-    position: static !important;
-}
-
-.permissions-section .panel-heading h4 {
-    margin: 0;
-    font-weight: 600;
-    font-size: 18px;
-    position: static !important;
-    color: white;
-}
-
-.permissions-section .panel-body {
-    padding: 25px;
-    position: static !important;
-    background: white;
-}
-
-#searchPermissions {
-    border: 2px solid #e9ecef;
-    border-radius: 8px;
-    padding: 12px 15px;
-    font-size: 14px;
+.checkbox label { 
+    font-weight: normal; 
+    padding: 12px 15px; 
+    background: white; 
+    border-radius: 8px; 
+    border: 2px solid #e9ecef; 
+    cursor: pointer; 
+    display: block;
+    min-height: 50px;
     transition: all 0.3s ease;
-    background: #f8f9fa;
+    line-height: 1.4;
+    font-size: 14px;
+    position: relative;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.checkbox label:hover { 
+    border-color: #667eea; 
+    box-shadow: 0 2px 10px rgba(102, 126, 234, 0.15); 
+    background: #f8f9ff; 
+    transform: translateY(-1px);
+}
+
+.checkbox label::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.checkbox input[type="checkbox"] { 
+    width: 18px; 
+    height: 18px; 
+    margin: 0 0 0 10px;
+    cursor: pointer;
+    float: right;
+    margin-top: 3px;
+}
+
+.checkbox input[type="checkbox"]:checked + label,
+.checkbox label:has(input[type="checkbox"]:checked) {
+    background: linear-gradient(135deg, #e8f5e8 0%, #f0fdf4 100%);
+    border-color: #28a745;
+    color: #155724;
+}
+
+/* Grid improvements for better layout */
+.permissions-section .row {
+    margin: 0 -10px;
+}
+
+.permissions-section .col-md-6 {
+    padding: 0 10px;
+}
+
+/* Text content styling */
+.checkbox label .text-content {
+    overflow: hidden;
+    text-align: right;
+    direction: rtl;
+    padding-right: 35px;
+}
+
+/* Small text styling */
+.checkbox label small {
+    display: block;
+    margin-top: 5px;
+    color: #666;
+    font-size: 12px;
+    line-height: 1.3;
+}
+
+/* Better responsive design */
+@media (max-width: 768px) {
+    .checkbox label {
+        padding: 10px 12px;
+        min-height: 45px;
+        font-size: 13px;
+    }
+    
+    .checkbox input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        margin: 0 0 0 8px;
+        margin-top: 2px;
+    }
+    
+    .checkbox label .text-content {
+        padding-right: 30px;
+    }
+    
+    .permissions-section .panel-body {
+        padding: 15px;
+    }
+}
+
+/* Counter and button styling */
+.permissions-section .btn {
+    margin: 0 5px;
+    border-radius: 6px;
+    font-size: 13px;
+    padding: 6px 12px;
+}
+
+/* Search input styling */
+#searchPermissions {
+    border-radius: 8px;
+    border: 2px solid #e9ecef;
+    padding: 10px 15px;
+    font-size: 14px;
+    direction: rtl;
+    text-align: right;
 }
 
 #searchPermissions:focus {
-    border-color: #28a745;
-    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
-    background: white;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    outline: none;
 }
 
-.permission-counter {
-    background: linear-gradient(135deg, #007bff, #0056b3);
-    color: white;
-    padding: 10px 15px;
-    border-radius: 8px;
-    font-weight: bold;
-    text-align: center;
-}
-
-#permissionsList {
-    position: static !important;
-    background: transparent !important;
-    padding: 0 !important;
-    margin-top: 20px !important;
-}
-
-.permission-item {
-    display: flex;
-    align-items: center;
-    padding: 8px 12px;
-    margin: 4px 0;
-    border-radius: 6px;
-    background: white;
+/* Grid container improvements */
+#projectsGrid, #departmentsGrid {
     border: 1px solid #e9ecef;
-    transition: all 0.2s ease;
-}
-
-.permission-item:hover {
-    background: #e8f5e8;
-    border-color: #28a745;
-}
-
-.permission-item input[type="checkbox"] {
-    margin-right: 10px;
-    transform: scale(1.2);
-}
-
-.permission-name {
-    font-weight: 600;
-    color: #495057;
-    flex: 1;
-}
-
-.permission-category {
-    background: #6c757d;
-    color: white;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 11px;
-    margin-left: 8px;
-}
-
-.permissions-section * {
-    position: static !important;
-}
-
-.permissions-section .panel-body > * {
-    position: static !important;
-}
-
-/* Checkbox styling - exact copy from add_user.php */
-.checkbox {
-    margin: 15px 0 !important;
-    position: static !important;
-    display: block !important;
-    clear: both !important;
-    width: 100% !important;
-}
-
-.checkbox label {
-    font-weight: normal !important;
-    padding: 15px 20px !important;
-    background: white !important;
-    border-radius: 8px !important;
-    border: 2px solid #e9ecef !important;
-    cursor: pointer !important;
-    display: block !important;
-    margin-bottom: 10px !important;
-    position: static !important;
-    width: 100% !important;
-    min-height: 60px !important;
-    line-height: 1.5 !important;
-    overflow: visible !important;
-}
-
-.checkbox label:hover {
-    border-color: #667eea !important;
-    box-shadow: 0 2px 10px rgba(102, 126, 234, 0.15) !important;
-    background: #f8f9ff !important;
-}
-
-.checkbox input[type="checkbox"] {
-    width: 18px !important;
-    height: 18px !important;
-    margin: 0 10px 0 10px !important;
-    position: static !important;
-    float: right !important;
-    clear: none !important;
-}
-
-.checkbox strong {
-    color: #2d3748 !important;
-    display: inline !important;
-    position: static !important;
-}
-
-.checkbox small {
-    color: #6c757d !important;
-    font-size: 12px !important;
-    display: block !important;
-    margin-top: 8px !important;
-    position: static !important;
-    clear: both !important;
-}
-
-/* Current permissions display */
-.current-permissions {
-    background: #e8f5e8;
-    border: 1px solid #28a745;
     border-radius: 8px;
     padding: 15px;
-    margin-bottom: 20px;
+    background: white;
+    max-height: 350px;
+    overflow-y: auto;
 }
 
-.current-permissions h5 {
-    color: #155724;
-    margin-bottom: 10px;
-    font-weight: bold;
+/* Scrollbar styling */
+#projectsGrid::-webkit-scrollbar, 
+#departmentsGrid::-webkit-scrollbar,
+#permissionsList::-webkit-scrollbar {
+    width: 8px;
 }
 
-.permission-badge {
-    display: inline-block;
-    background: #28a745;
-    color: white;
-    padding: 4px 8px;
+#projectsGrid::-webkit-scrollbar-track,
+#departmentsGrid::-webkit-scrollbar-track,
+#permissionsList::-webkit-scrollbar-track {
+    background: #f1f1f1;
     border-radius: 4px;
-    font-size: 12px;
-    margin: 2px;
+}
+
+#projectsGrid::-webkit-scrollbar-thumb,
+#departmentsGrid::-webkit-scrollbar-thumb,
+#permissionsList::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+#projectsGrid::-webkit-scrollbar-thumb:hover,
+#departmentsGrid::-webkit-scrollbar-thumb:hover,
+#permissionsList::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
 }
 </style>
 
@@ -322,7 +286,6 @@ input[readonly], select[readonly] {
                 
                 <div class="panel-body">
                     <form id="editUserForm" method="POST">
-                        <!-- CSRF Token -->
                         <input type="hidden" name="csrf_token" value="<?php echo generateCSRFToken(); ?>">
                         <input type="hidden" name="user_id" value="<?php echo $user['user_id']; ?>">
                         
@@ -331,16 +294,14 @@ input[readonly], select[readonly] {
                                 <div class="form-group">
                                     <label for="full_name">الاسم الكامل <span class="text-danger">*</span></label>
                                     <input type="text" id="full_name" name="full_name" class="form-control" required 
-                                           placeholder="أدخل الاسم الكامل" value="<?php echo htmlspecialchars($user['full_name']); ?>" tabindex="2">
+                                           value="<?php echo htmlspecialchars($user['full_name']); ?>">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="username">اسم المستخدم <span class="text-danger">*</span></label>
                                     <input type="text" id="username" name="username" class="form-control" required 
-                                           placeholder="أدخل اسم المستخدم (أحرف وأرقام فقط)" pattern="[a-zA-Z0-9_]{3,}"
-                                           value="<?php echo htmlspecialchars($user['username']); ?>" tabindex="1">
-                                    <small class="text-muted">3 أحرف على الأقل، أحرف وأرقام و _ فقط</small>
+                                           value="<?php echo htmlspecialchars($user['username']); ?>">
                                 </div>
                             </div>
                         </div>
@@ -350,15 +311,14 @@ input[readonly], select[readonly] {
                                 <div class="form-group">
                                     <label for="password">كلمة المرور الجديدة</label>
                                     <input type="password" id="password" name="password" class="form-control" 
-                                           placeholder="اتركه فارغاً إذا كنت لا تريد تغيير كلمة المرور" minlength="6" tabindex="4">
-                                    <small class="text-muted">اختياري - 6 أحرف على الأقل إذا تم ملؤه</small>
+                                           placeholder="اتركه فارغاً إذا كنت لا تريد تغيير كلمة المرور">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="email">البريد الإلكتروني <span class="text-danger">*</span></label>
                                     <input type="email" id="email" name="email" class="form-control" required 
-                                           placeholder="example@domain.com" value="<?php echo htmlspecialchars($user['email']); ?>" tabindex="3">
+                                           value="<?php echo htmlspecialchars($user['email']); ?>">
                                 </div>
                             </div>
                         </div>
@@ -367,21 +327,17 @@ input[readonly], select[readonly] {
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="department_id">القسم</label>
-                                    <select id="department_id" name="department_id" class="form-control" tabindex="5">
+                                    <select id="department_id" name="department_id" class="form-control">
                                         <option value="">اختر القسم</option>
-                                        <!-- Options will be loaded via AJAX -->
                                     </select>
-                                    <small class="text-muted">مطلوب للمشرفين فقط</small>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="project_id">المشروع</label>
-                                    <select id="project_id" name="project_id" class="form-control" tabindex="6">
-                                        <option value="">اختر المشروع (اختياري)</option>
-                                        <!-- Options will be loaded via AJAX -->
+                                    <select id="project_id" name="project_id" class="form-control">
+                                        <option value="">اختر المشروع</option>
                                     </select>
-                                    <small class="text-muted">يمكن ربط المستخدم بمشروع معين</small>
                                 </div>
                             </div>
                         </div>
@@ -390,157 +346,114 @@ input[readonly], select[readonly] {
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="role">الدور <span class="text-danger">*</span></label>
-                                    <select id="role" name="role" class="form-control" required tabindex="7">
+                                    <select id="role" name="role" class="form-control" required>
                                         <option value="">اختر الدور</option>
-                                        <option value="user" <?php echo ($user['role'] === 'user' || empty(trim($user['role']))) ? 'selected' : ''; ?>>مستخدم عادي</option>
+                                        <option value="user" <?php echo ($user['role'] === 'user') ? 'selected' : ''; ?>>مستخدم عادي</option>
                                         <option value="admin" <?php echo ($user['role'] === 'admin') ? 'selected' : ''; ?>>مشرف</option>
                                         <option value="super_admin" <?php echo ($user['role'] === 'super_admin') ? 'selected' : ''; ?>>مشرف عام</option>
                                     </select>
                                 </div>
-                        
-                        <!-- Parent Admin Field (for Sub Admins) -->
-                        <div class="form-group" id="parentAdminGroup" style="display: none;">
-                            <label for="parentAdminId" class="col-sm-3 control-label">
-                                المدير المباشر <span class="text-danger">*</span>
-                            </label>
-                            <div class="col-sm-9">
-                                <select name="parent_admin_id" id="parentAdminId" class="form-control">
-                                    <option value="">-- اختر المدير المباشر --</option>
-                                </select>
-                                                                 <small class="help-block">اختر المدير الرئيسي الذي سيشرف على هذا المدير الفرعي</small>
                             </div>
                         </div>
                         
-                        <!-- Admin Type Display -->
-                        <div class="form-group" id="adminTypeDisplay" style="display: none;">
-                            <div class="col-sm-12">
-                                <div class="alert alert-info" style="margin-bottom: 0;">
-                                    <strong>نوع المدير:</strong> <span id="adminTypeText">مدير رئيسي</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <script>
-                        // Set current parent admin ID for JavaScript
-                        $(document).ready(function() {
-                            $('#parentAdminId').data('current-parent', '<?php echo $user['parent_admin_id'] ?? ''; ?>');
-                        });
-                        </script>
-                        
-                        <!-- Admin Teams Fix for Department Selector -->
-                        <script src="fix_edit_user_department.js"></script>
-                            </div>
-                            <div class="col-md-6">
-                                <!-- مساحة فارغة للتوازن -->
-                            </div>
-                        </div>
-                        
-                        <!-- Current Permissions Display -->
-                        <div class="current-permissions">
-                            <h5><i class="glyphicon glyphicon-lock"></i> الصلاحيات الحالية:</h5>
-                            <div id="currentPermissionsDisplay">
-                                <?php if (!empty($userPermissions)): ?>
-                                    <?php foreach ($userPermissions as $perm): ?>
-                                        <span class="permission-badge"><?php echo htmlspecialchars($perm['permission_display_name']); ?></span>
-                                    <?php endforeach; ?>
-                                <?php else: ?>
-                                    <span class="text-muted">لا توجد صلاحيات مخصصة للمستخدم</span>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                        
-                        <!-- Projects Permissions Section (Admin/Sub Admin only) -->
+                        <!-- Projects Section -->
                         <div id="projectPermissionsSection" class="permissions-section" style="display: none;">
                             <div class="panel panel-warning">
                                 <div class="panel-heading">
                                     <h4><i class="glyphicon glyphicon-folder-open"></i> المشاريع المسموحة</h4>
                                 </div>
                                 <div class="panel-body">
-                                    <div class="alert alert-warning">
-                                        <strong>مهم:</strong> حدد المشاريع التي سيتمكن هذا المدير من إضافة رخص فيها. إذا لم تحدد أي مشروع، لن يتمكن من إضافة رخص.
-                                    </div>
-                                    
-                                    <!-- Projects Counter and Actions -->
-                                    <div class="row" style="margin-bottom: 15px;">
+                                                            <div class="row" style="margin-bottom: 15px; padding: 10px; background: #f8f9fa; border-radius: 6px;">
                                         <div class="col-md-6">
-                                            <div class="project-counter">
-                                                <strong>المشاريع المختارة: <span id="selectedProjectsCount">0</span></strong>
-                                                من <span id="totalProjectsCount">0</span> مشروع
-                                            </div>
+                                <strong style="color: #495057;">المشاريع المختارة: <span id="selectedProjectsCount" style="color: #28a745;">0</span></strong>
+                                من <span id="totalProjectsCount" style="color: #6c757d;">0</span> مشروع
                                         </div>
                                         <div class="col-md-6 text-left">
-                                            <div class="btn-group btn-group-sm">
-                                                <button type="button" class="btn btn-success" id="selectAllProjects">
-                                                    <i class="glyphicon glyphicon-check"></i> تحديد الكل
-                                                </button>
-                                                <button type="button" class="btn btn-warning" id="clearAllProjects">
-                                                    <i class="glyphicon glyphicon-unchecked"></i> إلغاء الكل
-                                                </button>
-                                            </div>
+                                <button type="button" class="btn btn-success btn-sm" id="selectAllProjects">
+                                    <i class="glyphicon glyphicon-check"></i> تحديد الكل
+                                </button>
+                                <button type="button" class="btn btn-warning btn-sm" id="clearAllProjects">
+                                    <i class="glyphicon glyphicon-remove"></i> إلغاء الكل
+                                </button>
                                         </div>
                                     </div>
-
-                                    <div class="checkbox-group">
-                                        <div id="projectsGrid" class="permissions-grid" style="max-height: 300px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; border-radius: 4px;">
-                                            <!-- Projects will be loaded here dynamically -->
-                                            <div class="text-center text-muted" style="padding: 20px;">
-                                                <i class="glyphicon glyphicon-refresh fa-spin"></i> جاري تحميل المشاريع...
-                                            </div>
-                                        </div>
+                                                        <div id="projectsGrid">
+                        <div class="text-center" style="padding: 40px; color: #6c757d;">
+                            <i class="fa fa-spinner fa-spin fa-2x" style="color: #28a745;"></i>
+                            <br><br>
+                            <strong>جاري تحميل المشاريع...</strong>
+                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         
-                        <!-- Permissions Selection Section -->
+                        <!-- Departments Section -->
+                        <div id="departmentPermissionsSection" class="permissions-section" style="display: none;">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h4><i class="glyphicon glyphicon-th-large"></i> الأقسام المسموحة</h4>
+                                </div>
+                                <div class="panel-body">
+                                                            <div class="row" style="margin-bottom: 15px; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                                        <div class="col-md-6">
+                                <strong style="color: #495057;">الأقسام المختارة: <span id="selectedDepartmentsCount" style="color: #17a2b8;">0</span></strong>
+                                من <span id="totalDepartmentsCount" style="color: #6c757d;">0</span> قسم
+                                        </div>
+                                        <div class="col-md-6 text-left">
+                                <button type="button" class="btn btn-success btn-sm" id="selectAllDepartments">
+                                    <i class="glyphicon glyphicon-check"></i> تحديد الكل
+                                </button>
+                                <button type="button" class="btn btn-info btn-sm" id="clearAllDepartments">
+                                    <i class="glyphicon glyphicon-remove"></i> إلغاء الكل
+                                </button>
+                                        </div>
+                                    </div>
+                                                        <div id="departmentsGrid">
+                        <div class="text-center" style="padding: 40px; color: #6c757d;">
+                            <i class="fa fa-spinner fa-spin fa-2x" style="color: #17a2b8;"></i>
+                            <br><br>
+                            <strong>جاري تحميل الأقسام...</strong>
+                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Permissions Section -->
                         <div id="permissionsSection" class="permissions-section">
                             <div class="panel panel-success">
                                 <div class="panel-heading">
                                     <h4><i class="glyphicon glyphicon-lock"></i> تعديل الصلاحيات</h4>
                                 </div>
                                 <div class="panel-body">
-                                    <div class="alert alert-info">
-                                        <strong>ملاحظة:</strong> يمكنك تعديل صلاحيات المستخدم. الصلاحيات الأساسية للدور ستُمنح تلقائياً.
-                                    </div>
-                                    
-                                    <!-- Search and Counter -->
-                                    <div class="row" style="margin-bottom: 15px;">
+                                                            <div class="row" style="margin-bottom: 15px; padding: 10px; background: #f8f9fa; border-radius: 6px;">
                                         <div class="col-md-8">
-                                            <input type="text" id="searchPermissions" class="form-control" 
-                                                   placeholder="🔍 البحث في الصلاحيات...">
+                                            <input type="text" id="searchPermissions" class="form-control" placeholder="🔍 البحث في الصلاحيات...">
                                         </div>
                                         <div class="col-md-4 text-center">
-                                            <div class="permission-counter">
-                                                <strong>المختارة: <span id="selectedCount">0</span></strong>
-                                                من <span id="totalCount">0</span> صلاحية
-                                            </div>
+                                <strong style="color: #495057;">المختارة: <span id="selectedCount" style="color: #28a745;">0</span></strong>
+                                من <span id="totalCount" style="color: #6c757d;">0</span> صلاحية
                                         </div>
                                     </div>
-
-                                    <!-- Action Buttons -->
                                     <div class="text-center" style="margin-bottom: 15px;">
-                                        <button type="button" class="btn btn-success btn-sm" id="selectAll">
-                                            <i class="glyphicon glyphicon-check"></i> تحديد الكل
-                                        </button>
-                                        <button type="button" class="btn btn-warning btn-sm" id="clearAll">
-                                            <i class="glyphicon glyphicon-unchecked"></i> إلغاء الكل
-                                        </button>
-
+                            <button type="button" class="btn btn-success btn-sm" id="selectAll">
+                                <i class="glyphicon glyphicon-check"></i> تحديد الكل
+                            </button>
+                            <button type="button" class="btn btn-warning btn-sm" id="clearAll">
+                                <i class="glyphicon glyphicon-remove"></i> إلغاء الكل
+                            </button>
                                     </div>
-
-                                    <!-- Permissions List -->
-                                    <div id="permissionsList" style="display: none;">
-                                        <!-- Permissions will be loaded here -->
-                                    </div>
+                                    <div id="permissionsList" style="display: none;"></div>
                                 </div>
                             </div>
                         </div>
                         
                         <div class="form-group text-center">
-                            <button type="submit" class="btn btn-success btn-lg" tabindex="8">
+                            <button type="submit" class="btn btn-success btn-lg">
                                 <i class="glyphicon glyphicon-save"></i> حفظ التعديلات
                             </button>
-                            <a href="view_user.php?id=<?php echo $user['user_id']; ?>" class="btn btn-default btn-lg" tabindex="9">
+                            <a href="view_user.php?id=<?php echo $user['user_id']; ?>" class="btn btn-default btn-lg">
                                 <i class="glyphicon glyphicon-remove"></i> إلغاء
                             </a>
                         </div>
@@ -551,244 +464,85 @@ input[readonly], select[readonly] {
     </div>
 </div>
 
+<script src="js/fix_projects_loading.js"></script>
 <script>
 $(document).ready(function() {
-    // Load projects and departments on page load
+    // Check if jQuery is loaded
+    console.log('🟢 jQuery loaded successfully, version:', $.fn.jquery);
+    console.log('🔍 Starting edit user page initialization...');
+    
+    // Global variables
+    let allPermissions = [];
+    let currentUserPermissions = <?php echo json_encode(array_map('intval', array_column($userPermissions, 'permission_id'))); ?>;
+    
+    console.log('👤 Current user permissions:', currentUserPermissions);
+    console.log('👤 User role:', '<?php echo $user["role"]; ?>');
+    console.log('👤 User ID:', <?php echo $userId; ?>);
+    
+    // Add test function for troubleshooting
+    window.testDepartments = function() {
+        console.log('🧪 Testing departments manually...');
+        console.log('Available checkboxes:', $('.department-checkbox').length);
+        $('.department-checkbox').each(function() {
+            console.log('Checkbox ID:', $(this).val(), 'Checked:', $(this).is(':checked'));
+        });
+    };
+    
+    console.log('💡 Run testDepartments() in console to debug departments');
+    
+    // Helper function to escape HTML
+    function escapeHtml(text) {
+        const map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+        return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+    }
+    
+    // Load data on page load
+    console.log('📡 Loading initial data...');
     loadProjects();
     loadDepartments();
     loadPermissions();
     
-    // Set current values
-    const currentDepartmentId = <?php echo $user['department_id'] ? $user['department_id'] : 'null'; ?>;
-    const currentProjectId = <?php echo $user['project_id'] ? $user['project_id'] : 'null'; ?>;
+    // Show sections for admins
+    const userRole = '<?php echo $user["role"]; ?>';
+    if (userRole === 'admin' || userRole === 'super_admin') {
+        $('#projectPermissionsSection').show();
+        $('#departmentPermissionsSection').show();
+        
+        setTimeout(function() {
+            loadUserProjects(<?php echo $userId; ?>);
+            loadAllDepartments();
+            // loadUserDepartments سيتم استدعاؤها تلقائياً بعد renderDepartmentsGrid
+        }, 1000);
+    }
     
-    // Set project value after loading
-    setTimeout(function() {
-        if (currentProjectId) {
-            $('#project_id').val(currentProjectId);
-        }
-        
-        // Check if current user is admin and show project permissions
-        const currentRole = $('#role').val();
-        const userId = <?php echo $userId; ?>;
-        
-        console.log('🚀 صفحة محملة - الدور:', currentRole, 'معرف المستخدم:', userId);
-        
-        if (currentRole === 'admin') {
-            $('#projectPermissionsSection').show();
-            console.log('✅ إظهار قسم المشاريع عند التحميل');
-            loadUserProjects(userId);
-        }
-    }, 800);
-    
-    // Handle role selection change
+    // Handle role change
     $('#role').on('change', function() {
         const role = $(this).val();
         
-        updateDepartmentRequirement();
-        loadDefaultPermissionsForRole(); // Load default permissions for selected role
-        handleRoleChange(); // Handle admin team fields
-        
-        // Handle project permissions - SIMPLE & CLEAR
         if (role === 'admin') {
             $('#projectPermissionsSection').show();
-            console.log('✅ عرض قسم المشاريع للمدير');
-            // Load user projects
-            const userId = <?php echo $userId; ?>;
-            loadUserProjects(userId);
+            $('#departmentPermissionsSection').show();
+            loadProjects();
+            loadDepartments();
+            loadUserProjects(<?php echo $userId; ?>);
+            loadAllDepartments();
         } else {
             $('#projectPermissionsSection').hide();
-            console.log('🔒 إخفاء قسم المشاريع للدور:', role);
+            $('#departmentPermissionsSection').hide();
         }
     });
-    
-    // Handle admin team fields based on role
-    function handleRoleChange() {
-        const selectedRole = $('#role').val();
-        const $parentAdminGroup = $('#parentAdminGroup');
-        const $adminTypeDisplay = $('#adminTypeDisplay');
-        const $parentAdminSelect = $('#parentAdminId');
-        
-        if (selectedRole === 'admin') {
-            $parentAdminGroup.show();
-            $adminTypeDisplay.show();
-            loadHeadAdmins();
-        } else {
-            $parentAdminGroup.hide();
-            $adminTypeDisplay.hide();
-            $parentAdminSelect.empty().append('<option value="">-- اختر المدير المباشر --</option>');
-        }
-    }
-    
-    // Load head admins for parent admin dropdown
-    function loadHeadAdmins() {
-        const departmentId = $('#department').val();
-        const currentUserId = $('input[name="user_id"]').val(); // Exclude current user
-        
-        if (!departmentId) {
-            return;
-        }
-        
-        $.ajax({
-            url: 'php_action/get_head_admins.php',
-            method: 'POST',
-            data: {
-                department_id: departmentId,
-                exclude_user_id: currentUserId
-            },
-            dataType: 'json',
-            success: function(response) {
-                const $select = $('#parentAdminId');
-                $select.empty().append('<option value="">-- اختر المدير المباشر --</option>');
-                
-                if (response.success && response.data.length > 0) {
-                    response.data.forEach(function(admin) {
-                        $select.append(`<option value="${admin.user_id}">${admin.full_name} (${admin.username})</option>`);
-                    });
-                } else {
-                    $select.append('<option value="" disabled>لا يوجد مديرين رئيسيين في هذا القسم</option>');
-                }
-                
-                // Set current parent admin if editing
-                const currentParentId = '<?php echo $user['parent_admin_id'] ?? ''; ?>';
-                if (currentParentId) {
-                    $select.val(currentParentId);
-                }
-                
-                updateAdminTypeDisplay();
-            },
-            error: function() {
-                console.error('خطأ في تحميل المديرين الرئيسيين');
-            }
-        });
-    }
-    
-    // Update admin type display based on parent admin selection
-    $('#parentAdminId').on('change', function() {
-        updateAdminTypeDisplay();
-    });
-    
-    function updateAdminTypeDisplay() {
-        const parentAdminId = $('#parentAdminId').val();
-        const $adminTypeText = $('#adminTypeText');
-        
-        if (parentAdminId) {
-            const parentName = $('#parentAdminId option:selected').text();
-            $adminTypeText.text(`مدير فرعي تحت: ${parentName}`);
-        } else {
-            $adminTypeText.text('مدير رئيسي مستقل');
-        }
-    }
-    
-    // Load head admins when department changes (for admin role)
-    $('#department').on('change', function() {
-        if ($('#role').val() === 'admin') {
-            loadHeadAdmins();
-        }
-    });
-    
-    
-    // Force update department requirement after page fully loads (for edit mode)
-    setTimeout(function() {
-        console.log('🔄 Forcing department requirement update for edit mode...');
-        updateDepartmentRequirement();
-    }, 500);
-
-    
-    // Global variables for permissions
-    let allPermissions = [];
-    // Ensure currentUserPermissions contains only integers
-    let currentUserPermissions = <?php echo json_encode(array_map('intval', array_column($userPermissions, 'permission_id'))); ?>;
-    
-    // Debug: Show current user permissions
-    console.log('🔍 Current user permissions loaded:', currentUserPermissions);
-    console.log('📊 Total user permissions count:', currentUserPermissions.length);
-    
-    if (currentUserPermissions.length === 0) {
-        console.warn('⚠️ المستخدم ليس لديه صلاحيات محددة!');
-    } else {
-        console.log('✅ المستخدم لديه', currentUserPermissions.length, 'صلاحية');
-        currentUserPermissions.forEach(permId => {
-            console.log('  - Permission ID:', permId);
-        });
-    }
-    
-    function updateDepartmentRequirement() {
-        const role = $('#role').val();
-        const departmentSelect = $('#department_id');
-        const projectSelect = $('#project_id');
-        
-        if (role === 'admin') {
-            projectSelect.prop('disabled', false);
-            departmentSelect.parent().find('label').html('القسم <span class="text-danger">*</span>');
-            departmentSelect.prop('required', true);
-            // Enable department only if project is selected
-            if (projectSelect.val()) {
-                departmentSelect.prop('disabled', false);
-            }
-        } else if (role === 'user') {
-            // Regular users can have department for access control
-            projectSelect.prop('disabled', false);
-            departmentSelect.parent().find('label').html('القسم <small class="text-muted">(اختياري)</small>');
-            departmentSelect.prop('required', false);
-            // Enable department only if project is selected
-            if (projectSelect.val()) {
-                departmentSelect.prop('disabled', false);
-            }
-        } else if (role === 'super_admin') {
-            // Super admin doesn't need project or department
-            projectSelect.prop('disabled', true).val('');
-            departmentSelect.prop('disabled', true).prop('required', false).val('');
-            departmentSelect.parent().find('label').html('القسم');
-        } else {
-            // Other roles (empty, unknown) - disable project and department
-            projectSelect.prop('disabled', true).val('');
-            departmentSelect.prop('disabled', true).prop('required', false).val('');
-            departmentSelect.parent().find('label').html('القسم');
-        }
-    }
-    
-    // Load projects function
-    function loadProjects() {
-        $.get('php_action/get_projects.php')
-            .done(function(response) {
-                if (response.success) {
-                    let options = '<option value="">اختر المشروع</option>';
-                    let userProjectId = null;
-                    
-                    response.data.forEach(function(project) {
-                        options += `<option value="${project.project_id}">${project.project_name}</option>`;
-                    });
-                    $('#project_id').html(options);
-                    
-                    // If user has department, find and select the corresponding project
-                    <?php if ($user['department_id']): ?>
-                        loadUserProject(<?php echo $user['department_id']; ?>);
-                    <?php endif; ?>
-                }
-            })
-            .fail(function() {
-                console.error('فشل في تحميل المشاريع');
-            });
-    }
-    
-    // Load user's project based on their department
-    function loadUserProject(departmentId) {
-        $.get('php_action/get_department_project.php', { department_id: departmentId })
-            .done(function(response) {
-                if (response.success && response.project_id) {
-                    $('#project_id').val(response.project_id);
-                    // Load departments for this project
-                    loadDepartmentsByProject(response.project_id, departmentId);
-                }
-            });
-    }
     
     // Load departments function
     function loadDepartments() {
         const selectedDepartmentId = <?php echo $user['department_id'] ? $user['department_id'] : 'null'; ?>;
         
-        $.get('php_action/get_unique_departments.php')
+        $.get('php_action/get_departments_no_auth.php')
             .done(function(response) {
                 if (response.success) {
                     let options = '<option value="">اختر القسم</option>';
@@ -797,81 +551,253 @@ $(document).ready(function() {
                         options += `<option value="${dept.department_id}" ${selected}>${dept.department_name}</option>`;
                     });
                     $('#department_id').html(options);
-                    
-                    // Update requirement after loading
-                    updateDepartmentRequirement();
-                } else {
-                    $('#department_id').html('<option value="">لا توجد أقسام متاحة</option>');
                 }
-            })
-            .fail(function() {
-                $('#department_id').html('<option value="">خطأ في تحميل الأقسام</option>');
+            });
+    }
+    
+    // Load projects function
+    function loadProjects() {
+        console.log('🔄 Loading projects...');
+        const selectedProjectId = <?php echo $user['project_id'] ? $user['project_id'] : 'null'; ?>;
+        console.log('User current project ID:', selectedProjectId);
+        
+        $.ajax({
+            url: 'php_action/get_projects_no_auth.php',
+            method: 'GET',
+            dataType: 'json',
+            timeout: 10000, // 10 seconds timeout
+            success: function(response) {
+                console.log('📊 Projects response:', response);
+                if (response.success && response.data && Array.isArray(response.data)) {
+                    let options = '<option value="">اختر المشروع</option>';
+                    response.data.forEach(function(project) {
+                        const selected = selectedProjectId == project.project_id ? 'selected' : '';
+                        options += `<option value="${project.project_id}" ${selected}>${project.project_name}</option>`;
+                    });
+                    $('#project_id').html(options);
+                    console.log('✅ Projects loaded successfully:', response.data.length, 'projects');
+                } else {
+                    console.error('❌ Projects loading failed - Invalid response:', response);
+                    $('#project_id').html('<option value="">خطأ في تحميل المشاريع</option>');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('❌ Projects API error:', status, error);
+                console.error('Response text:', xhr.responseText);
+                console.error('Status code:', xhr.status);
+                $('#project_id').html('<option value="">خطأ في الاتصال بالخادم</option>');
+                }
             });
     }
     
     // Load permissions function
     function loadPermissions() {
-        $.get('php_action/get_permissions.php')
+        $.get('php_action/get_permissions_no_auth.php')
             .done(function(response) {
-                // === JAVASCRIPT DEBUG ===
-                console.log("🔍 AJAX Response received:");
-                console.log("- Type:", typeof response);
-                console.log("- Raw response:", response);
-                
-                if (typeof response === "string") {
-                    console.log("⚠️ Response is string, trying to parse...");
-                    try {
-                        response = JSON.parse(response);
-                        console.log("✅ Parsed successfully:", response);
-                    } catch (e) {
-                        console.error("❌ JSON Parse failed:", e);
-                        console.log("Raw string:", response);
-                    }
-                }
-                
-                console.log("- Success:", response.success);
-                console.log("- Message:", response.message);
-                console.log("- Permissions data:", response.data);
-                console.log("- Permissions count:", response.total_count);
-                
-                if (!response.data) {
-                    console.error("❌ PERMISSIONS DATA IS MISSING!");
-                    console.log("Full response object:", response);
-                }
-                // === END DEBUG ===
-                // Validate response structure - this is permissions data, not user data
-                if (!response.data) {
-                    console.error("❌ response.data is missing!");
-                    console.log("Available keys:", Object.keys(response));
-                    showAlert("خطأ: بيانات الصلاحيات مفقودة في الاستجابة", "danger");
-                    return;
-                }
-
-
                 if (response.success) {
                     allPermissions = response.data;
-                    console.log('✅ تم تحميل', allPermissions.length, 'صلاحية');
                     renderPermissions(allPermissions);
-                    console.log('✅ Permissions rendered with current user selections preserved');
-                } else {
-                    showAlert('فشل في تحميل الصلاحيات: ' + response.message, 'danger');
                 }
-            })
-            .fail(function() {
-                showAlert('فشل في تحميل الصلاحيات', 'danger');
             });
     }
     
-        // Render permissions function - Exact copy from add_user.php style
+    // Load user projects function
+    function loadUserProjects(userId) {
+        $.ajax({
+            url: 'php_action/get_user_projects.php?user_id=' + userId,
+            method: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                if (response.success && response.projects) {
+                    renderUserProjectsGrid(response.projects);
+                }
+            }
+        });
+    }
+    
+    // Load all departments function
+    function loadAllDepartments() {
+        console.log('🔄 Loading all departments...');
+        
+        $.ajax({
+            url: 'php_action/get_departments_no_auth.php',
+            method: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                console.log('📊 All departments response:', response);
+                
+                if (response.success && response.data) {
+                    console.log('✅ Found', response.data.length, 'departments');
+                    renderDepartmentsGrid(response.data);
+                } else {
+                    console.error('❌ Failed to load departments:', response);
+                    $('#departmentsGrid').html('<div class="text-center text-danger">خطأ في تحميل الأقسام</div>');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('❌ Departments API error:', status, error);
+                console.error('Response:', xhr.responseText);
+                $('#departmentsGrid').html('<div class="text-center text-danger">خطأ في الاتصال بالخادم</div>');
+            }
+        });
+    }
+    
+    // Load user departments function
+    function loadUserDepartments(userId) {
+        console.log('🔄 Loading user departments for user ID:', userId);
+        
+        $.ajax({
+            url: 'php_action/get_user_departments.php',
+            method: 'GET',
+            data: { user_id: userId },
+            dataType: 'json',
+            success: function(response) {
+                console.log('📊 User departments response:', response);
+                
+                if (response.success && response.departments) {
+                    // المفتاح الصحيح هو departments وليس data
+                    console.log('✅ Processing', response.departments.length, 'departments');
+                    
+                    response.departments.forEach(function(dept) {
+                        if (dept.is_assigned == 1 || dept.is_assigned === '1') {
+                            console.log('✅ Setting department as checked:', dept.department_name, 'ID:', dept.department_id);
+                                $(".department-checkbox[value='" + dept.department_id + "']").prop("checked", true);
+                        } else {
+                            console.log('❌ Department not assigned:', dept.department_name, 'ID:', dept.department_id, 'is_assigned:', dept.is_assigned);
+                            }
+                        });
+                    
+                        updateDepartmentsCounter();
+                    console.log('✅ User departments loaded and selected successfully');
+                } else {
+                    console.error('❌ Failed to load user departments:', response);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('❌ User departments API error:', status, error);
+                console.error('Response:', xhr.responseText);
+            }
+        });
+    }
+    
+    // Render departments grid function
+    function renderDepartmentsGrid(departments) {
+        console.log('🎨 Rendering departments grid with', departments.length, 'departments');
+        
+        let html = '<div class="row">';
+        
+        departments.forEach(function(department) {
+            const safeDepartmentName = escapeHtml(department.department_name);
+            const safeDepartmentDesc = department.department_description ? escapeHtml(department.department_description) : '';
+            
+            html += `
+                <div class="col-md-6 col-sm-12" style="margin-bottom: 10px;">
+                    <div class="checkbox">
+                        <label for="dept_${department.department_id}">
+                            <input type="checkbox" name="departments[]" value="${department.department_id}" 
+                                   class="department-checkbox" id="dept_${department.department_id}">
+                            <div class="text-content">
+                                <strong>${safeDepartmentName}</strong>
+                                ${safeDepartmentDesc ? '<small>' + safeDepartmentDesc + '</small>' : ''}
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            `;
+        });
+        
+        html += '</div>';
+        $('#departmentsGrid').html(html);
+        $('#totalDepartmentsCount').text(departments.length);
+        updateDepartmentsCounter();
+        
+        console.log('✅ Departments grid rendered successfully');
+        
+        // بعد رسم الشبكة، نحمل الأقسام المخصصة للمستخدم
+        setTimeout(function() {
+            console.log('🔄 Starting delayed user departments loading...');
+            loadUserDepartments(<?php echo $userId; ?>);
+        }, 500);
+        
+        $('.department-checkbox').on('change', updateDepartmentsCounter);
+        
+        $('#selectAllDepartments').off('click').on('click', function() {
+            $('.department-checkbox').prop('checked', true);
+            updateDepartmentsCounter();
+        });
+        
+        $('#clearAllDepartments').off('click').on('click', function() {
+            $('.department-checkbox').prop('checked', false);
+            updateDepartmentsCounter();
+        });
+    }
+    
+    // Update departments counter function
+    function updateDepartmentsCounter() {
+        const selectedCount = $('.department-checkbox:checked').length;
+        const totalCount = $('.department-checkbox').length;
+        $('#selectedDepartmentsCount').text(selectedCount);
+        console.log('📊 Departments counter updated:', selectedCount, 'of', totalCount, 'selected');
+    }
+    
+    // Render user projects grid function
+    function renderUserProjectsGrid(projects) {
+        console.log('🎨 Rendering projects grid with', projects.length, 'projects');
+        
+        let html = '<div class="row">';
+        
+        projects.forEach(function(project) {
+            const isChecked = project.is_assigned == 1 ? 'checked' : '';
+            const safeProjectName = escapeHtml(project.project_name);
+            const safeProjectDesc = project.description ? escapeHtml(project.description) : '';
+            
+            html += `
+                <div class="col-md-6 col-sm-12" style="margin-bottom: 10px;">
+                    <div class="checkbox">
+                        <label for="proj_${project.project_id}">
+                            <input type="checkbox" name="projects[]" value="${project.project_id}" 
+                                   class="project-checkbox" ${isChecked} id="proj_${project.project_id}">
+                            <div class="text-content">
+                                <strong>${safeProjectName}</strong>
+                                ${safeProjectDesc ? '<small>' + safeProjectDesc + '</small>' : ''}
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            `;
+        });
+        
+        html += '</div>';
+        $('#projectsGrid').html(html);
+        $('#totalProjectsCount').text(projects.length);
+        updateProjectsCounter();
+        
+        console.log('✅ Projects grid rendered successfully');
+        
+        $('.project-checkbox').on('change', updateProjectsCounter);
+        
+        $('#selectAllProjects').off('click').on('click', function() {
+            $('.project-checkbox').prop('checked', true);
+            updateProjectsCounter();
+        });
+        
+        $('#clearAllProjects').off('click').on('click', function() {
+            $('.project-checkbox').prop('checked', false);
+            updateProjectsCounter();
+        });
+    }
+    
+    // Update projects counter function
+    function updateProjectsCounter() {
+        const selectedCount = $('.project-checkbox:checked').length;
+        $('#selectedProjectsCount').text(selectedCount);
+    }
+    
+    // Render permissions function
     function renderPermissions(permissions) {
-        console.log('🎨 بدء رسم الصلاحيات:');
-        console.log('📊 إجمالي الصلاحيات المستلمة:', permissions.length);
-        console.log('🔍 صلاحيات المستخدم الحالية:', currentUserPermissions);
-        
         let html = '';
-        
-        // Group by category
         const grouped = {};
+        
         permissions.forEach(perm => {
             if (!grouped[perm.permission_category]) {
                 grouped[perm.permission_category] = [];
@@ -879,58 +805,25 @@ $(document).ready(function() {
             grouped[perm.permission_category].push(perm);
         });
         
-        console.log('📂 الفئات المجمعة:', Object.keys(grouped));
-        
-        // Category names with icons
-        const categoryNames = {
-            'licenses': '📜 التراخيص',
-            'personal_licenses': '👤 رخص القيادة الشخصية',
-            'vehicle_licenses': '🚗 رخص المركبات',
-            'users': '👥 المستخدمون', 
-            'departments': '🏢 الأقسام',
-            'projects': '📋 المشاريع',
-            'reports': '📊 التقارير',
-            'analytics': '📈 الإحصائيات',
-            'system': '🔧 النظام'
-        };
-        
-        let selectedCount = 0;
-        
-        // Render each category
         Object.keys(grouped).forEach(category => {
-            html += `<h5 style="color: #4a5568; font-weight: 700; font-size: 16px; margin: 30px 0 20px 0 !important; padding: 12px 15px; background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%); border-radius: 8px; border-right: 4px solid #667eea; position: static !important; display: block !important; clear: both !important;">${categoryNames[category] || category}</h5>`;
-            html += '<div class="row">';
+            const safeCategoryName = escapeHtml(category);
+            html += `<h5 style="color: #2c3e50; margin: 20px 0 15px 0; padding-bottom: 8px; border-bottom: 2px solid #e9ecef;">${safeCategoryName}</h5><div class="row">`;
             
             grouped[category].forEach(perm => {
-                // CRITICAL FIX: Ensure both values are integers for comparison
                 const permId = parseInt(perm.permission_id);
                 const userPermIds = currentUserPermissions.map(id => parseInt(id));
                 const isSelected = userPermIds.includes(permId);
-                
-                // Debug logging for troubleshooting
-                console.log(`🔍 Checking permission ID ${permId} (${perm.permission_display_name})`);
-                console.log(`  - API returned type: ${typeof perm.permission_id}, value: ${perm.permission_id}`);
-                console.log(`  - Converted to: ${permId} (type: ${typeof permId})`);
-                console.log(`  - User permissions: [${userPermIds.join(', ')}]`);
-                console.log(`  - Is selected: ${isSelected}`);
-                
-                if (isSelected) {
-                    selectedCount++;
-                    console.log(`✅ PERMISSION SELECTED: ${perm.permission_display_name}`);
-                } else {
-                    console.log(`❌ Permission not selected: ${perm.permission_display_name}`);
-                }
+                const safePermName = escapeHtml(perm.permission_display_name);
                 
                 html += `
-                    <div class="col-md-6 col-sm-12" style="margin-bottom: 10px;">
-                        <div class="checkbox" style="margin: 15px 0 !important; position: static !important; display: block !important; clear: both !important; width: 100% !important;">
-                            <label style="font-weight: normal !important; padding: 15px 20px !important; background: white !important; border-radius: 8px !important; border: 2px solid #e9ecef !important; cursor: pointer !important; display: block !important; margin-bottom: 10px !important; position: static !important; width: 100% !important; min-height: 60px !important; line-height: 1.5 !important; overflow: visible !important;">
+                    <div class="col-md-6">
+                        <div class="checkbox">
+                            <label for="perm_${permId}">
                                 <input type="checkbox" name="permissions[]" value="${permId}" 
-                                       class="permission-checkbox" ${isSelected ? 'checked' : ''}
-                                       data-permission-name="${perm.permission_name}"
-                                       style="width: 18px !important; height: 18px !important; margin: 0 10px 0 10px !important; position: static !important; float: right !important; clear: none !important;"> 
-                                <strong style="color: #2d3748 !important; display: inline !important; position: static !important;">${perm.permission_display_name}</strong>
-                                ${perm.permission_description ? '<small style="color: #6c757d !important; font-size: 12px !important; display: block !important; margin-top: 8px !important; position: static !important; clear: both !important;">' + perm.permission_description + '</small>' : ''}
+                                       class="permission-checkbox" ${isSelected ? 'checked' : ''} id="perm_${permId}">
+                                <div class="text-content">
+                                    <strong>${safePermName}</strong>
+                                </div>
                             </label>
                         </div>
                     </div>
@@ -940,115 +833,58 @@ $(document).ready(function() {
             html += '</div>';
         });
         
-        // Set the HTML and show
-        $('#permissionsList').html(html);
-        $('#permissionsList').show();
-        $('#permissionsList').css('display', 'block');
-        $('#permissionsList').removeClass('hidden');
-        
-        console.log(`🎨 تم إنشاء HTML للصلاحيات - محدد: ${selectedCount} من ${permissions.length}`);
-        
-        // Final verification
-        setTimeout(() => {
-            const checkedBoxes = $('input[name="permissions[]"]:checked').length;
-            const totalBoxes = $('input[name="permissions[]"]').length;
-            console.log(`📋 نتيجة نهائية: ${checkedBoxes} محدد من ${totalBoxes} إجمالي`);
-            
-            if (checkedBoxes === 0 && currentUserPermissions.length > 0) {
-                console.error('🚨 خطأ: لم يتم تحديد أي صلاحيات رغم وجود صلاحيات للمستخدم!');
-                console.error('🔍 للتشخيص: تحقق من تطابق الـ IDs في console أعلاه');
-            } else {
-                console.log('✅ تم تحديد الصلاحيات بنجاح!');
-            }
-        }, 100);
-        
-        // Update counters
+        $('#permissionsList').html(html).show();
         updatePermissionCounters();
         
-        // Add event listeners
-        $('input[name="permissions[]"]').on('change', updatePermissionCounters);
+        $('.permission-checkbox').on('change', updatePermissionCounters);
         
-        console.log('✅ انتهى رسم الصلاحيات');
+        $('#selectAll').on('click', function() {
+            $('.permission-checkbox').prop('checked', true);
+            updatePermissionCounters();
+        });
+        
+        $('#clearAll').on('click', function() {
+            $('.permission-checkbox').prop('checked', false);
+            updatePermissionCounters();
+        });
     }
-
+    
+    // Update permission counters function
     function updatePermissionCounters() {
         const total = allPermissions.length;
-        const selected = $('input[name="permissions[]"]:checked').length;
-        
+        const selected = $('.permission-checkbox:checked').length;
         $('#totalCount').text(total);
         $('#selectedCount').text(selected);
     }
     
-    // Search functionality
+    // Search permissions function
     $('#searchPermissions').on('input', function() {
-        const searchTerm = $(this).val().toLowerCase();
+        const searchTerm = $(this).val().toLowerCase().trim();
         
         if (searchTerm === '') {
-            renderPermissions(allPermissions);
+            $('.checkbox').show();
         } else {
-            const filtered = allPermissions.filter(perm => 
-                perm.permission_display_name.toLowerCase().includes(searchTerm) ||
-                perm.permission_name.toLowerCase().includes(searchTerm) ||
-                perm.permission_category.toLowerCase().includes(searchTerm)
-            );
-            renderPermissions(filtered);
+            $('.checkbox').each(function() {
+                const permissionText = $(this).find('.text-content strong').text().toLowerCase();
+                if (permissionText.includes(searchTerm)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        }
+        
+        // Update visible counter
+        const visibleTotal = $('.checkbox:visible').length;
+        const visibleSelected = $('.checkbox:visible input[type="checkbox"]:checked').length;
+        
+        if (searchTerm !== '') {
+            $('#totalCount').text(visibleTotal + ' (من ' + allPermissions.length + ')');
+            $('#selectedCount').text(visibleSelected);
+        } else {
+            updatePermissionCounters();
         }
     });
-    
-    // Select all permissions
-    $('#selectAll').on('click', function() {
-        $('input[name="permissions[]"]').prop('checked', true);
-        updatePermissionCounters();
-    });
-    
-    // Clear all permissions
-    $('#clearAll').on('click', function() {
-        $('input[name="permissions[]"]').prop('checked', false);
-        updatePermissionCounters();
-    });
-    
-    // Load default permissions for role
-    $('#loadDefaultPermissions').on('click', function() {
-        loadDefaultPermissionsForRole(); // Load default permissions for selected role
-    });
-    
-    function loadDefaultPermissionsForRole() {
-        
-        const role = $('#role').val();
-        if (!role) return;
-        
-        // Define default permissions for each role
-        const defaults = {
-            'user': [
-                'licenses_view',
-                'personal_licenses_view',
-                'vehicle_licenses_view'
-            ],
-            'admin': [
-                'licenses_view', 'licenses_add', 'licenses_edit', 'licenses_delete',
-                'personal_licenses_view', 'personal_licenses_add', 'personal_licenses_edit', 'personal_licenses_delete',
-                'vehicle_licenses_view', 'vehicle_licenses_add', 'vehicle_licenses_edit', 'vehicle_licenses_delete',
-                'departments_view', 'projects_view'
-            ],
-            'super_admin': allPermissions.map(p => p.permission_name)
-        };
-        
-        const roleDefaults = defaults[role] || [];
-        
-        // Clear all first
-        $('input[name="permissions[]"]').prop('checked', false);
-        
-        // Select defaults
-        roleDefaults.forEach(permName => {
-            const perm = allPermissions.find(p => p.permission_name === permName);
-            if (perm) {
-                $(`input[name="permissions[]"][value="${perm.permission_id}"]`).prop('checked', true);
-            }
-        });
-        
-        updatePermissionCounters();
-        showAlert(`تم تحديد الصلاحيات الافتراضية لدور "${role}"`, 'success');
-    }
     
     // Form submission
     $('#editUserForm').submit(function(e) {
@@ -1056,19 +892,26 @@ $(document).ready(function() {
         
         const formData = new FormData(this);
         
-        // Add selected permissions to form data
+        // Add selected permissions
         const selectedPermissions = [];
-        $('input[name="permissions[]"]:checked').each(function() {
+        $('.permission-checkbox:checked').each(function() {
             selectedPermissions.push($(this).val());
         });
+        formData.append('selected_permissions', JSON.stringify(selectedPermissions));
         
-        // Always send permissions array, even if empty
-            formData.append('selected_permissions', JSON.stringify(selectedPermissions));
+        // Add selected projects
+        const selectedProjects = [];
+        $('.project-checkbox:checked').each(function() {
+            selectedProjects.push($(this).val());
+        });
+        formData.append('selected_projects', JSON.stringify(selectedProjects));
         
-        // Show loading state
-        const submitBtn = $(this).find('button[type="submit"]');
-        const originalText = submitBtn.html();
-        submitBtn.html('<i class="fa fa-spinner fa-spin"></i> جاري الحفظ...').prop('disabled', true);
+        // Add selected departments
+        const selectedDepartments = [];
+        $('.department-checkbox:checked').each(function() {
+            selectedDepartments.push($(this).val());
+        });
+        formData.append('selected_departments', JSON.stringify(selectedDepartments));
         
         $.ajax({
             url: 'php_action/edit_user.php',
@@ -1078,517 +921,18 @@ $(document).ready(function() {
             contentType: false,
             success: function(response) {
                 if (response.success) {
-                    showAlert(response.message, 'success');
-                    
-
-                    
-                    setTimeout(function() {
-                        window.location.href = 'view_user.php?id=' + <?php echo $user['user_id']; ?>;
-                    }, 2000);
+                    alert('تم تحديث المستخدم بنجاح');
+                    window.location.href = 'view_user.php?id=' + <?php echo $user['user_id']; ?>;
                 } else {
-                    showAlert(response.error, 'danger');
-                    submitBtn.html(originalText).prop('disabled', false);
+                    alert('خطأ: ' + response.error);
                 }
             },
             error: function() {
-                showAlert('حدث خطأ في الخادم', 'danger');
-                submitBtn.html(originalText).prop('disabled', false);
+                alert('حدث خطأ في الخادم');
             }
         });
     });
-    
-
-    
-    // Show alert function
-    function showAlert(message, type) {
-        const alertHtml = `
-            <div class="alert alert-${type} alert-dismissible" style="margin-top: 15px;">
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                ${message}
-            </div>
-        `;
-        $('.content-wrapper').prepend(alertHtml);
-        
-        // Auto dismiss after 5 seconds
-        setTimeout(function() {
-            $('.alert').fadeOut();
-        }, 5000);
-    }
-    
-    // ===============================
-    // Projects Permissions Functions  
-    // ===============================
-    
-    // Show/Hide project permissions section based on role
-    function toggleProjectPermissions(role) {
-        const projectSection = $('#projectPermissionsSection');
-        
-        if (role === 'admin') {
-            projectSection.show();
-            loadUserProjects(<?php echo $userId; ?>);
-            console.log('✅ عرض قسم المشاريع للمدير');
-        } else {
-            projectSection.hide();
-            console.log('🔒 إخفاء قسم المشاريع للدور:', role);
-        }
-    }
-    
-    // Load current user's projects
-    function loadUserProjects(userId) {
-        console.log('🔧 تحميل مشاريع المستخدم:', userId);
-        
-        $.ajax({
-            url: 'php_action/get_user_projects.php?user_id=' + userId,
-            method: 'GET',
-            dataType: 'json',
-            success: function(response) {
-                console.log('✅ نجح تحميل مشاريع المستخدم:', response);
-                
-                if (response.success && response.projects) {
-                    renderUserProjectsGrid(response.projects);
-                } else {
-                    console.error('❌ لا توجد مشاريع للمستخدم');
-                    $('#projectsGrid').html('<div class="text-center text-warning" style="padding: 20px;"><i class="glyphicon glyphicon-exclamation-sign"></i> لا توجد مشاريع متاحة</div>');
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('❌ خطأ في تحميل مشاريع المستخدم:', error);
-                $('#projectsGrid').html('<div class="text-center text-danger" style="padding: 20px;"><i class="glyphicon glyphicon-warning-sign"></i> حدث خطأ في تحميل المشاريع</div>');
-            }
-        });
-    }
-    
-    // Render user projects with current assignments
-    function renderUserProjectsGrid(projects) {
-        console.log('🎨 عرض', projects.length, 'مشروع');
-        
-        let html = '<div class="row">';
-        
-        projects.forEach(function(project) {
-            const isChecked = project.is_assigned == 1 ? 'checked' : '';
-            html += `
-                <div class="col-md-6 col-sm-12" style="margin-bottom: 10px;">
-                    <div class="checkbox" style="margin: 10px 0;">
-                        <label style="font-weight: normal; padding: 12px 15px; background: white; border-radius: 6px; border: 2px solid #e9ecef; cursor: pointer; display: block; min-height: 50px; transition: all 0.2s;">
-                            <input type="checkbox" name="projects[]" value="${project.project_id}" 
-                                   class="project-checkbox" data-project-name="${project.project_name}" ${isChecked}
-                                   style="width: 16px; height: 16px; margin: 0 8px 0 0; float: right;"> 
-                            <strong style="color: #2d3748; font-size: 14px;">${project.project_name}</strong>
-                            ${project.description ? '<small style="color: #6c757d; font-size: 11px; display: block; margin-top: 5px; line-height: 1.3;">' + project.description + '</small>' : ''}
-                        </label>
-                    </div>
-                </div>
-            `;
-        });
-        
-        html += '</div>';
-        
-        $('#projectsGrid').html(html);
-        
-        // Update counters
-        $('#totalProjectsCount').text(projects.length);
-        updateProjectsCounter();
-        
-        // Add hover effects
-        $('.project-checkbox').parent().hover(
-            function() { $(this).css('border-color', '#007bff'); },
-            function() { $(this).css('border-color', '#e9ecef'); }
-        );
-        
-        // Add event listeners
-        $('.project-checkbox').on('change', updateProjectsCounter);
-        
-        // Select/Clear all buttons
-        $('#selectAllProjects').off('click').on('click', function() {
-            $('.project-checkbox').prop('checked', true);
-            updateProjectsCounter();
-            console.log('✅ تم تحديد جميع المشاريع');
-        });
-        
-        $('#clearAllProjects').off('click').on('click', function() {
-            $('.project-checkbox').prop('checked', false);
-            updateProjectsCounter();
-            console.log('❌ تم إلغاء تحديد جميع المشاريع');
-        });
-        
-        console.log('✅ تم عرض مشاريع المستخدم بنجاح');
-    }
-    
-    // Update projects counter
-    function updateProjectsCounter() {
-        const selectedCount = $('.project-checkbox:checked').length;
-        $('#selectedProjectsCount').text(selectedCount);
-        
-        // Change color based on selection
-        if (selectedCount > 0) {
-            $('#selectedProjectsCount').parent().css('color', '#28a745');
-        } else {
-            $('#selectedProjectsCount').parent().css('color', '#6c757d');
-        }
-    }
-    
-    // Initial project permissions setup
-    setTimeout(function() {
-        const currentRole = $('#role').val();
-        toggleProjectPermissions(currentRole);
-    }, 500);
 });
-
-// Admin Teams System JavaScript for Edit User
-function handleRoleChange() {
-    const selectedRole = $('#role').val();
-    const $parentAdminGroup = $('#parentAdminGroup');
-    const $adminTypeDisplay = $('#adminTypeDisplay');
-    const $parentAdminSelect = $('#parentAdminId');
-    
-    if (selectedRole === 'admin') {
-        $parentAdminGroup.show();
-        $adminTypeDisplay.show();
-        loadHeadAdmins();
-        // إظهار قسم المشاريع
-        toggleProjectPermissions('admin');
-    } else {
-        $parentAdminGroup.hide();
-        $adminTypeDisplay.hide();
-        $parentAdminSelect.empty().append('<option value="">-- اختر المدير المباشر --</option>');
-        // إخفاء قسم المشاريع
-        toggleProjectPermissions(selectedRole);
-    }
-}
-
-// Load head admins for parent admin dropdown
-function loadHeadAdmins() {
-    const departmentId = $('#department').val();
-    const currentUserId = $('input[name="user_id"]').val(); // Exclude current user
-    
-    if (!departmentId) {
-        $('#parentAdminId').empty().append('<option value="">اختر القسم أولاً</option>');
-        return;
-    }
-    
-    $.ajax({
-        url: 'php_action/get_head_admins.php',
-        method: 'POST',
-        data: {
-            department_id: departmentId,
-            exclude_user_id: currentUserId
-        },
-        dataType: 'json',
-        success: function(response) {
-            const $select = $('#parentAdminId');
-            $select.empty().append('<option value="">-- اختر المدير المباشر --</option>');
-            
-            if (response.success && response.data.length > 0) {
-                response.data.forEach(function(admin) {
-                    $select.append(`<option value="${admin.user_id}">${admin.full_name} (${admin.username})</option>`);
-                });
-            } else {
-                $select.append('<option value="" disabled>لا يوجد مديرين رئيسيين في هذا القسم</option>');
-            }
-            
-            // Set current parent admin if editing
-            const currentParentId = '<?php echo $user['parent_admin_id'] ?? ''; ?>';
-            if (currentParentId) {
-                $select.val(currentParentId);
-            }
-            
-            updateAdminTypeDisplay();
-        },
-        error: function() {
-            console.error('خطأ في تحميل المديرين الرئيسيين');
-            $('#parentAdminId').empty().append('<option value="">خطأ في التحميل</option>');
-        }
-    });
-}
-
-// Update admin type display based on parent admin selection
-function updateAdminTypeDisplay() {
-    const parentAdminId = $('#parentAdminId').val();
-    const $adminTypeText = $('#adminTypeText');
-    
-    if (parentAdminId) {
-        const parentName = $('#parentAdminId option:selected').text();
-        $adminTypeText.text(`مدير فرعي تحت: ${parentName}`);
-    } else {
-        $adminTypeText.text('مدير رئيسي مستقل');
-    }
-}
-
-// Event handlers for Admin Teams
-$('#role').on('change', function() {
-    handleRoleChange();
-});
-
-$('#parentAdminId').on('change', function() {
-    updateAdminTypeDisplay();
-});
-
-$('#department_id').on('change', function() {
-    if ($('#role').val() === 'admin') {
-        loadHeadAdmins();
-    }
-});
-
-// Initialize on page load
-$(document).ready(function() {
-    setTimeout(function() {
-        handleRoleChange();
-    }, 1000); // Wait for other initialization
-});
-
-// Admin Teams System JavaScript for Edit User
-function handleRoleChange() {
-    const selectedRole = $('#role').val();
-    const $parentAdminGroup = $('#parentAdminGroup');
-    const $adminTypeDisplay = $('#adminTypeDisplay');
-    const $parentAdminSelect = $('#parentAdminId');
-    
-    if (selectedRole === 'admin') {
-        $parentAdminGroup.show();
-        $adminTypeDisplay.show();
-        loadHeadAdmins();
-    } else {
-        $parentAdminGroup.hide();
-        $adminTypeDisplay.hide();
-        $parentAdminSelect.empty().append('<option value="">-- اختر المدير المباشر --</option>');
-    }
-}
-
-// Load head admins for parent admin dropdown
-function loadHeadAdmins() {
-    const departmentId = $('#department_id').val();
-    const currentUserId = $('input[name="user_id"]').val(); // Exclude current user
-    
-    console.log('🔍 Loading head admins for department:', departmentId);
-    
-    if (!departmentId || departmentId === '') {
-        console.log('❌ No department selected');
-        $('#parentAdminId').empty().append('<option value="">اختر القسم أولاً</option>');
-        return;
-    }
-    
-    // Show loading state
-    $('#parentAdminId').empty().append('<option value="">جاري التحميل...</option>');
-    
-    $.ajax({
-        url: 'php_action/get_head_admins.php',
-        method: 'POST',
-        data: {
-            department_id: departmentId,
-            exclude_user_id: currentUserId || 0
-        },
-        dataType: 'json',
-        success: function(response) {
-            console.log('✅ Head admins response:', response);
-            
-            const $select = $('#parentAdminId');
-            $select.empty().append('<option value="">-- اختر المدير المباشر --</option>');
-            
-            if (response.success && response.data && response.data.length > 0) {
-                response.data.forEach(function(admin) {
-                    $select.append(`<option value="${admin.user_id}">${admin.full_name} (${admin.username})</option>`);
-                });
-                console.log(`📋 Loaded ${response.data.length} head admins`);
-            } else {
-                $select.append('<option value="" disabled>لا يوجد مديرين رئيسيين في هذا القسم</option>');
-                console.log('ℹ️ No head admins found for this department');
-            }
-            
-            // Set current parent admin if editing
-            const currentParentId = $('#parentAdminId').data('current-parent') || '';
-            if (currentParentId) {
-                console.log('🎯 Setting current parent:', currentParentId);
-                $select.val(currentParentId);
-            }
-            
-            updateAdminTypeDisplay();
-        },
-        error: function(xhr, status, error) {
-            console.error('❌ Error loading head admins:', {xhr, status, error});
-            $('#parentAdminId').empty().append('<option value="">خطأ في التحميل - حاول مرة أخرى</option>');
-        }
-    });
-}
-
-// Update admin type display based on parent admin selection
-function updateAdminTypeDisplay() {
-    const parentAdminId = $('#parentAdminId').val();
-    const $adminTypeText = $('#adminTypeText');
-    
-    if (parentAdminId) {
-        const parentName = $('#parentAdminId option:selected').text();
-        $adminTypeText.text(`مدير فرعي تحت: ${parentName}`);
-    } else {
-        $adminTypeText.text('مدير رئيسي مستقل');
-    }
-}
-
-// Event handlers for Admin Teams
-$('#role').on('change', function() {
-    handleRoleChange();
-});
-
-$('#parentAdminId').on('change', function() {
-    updateAdminTypeDisplay();
-});
-
-$('#department_id').on('change', function() {
-    if ($('#role').val() === 'admin') {
-        loadHeadAdmins();
-    }
-});
-
-// Fix department selector for Admin Teams
-$('#department_id').off('change.adminteams').on('change.adminteams', function() {
-    console.log('🔧 Department changed for admin teams:', $(this).val());
-    if ($('#role').val() === 'admin') {
-        loadHeadAdmins();
-    }
-    
-    // ===============================
-    // Projects Permissions Functions  
-    // ===============================
-    
-    // Show/Hide project permissions section based on role
-    function toggleProjectPermissions(role) {
-        const projectSection = $('#projectPermissionsSection');
-        
-        if (role === 'admin') {
-            projectSection.show();
-            loadUserProjects(<?php echo $userId; ?>);
-            console.log('✅ عرض قسم المشاريع للمدير');
-        } else {
-            projectSection.hide();
-            console.log('🔒 إخفاء قسم المشاريع للدور:', role);
-        }
-    }
-    
-    // Load current user's projects
-    function loadUserProjects(userId) {
-        console.log('🔧 تحميل مشاريع المستخدم:', userId);
-        
-        $.ajax({
-            url: 'php_action/get_user_projects.php?user_id=' + userId,
-            method: 'GET',
-            dataType: 'json',
-            success: function(response) {
-                console.log('✅ نجح تحميل مشاريع المستخدم:', response);
-                
-                if (response.success && response.projects) {
-                    renderUserProjectsGrid(response.projects);
-                } else {
-                    console.error('❌ لا توجد مشاريع للمستخدم');
-                    $('#projectsGrid').html('<div class="text-center text-warning" style="padding: 20px;"><i class="glyphicon glyphicon-exclamation-sign"></i> لا توجد مشاريع متاحة</div>');
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('❌ خطأ في تحميل مشاريع المستخدم:', error);
-                $('#projectsGrid').html('<div class="text-center text-danger" style="padding: 20px;"><i class="glyphicon glyphicon-warning-sign"></i> حدث خطأ في تحميل المشاريع</div>');
-            }
-        });
-    }
-    
-    // Render user projects with current assignments
-    function renderUserProjectsGrid(projects) {
-        console.log('🎨 عرض', projects.length, 'مشروع');
-        
-        let html = '<div class="row">';
-        
-        projects.forEach(function(project) {
-            const isChecked = project.is_assigned == 1 ? 'checked' : '';
-            html += `
-                <div class="col-md-6 col-sm-12" style="margin-bottom: 10px;">
-                    <div class="checkbox" style="margin: 10px 0;">
-                        <label style="font-weight: normal; padding: 12px 15px; background: white; border-radius: 6px; border: 2px solid #e9ecef; cursor: pointer; display: block; min-height: 50px; transition: all 0.2s;">
-                            <input type="checkbox" name="projects[]" value="${project.project_id}" 
-                                   class="project-checkbox" data-project-name="${project.project_name}" ${isChecked}
-                                   style="width: 16px; height: 16px; margin: 0 8px 0 0; float: right;"> 
-                            <strong style="color: #2d3748; font-size: 14px;">${project.project_name}</strong>
-                            ${project.description ? '<small style="color: #6c757d; font-size: 11px; display: block; margin-top: 5px; line-height: 1.3;">' + project.description + '</small>' : ''}
-                        </label>
-                    </div>
-                </div>
-            `;
-        });
-        
-        html += '</div>';
-        
-        $('#projectsGrid').html(html);
-        
-        // Update counters
-        $('#totalProjectsCount').text(projects.length);
-        updateProjectsCounter();
-        
-        // Add hover effects
-        $('.project-checkbox').parent().hover(
-            function() { $(this).css('border-color', '#007bff'); },
-            function() { $(this).css('border-color', '#e9ecef'); }
-        );
-        
-        // Add event listeners
-        $('.project-checkbox').on('change', updateProjectsCounter);
-        
-        // Select/Clear all buttons
-        $('#selectAllProjects').off('click').on('click', function() {
-            $('.project-checkbox').prop('checked', true);
-            updateProjectsCounter();
-            console.log('✅ تم تحديد جميع المشاريع');
-        });
-        
-        $('#clearAllProjects').off('click').on('click', function() {
-            $('.project-checkbox').prop('checked', false);
-            updateProjectsCounter();
-            console.log('❌ تم إلغاء تحديد جميع المشاريع');
-        });
-        
-        console.log('✅ تم عرض مشاريع المستخدم بنجاح');
-    }
-    
-    // Update projects counter
-    function updateProjectsCounter() {
-        const selectedCount = $('.project-checkbox:checked').length;
-        $('#selectedProjectsCount').text(selectedCount);
-        
-        // Change color based on selection
-        if (selectedCount > 0) {
-            $('#selectedProjectsCount').parent().css('color', '#28a745');
-        } else {
-            $('#selectedProjectsCount').parent().css('color', '#6c757d');
-        }
-    }
-    
-    // إزالة أي event handlers قديمة للدور
-    $('#role').off('change.projects');
-    
-    // إضافة event handler جديد للمشاريع
-    $('#role').on('change.projects', function() {
-        const role = $(this).val();
-        console.log('🔄 تغيير الدور إلى:', role);
-        
-        if (typeof toggleProjectPermissions === 'function') {
-            toggleProjectPermissions(role);
-        } else {
-            console.error('❌ دالة toggleProjectPermissions غير موجودة');
-        }
-    });
-    
-    // فحص الدور الحالي عند تحميل الصفحة
-    setTimeout(function() {
-        const currentRole = $('#role').val();
-        console.log('🚀 الدور الحالي عند التحميل:', currentRole);
-        
-        if (currentRole === 'admin' && typeof toggleProjectPermissions === 'function') {
-            console.log('✅ إظهار قسم المشاريع للمدير');
-            toggleProjectPermissions(currentRole);
-        } else {
-            console.log('🔒 إخفاء قسم المشاريع لدور:', currentRole);
-        }
-    }, 1500);
-});
-
 </script>
-
-<!-- Admin Teams Fix for Department Selector -->
-<script src="fix_edit_user_department.js"></script>
 
 <?php include 'includes/footer.php'; ?> 

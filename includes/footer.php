@@ -5,7 +5,7 @@
                 <p>&copy; <?php echo date('Y'); ?> نظام إدارة التراخيص. جميع الحقوق محفوظة.</p>
             </div>
             <div class="col-md-6 text-right">
-                <p>تم التطوير بـ <i class="glyphicon glyphicon-heart" style="color: #e74c3c;"></i> لإدارة فعالة للتراخيص</p>
+                <p>تم التطوير بـ DS Team لإدارة فعالة للتراخيص</p>
             </div>
         </div>
     </div>

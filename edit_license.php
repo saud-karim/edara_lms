@@ -217,7 +217,7 @@ include 'includes/header.php';
                                                         <!-- Right Column (Previously Left) -->
                                                         <div class="form-group">
                                                             <label for="vehicle_type" class="required">نوع المركبة</label>
-                                                            <select id="vehicle_type" name="vehicle_type" class="form-control" tabindex="5" required>
+                                                            <select id="vehicle_type" name="vehicle_type" class="form-control" tabindex="1" required>
                                                                 <option value="">اختر نوع المركبة</option>
                                                                 <option value="موتوسيكل" <?php echo $license['vehicle_type'] === 'موتوسيكل' ? 'selected' : ''; ?>>موتوسيكل</option>
                                                                 <option value="عربية" <?php echo $license['vehicle_type'] === 'عربية' ? 'selected' : ''; ?>>عربية</option>
@@ -226,21 +226,38 @@ include 'includes/header.php';
                                                         </div>
                                                         
                                                         <div class="form-group">
+                                                            <label for="license_category" class="required">فئة الرخصة</label>
+                                                            <select id="license_category" name="license_category" class="form-control" tabindex="6" required>
+                                                                <option value="">اختر فئة الرخصة</option>
+                                                                <option value="رخصة مركبة" <?php echo ($license['license_category'] ?? 'رخصة مركبة') === 'رخصة مركبة' ? 'selected' : ''; ?>>رخصة مركبة</option>
+                                                                <option value="تصريح مركبة" <?php echo ($license['license_category'] ?? '') === 'تصريح مركبة' ? 'selected' : ''; ?>>تصريح مركبة</option>
+                                                            </select>
+                                                        </div>
+                                                        
+                                                        <div class="form-group" id="inspection_year_group">
+                                                            <label for="inspection_year">سنة الفحص</label>
+                                                            <input type="number" id="inspection_year" name="inspection_year" class="form-control" 
+                                                                   placeholder="مثال: 2024" min="2020" max="2030" tabindex="7"
+                                                                   value="<?php echo htmlspecialchars($license['inspection_year'] ?? ''); ?>">
+                                                            <small class="help-block text-info">يظهر فقط للتصاريح - اختياري</small>
+                                                        </div>
+                                                        
+                                                        <div class="form-group">
                                                             <label for="issue_date" class="required">تاريخ الإصدار</label>
                                                             <input type="date" id="issue_date" name="issue_date" class="form-control" 
-                                                                   value="<?php echo htmlspecialchars($license['issue_date']); ?>" tabindex="7" required>
+                                                                   value="<?php echo htmlspecialchars($license['issue_date']); ?>" tabindex="8" required>
                                                         </div>
                                                         
                                                         <div class="form-group">
                                                             <label for="expiration_date" class="required">تاريخ الانتهاء</label>
                                                             <input type="date" id="expiration_date" name="expiration_date" class="form-control" 
-                                                                   value="<?php echo htmlspecialchars($license['expiration_date']); ?>" tabindex="8" required>
+                                                                   value="<?php echo htmlspecialchars($license['expiration_date']); ?>" tabindex="9" required>
                                                         </div>
                                                         
                                                         <div class="form-group">
                                                             <label for="notes">ملاحظات</label>
                                                             <textarea id="notes" name="notes" class="form-control" rows="4" 
-                                                                      placeholder="أي ملاحظات إضافية..." tabindex="9"><?php echo htmlspecialchars($license['notes'] ?? ''); ?></textarea>
+                                                                      placeholder="أي ملاحظات إضافية..." tabindex="10"><?php echo htmlspecialchars($license['notes'] ?? ''); ?></textarea>
                                                         </div>
                                                     <?php endif; ?>
                                                     
@@ -338,7 +355,7 @@ include 'includes/header.php';
                                                                             <input type="text" class="form-control text-center" id="car_numbers" 
                                                                                    name="car_numbers" placeholder="123" pattern="[0-9]{3,4}" 
                                                                                    maxlength="4" style="font-size: 18px; font-weight: bold;" 
-                                                                                   value="<?php echo htmlspecialchars($carNumbers); ?>" tabindex="2" required>
+                                                                                   value="<?php echo htmlspecialchars($carNumbers); ?>" tabindex="3" required>
                                                                         </div>
                                                                         <small class="help-block">3-4 أرقام</small>
                                                                     </div>
@@ -348,7 +365,7 @@ include 'includes/header.php';
                                                                             <input type="text" class="form-control text-center" id="car_letters" 
                                                                                    name="car_letters" placeholder="أ ب ج" 
                                                                                    maxlength="7" style="font-size: 18px; font-weight: bold;" 
-                                                                                   value="<?php echo htmlspecialchars($carLetters); ?>" tabindex="1" required>
+                                                                                   value="<?php echo htmlspecialchars($carLetters); ?>" tabindex="2" required>
                                                                         </div>
                                                                         <small class="help-block">2-3 حروف عربية</small>
                                                                     </div>
@@ -368,7 +385,7 @@ include 'includes/header.php';
                                                     
                                                     <div class="form-group">
                                                         <label for="project_id" class="required">المشروع</label>
-                                                        <select id="project_id" name="project_id" class="form-control" tabindex="3" required>
+                                                        <select id="project_id" name="project_id" class="form-control" tabindex="4" required>
                                                             <option value="">اختر المشروع</option>
                                                             <?php foreach ($projects as $project): ?>
                                                                 <option value="<?php echo $project['project_id']; ?>" 
@@ -381,7 +398,7 @@ include 'includes/header.php';
                                                     
                                                     <div class="form-group">
                                                         <label for="department_id" class="required">القسم</label>
-                                                        <select id="department_id" name="department_id" class="form-control" tabindex="4" required>
+                                                        <select id="department_id" name="department_id" class="form-control" tabindex="5" required>
                                                             <option value="">اختر القسم</option>
                                                             <?php foreach ($departments as $department): ?>
                                                                 <option value="<?php echo $department['department_id']; ?>" 
@@ -549,6 +566,30 @@ include 'includes/header.php';
 $(document).ready(function() {
     // Load departments on page load
     loadDepartments();
+    
+    // Handle license category change for vehicle licenses
+    $('#license_category').on('change', function() {
+        const selectedCategory = $(this).val();
+        console.log('🔄 License category changed to:', selectedCategory);
+        
+        if (selectedCategory === 'تصريح مركبة') {
+            $('#inspection_year_group').slideDown(300);
+            console.log('✅ Showing inspection year field');
+        } else {
+            $('#inspection_year_group').slideUp(300);
+            $('#inspection_year').val(''); // Clear the value
+            console.log('❌ Hiding inspection year field');
+        }
+    });
+    
+    // Initialize inspection year visibility on page load
+    const initialCategory = $('#license_category').val();
+    console.log('🔄 Initial license category:', initialCategory);
+    if (initialCategory === 'تصريح مركبة') {
+        $('#inspection_year_group').show();
+    } else {
+        $('#inspection_year_group').hide();
+    }
     
     // Load departments function
     function loadDepartments() {

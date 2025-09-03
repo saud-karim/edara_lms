@@ -797,18 +797,38 @@ function getLicenseFilter($tableAlias = 'pl') {
         return "1=1";
     }
     
-    // Head admin sees ALL licenses in their department (regardless of who added them)
+    // Head admin sees licenses from their team + licenses added by super admin to their department
     if (isHeadAdmin()) {
+        $teamAndSelfIds = getMyTeamAndSelfIds();
         $userDepartmentId = getUserDepartment();
+        
+        $conditions = [];
+        
+        // Include licenses added by team members (including self)
+        if (!empty($teamAndSelfIds)) {
+            $conditions[] = "{$tableAlias}.user_id IN (" . implode(',', $teamAndSelfIds) . ")";
+        }
+        
+        // Include licenses added by super admin to the same department
         if ($userDepartmentId) {
-            return "{$tableAlias}.department_id = " . intval($userDepartmentId);
-        } else {
-            // Fallback to team-based filtering if no department
-            $teamAndSelfIds = getMyTeamAndSelfIds();
-            if (empty($teamAndSelfIds)) {
-                return "{$tableAlias}.user_id = " . getUserId();
+            try {
+                $conn = getDBConnection();
+                $stmt = $conn->query("SELECT user_id FROM users WHERE role = 'super_admin' AND is_active = 1");
+                $superAdminIds = array_column($stmt->fetchAll(), 'user_id');
+                
+                if (!empty($superAdminIds)) {
+                    $conditions[] = "({$tableAlias}.user_id IN (" . implode(',', $superAdminIds) . ") AND {$tableAlias}.department_id = " . intval($userDepartmentId) . ")";
+                }
+            } catch (Exception $e) {
+                error_log("Error getting super admin IDs in getLicenseFilter: " . $e->getMessage());
             }
-            return "{$tableAlias}.user_id IN (" . implode(',', $teamAndSelfIds) . ")";
+        }
+        
+        if (!empty($conditions)) {
+            return "(" . implode(' OR ', $conditions) . ")";
+        } else {
+            // Fallback to own licenses only
+                return "{$tableAlias}.user_id = " . getUserId();
         }
     }
     

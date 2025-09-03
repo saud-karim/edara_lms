@@ -103,10 +103,58 @@ try {
     
     // Apply user role restrictions
     $userRole = getUserRole();
-    if ($userRole === 'admin' || $userRole === 'user') {
+    $currentUserId = getCurrentUserId();
+    
+    if ($userRole === 'super_admin') {
+        // Super admin sees all departments
+    } elseif ($userRole === 'admin') {
+        // Admin sees only assigned departments via user_departments table
+        // Check if user_departments table exists and has data for this user
+        $checkUserDepts = $conn->prepare("
+            SELECT COUNT(*) as count 
+            FROM information_schema.tables 
+            WHERE table_schema = DATABASE() AND table_name = 'user_departments'
+        ");
+        $checkUserDepts->execute();
+        $tableExists = $checkUserDepts->fetch()['count'] > 0;
+        
+        if ($tableExists) {
+            $checkUserHasDepts = $conn->prepare("
+                SELECT COUNT(*) as count 
+                FROM user_departments 
+                WHERE user_id = ?
+            ");
+            $checkUserHasDepts->execute([$currentUserId]);
+            $userHasDepts = $checkUserHasDepts->fetch()['count'] > 0;
+            
+            if ($userHasDepts) {
+                // Filter by user's assigned departments
+                $whereConditions[] = "d.department_id IN (
+                    SELECT ud.department_id 
+                    FROM user_departments ud 
+                    WHERE ud.user_id = ?
+                )";
+                $params[] = $currentUserId;
+            } else {
+                // Fallback to old department_name logic
+                $userDepartmentName = getUserDepartmentName();
+                if ($userDepartmentName) {
+                    $whereConditions[] = "d.department_name = ?";
+                    $params[] = $userDepartmentName;
+                }
+            }
+        } else {
+            // Fallback to old department_name logic
+            $userDepartmentName = getUserDepartmentName();
+            if ($userDepartmentName) {
+                $whereConditions[] = "d.department_name = ?";
+                $params[] = $userDepartmentName;
+            }
+        }
+    } elseif ($userRole === 'user') {
+        // Regular users see their department only
         $userDepartmentName = getUserDepartmentName();
         if ($userDepartmentName) {
-            // Show all departments with the same name across all projects
             $whereConditions[] = "d.department_name = ?";
             $params[] = $userDepartmentName;
         }

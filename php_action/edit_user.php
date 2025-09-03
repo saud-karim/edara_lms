@@ -133,16 +133,22 @@ try {
     if ($role === 'admin' && !empty($_POST['parent_admin_id'])) {
         $parentAdminId = intval($_POST['parent_admin_id']);
         
-        // Validate parent admin exists and is a head admin in same department
+        // Validate parent admin exists and is eligible to be a direct manager
+        // Only Head admins (parent_admin_id IS NULL) from SAME department can be direct managers
+        // Super admins are excluded as they already have full system access
         $parentStmt = $conn->prepare("
-            SELECT user_id FROM users 
-            WHERE user_id = ? AND role = 'admin' AND parent_admin_id IS NULL 
-            AND department_id = ? AND is_active = 1
+            SELECT user_id, role, department_id FROM users 
+            WHERE user_id = ? 
+            AND is_active = 1
+            AND role = 'admin' 
+            AND parent_admin_id IS NULL
+            AND department_id = ?
         ");
         $parentStmt->execute([$parentAdminId, $departmentId]);
+        $parentAdmin = $parentStmt->fetch();
         
-        if (!$parentStmt->fetch()) {
-            echo json_encode(['error' => 'المدير المباشر المحدد غير صحيح أو من قسم مختلف']);
+        if (!$parentAdmin) {
+            echo json_encode(['error' => 'المدير المباشر المحدد غير صحيح - يجب أن يكون مشرف رئيسي من نفس القسم']);
             exit;
         }
     }
@@ -228,6 +234,55 @@ try {
         $deleteProjectsStmt = $conn->prepare("DELETE FROM user_projects WHERE user_id = ?");
         $deleteProjectsStmt->execute([$userId]);
         error_log("Removed all project assignments for non-admin user $userId");
+    }
+    
+    // Handle department permissions for admin users
+    if ($role === 'admin') {
+        // First, remove all existing department assignments
+        $deleteDepartmentsStmt = $conn->prepare("DELETE FROM user_departments WHERE user_id = ?");
+        $deleteDepartmentsStmt->execute([$userId]);
+        error_log("Removed all existing department assignments for user $userId");
+        
+        if (!empty($_POST['departments'])) {
+            $selectedDepartments = array_map('intval', $_POST['departments']);
+            $selectedDepartments = array_filter($selectedDepartments, function($did) { return $did > 0; });
+            
+            if (!empty($selectedDepartments)) {
+                error_log("Processing " . count($selectedDepartments) . " selected departments for user $userId");
+                
+                // Insert user departments
+                $insertDepartmentStmt = $conn->prepare("
+                    INSERT INTO user_departments (user_id, department_id, created_at) 
+                    VALUES (?, ?, NOW())
+                ");
+                
+                $departmentsGranted = 0;
+                foreach ($selectedDepartments as $departmentId) {
+                    // Verify department exists and is active
+                    $departmentCheckStmt = $conn->prepare("SELECT department_id FROM departments WHERE department_id = ? AND is_active = 1");
+                    $departmentCheckStmt->execute([$departmentId]);
+                    
+                    if ($departmentCheckStmt->fetch()) {
+                        $result = $insertDepartmentStmt->execute([$userId, $departmentId]);
+                        if ($result) {
+                            $departmentsGranted++;
+                            error_log("✅ Successfully granted department $departmentId to user $userId");
+                        } else {
+                            error_log("❌ Failed to grant department $departmentId to user $userId");
+                        }
+                    } else {
+                        error_log("⚠️ Department $departmentId not found or inactive, skipping");
+                    }
+                }
+                
+                error_log("Total departments granted to user $userId: $departmentsGranted");
+            }
+        }
+    } elseif ($role !== 'admin') {
+        // If role is not admin, remove all department assignments
+        $deleteDepartmentsStmt = $conn->prepare("DELETE FROM user_departments WHERE user_id = ?");
+        $deleteDepartmentsStmt->execute([$userId]);
+        error_log("Removed all department assignments for non-admin user $userId");
     }
     
     // Handle permissions update
