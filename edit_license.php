@@ -572,7 +572,8 @@ $(document).ready(function() {
         const selectedCategory = $(this).val();
         console.log('🔄 License category changed to:', selectedCategory);
         
-        if (selectedCategory === 'تصريح مركبة') {
+        // Show inspection year for both vehicle license types
+        if (selectedCategory === 'تصريح مركبة' || selectedCategory === 'رخصة مركبة') {
             $('#inspection_year_group').slideDown(300);
             console.log('✅ Showing inspection year field');
         } else {
@@ -585,7 +586,7 @@ $(document).ready(function() {
     // Initialize inspection year visibility on page load
     const initialCategory = $('#license_category').val();
     console.log('🔄 Initial license category:', initialCategory);
-    if (initialCategory === 'تصريح مركبة') {
+    if (initialCategory === 'تصريح مركبة' || initialCategory === 'رخصة مركبة') {
         $('#inspection_year_group').show();
     } else {
         $('#inspection_year_group').hide();

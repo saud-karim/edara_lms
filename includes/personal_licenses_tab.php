@@ -1,14 +1,30 @@
 <!-- Personal Licenses Tab Content -->
-<div class="row" style="margin-bottom: 20px;">
-    <div class="col-md-3">
+<div class="row filters-row">
+    <div class="col-md-3 col-sm-12">
+        <div class="form-group">
+            <label style="font-size: 12px; color: #666; margin-bottom: 5px;">البحث</label>
         <input type="text" id="personalSearchInput" class="form-control" placeholder="البحث في رخص القيادة...">
+        </div>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-2 col-sm-4">
+        <div class="form-group">
+            <label style="font-size: 12px; color: #666; margin-bottom: 5px;">القسم</label>
         <select id="personalDepartmentFilter" class="form-control">
             <option value="">جميع الأقسام</option>
         </select>
     </div>
-    <div class="col-md-2">
+    </div>
+    <div class="col-md-2 col-sm-4">
+        <div class="form-group">
+            <label style="font-size: 12px; color: #666; margin-bottom: 5px;">المشروع</label>
+            <select id="personalProjectFilter" class="form-control">
+                <option value="">جميع المشاريع</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-md-2 col-sm-4">
+        <div class="form-group">
+            <label style="font-size: 12px; color: #666; margin-bottom: 5px;">الحالة</label>
         <select id="personalStatusFilter" class="form-control">
             <option value="">جميع الحالات</option>
             <option value="active">نشط</option>
@@ -16,19 +32,23 @@
             <option value="expired">منتهي الصلاحية</option>
         </select>
     </div>
-    <div class="col-md-5">
-        <div class="btn-group" role="group">
-            <button id="personalRefreshBtn" class="btn btn-info">
+    </div>
+    <div class="col-md-3 col-sm-12">
+        <div class="form-group">
+            <label style="font-size: 12px; color: #666; margin-bottom: 5px; opacity: 0;">&nbsp;</label>
+            <div class="btn-group" role="group" style="display: block; width: 100%;">
+                <button id="personalRefreshBtn" class="btn btn-info btn-sm">
                 <i class="glyphicon glyphicon-refresh"></i> تحديث
             </button>
-            <a href="deleted_licenses.php?type=personal" class="btn btn-warning">
+                <a href="deleted_licenses.php?type=personal" class="btn btn-warning btn-sm">
                 <i class="glyphicon glyphicon-trash"></i> المحذوفة
             </a>
             <?php if ($canAddPersonal): ?>
-            <a href="add_license.php?type=personal" class="btn btn-success">
+                <a href="add_license.php?type=personal" class="btn btn-success btn-sm">
                 <i class="glyphicon glyphicon-plus"></i> إضافة رخصة
             </a>
             <?php endif; ?>
+            </div>
         </div>
     </div>
 </div>

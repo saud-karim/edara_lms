@@ -36,6 +36,8 @@ try {
     $conn = getDBConnection();
     
     $reportType = $_POST['report_type'] ?? '';
+    $departmentFilter = $_POST['department_id'] ?? '';
+    $projectFilter = $_POST['project_id'] ?? '';
     
     // Validate report type permissions
     if (strpos($reportType, 'personal_') === 0 && !$canViewPersonal) {
@@ -59,34 +61,34 @@ try {
     $userRole = getUserRole();
     $userDept = getUserDepartment();
     
-    // Generate report based on type (without filters)
+    // Generate report based on type with filters
     switch ($reportType) {
         case 'personal_expired':
-            $result = generatePersonalExpiredReport($conn, '', '', '', '', $userRole, $userDept, $canViewPersonal, $hasGeneralView);
+            $result = generatePersonalExpiredReport($conn, '', '', $departmentFilter, $projectFilter, $userRole, $userDept, $canViewPersonal, $hasGeneralView);
             break;
             
         case 'personal_expiring':
-            $result = generatePersonalExpiringReport($conn, '', '', '', '', $userRole, $userDept, $canViewPersonal, $hasGeneralView);
+            $result = generatePersonalExpiringReport($conn, '', '', $departmentFilter, $projectFilter, $userRole, $userDept, $canViewPersonal, $hasGeneralView);
             break;
             
         case 'personal_active':
-            $result = generatePersonalActiveReport($conn, '', '', '', '', $userRole, $userDept, $canViewPersonal, $hasGeneralView);
+            $result = generatePersonalActiveReport($conn, '', '', $departmentFilter, $projectFilter, $userRole, $userDept, $canViewPersonal, $hasGeneralView);
             break;
             
         case 'vehicle_expired':
-            $result = generateVehicleExpiredReport($conn, '', '', '', '', $userRole, $userDept, $canViewVehicle, $hasGeneralView);
+            $result = generateVehicleExpiredReport($conn, '', '', $departmentFilter, $projectFilter, $userRole, $userDept, $canViewVehicle, $hasGeneralView);
             break;
             
         case 'vehicle_expiring':
-            $result = generateVehicleExpiringReport($conn, '', '', '', '', $userRole, $userDept, $canViewVehicle, $hasGeneralView);
+            $result = generateVehicleExpiringReport($conn, '', '', $departmentFilter, $projectFilter, $userRole, $userDept, $canViewVehicle, $hasGeneralView);
             break;
             
         case 'vehicle_active':
-            $result = generateVehicleActiveReport($conn, '', '', '', '', $userRole, $userDept, $canViewVehicle, $hasGeneralView);
+            $result = generateVehicleActiveReport($conn, '', '', $departmentFilter, $projectFilter, $userRole, $userDept, $canViewVehicle, $hasGeneralView);
             break;
             
         case 'all_summary':
-            $result = generateAllSummaryReport($conn, '', '', '', '', $userRole, $userDept, $canViewPersonal, $canViewVehicle);
+            $result = generateAllSummaryReport($conn, '', '', $departmentFilter, $projectFilter, $userRole, $userDept, $canViewPersonal, $canViewVehicle);
             break;
             
         default:
@@ -150,8 +152,9 @@ function generatePersonalExpiredReport($conn, $startDate, $endDate, $departmentI
     $whereClause = "WHERE " . implode(" AND ", $whereConditions);
     
     $query = "
-        SELECT pl.license_id, pl.license_number, pl.full_name, pl.expiration_date,
+        SELECT pl.license_id, pl.license_number, pl.full_name, 
                pl.department_name, pl.project_name,
+               pl.issue_date, pl.expiration_date,
                DATEDIFF(CURDATE(), pl.expiration_date) as days_expired,
                'expired' as status
         FROM personal_license_overview pl
@@ -212,8 +215,9 @@ function generatePersonalExpiringReport($conn, $startDate, $endDate, $department
     $whereClause = "WHERE " . implode(" AND ", $whereConditions);
     
     $query = "
-        SELECT pl.license_id, pl.license_number, pl.full_name, pl.expiration_date,
+        SELECT pl.license_id, pl.license_number, pl.full_name, 
                pl.department_name, pl.project_name,
+               pl.issue_date, pl.expiration_date,
                DATEDIFF(pl.expiration_date, CURDATE()) as days_until_expiry,
                'expiring' as status
         FROM personal_license_overview pl
@@ -274,8 +278,9 @@ function generatePersonalActiveReport($conn, $startDate, $endDate, $departmentId
     $whereClause = "WHERE " . implode(" AND ", $whereConditions);
     
     $query = "
-        SELECT pl.license_id, pl.license_number, pl.full_name, pl.expiration_date,
+        SELECT pl.license_id, pl.license_number, pl.full_name, 
                pl.department_name, pl.project_name,
+               pl.issue_date, pl.expiration_date,
                DATEDIFF(pl.expiration_date, CURDATE()) as days_until_expiry,
                'active' as status
         FROM personal_license_overview pl
@@ -336,8 +341,10 @@ function generateVehicleExpiredReport($conn, $startDate, $endDate, $departmentId
     $whereClause = "WHERE " . implode(" AND ", $whereConditions);
     
     $query = "
-        SELECT vl.license_id, vl.car_number, vl.vehicle_type, vl.expiration_date,
+        SELECT vl.license_id, vl.car_number, vl.vehicle_type, 
+               vl.license_category, vl.inspection_year,
                vl.department_name, vl.project_name,
+               vl.issue_date, vl.expiration_date,
                DATEDIFF(CURDATE(), vl.expiration_date) as days_expired,
                'expired' as status
         FROM vehicle_license_overview vl
@@ -398,8 +405,10 @@ function generateVehicleExpiringReport($conn, $startDate, $endDate, $departmentI
     $whereClause = "WHERE " . implode(" AND ", $whereConditions);
     
     $query = "
-        SELECT vl.license_id, vl.car_number, vl.vehicle_type, vl.expiration_date,
+        SELECT vl.license_id, vl.car_number, vl.vehicle_type, 
+               vl.license_category, vl.inspection_year,
                vl.department_name, vl.project_name,
+               vl.issue_date, vl.expiration_date,
                DATEDIFF(vl.expiration_date, CURDATE()) as days_until_expiry,
                'expiring' as status
         FROM vehicle_license_overview vl
@@ -460,8 +469,10 @@ function generateVehicleActiveReport($conn, $startDate, $endDate, $departmentId,
     $whereClause = "WHERE " . implode(" AND ", $whereConditions);
     
     $query = "
-        SELECT vl.license_id, vl.car_number, vl.vehicle_type, vl.expiration_date,
+        SELECT vl.license_id, vl.car_number, vl.vehicle_type, 
+               vl.license_category, vl.inspection_year,
                vl.department_name, vl.project_name,
+               vl.issue_date, vl.expiration_date,
                DATEDIFF(vl.expiration_date, CURDATE()) as days_until_expiry,
                'active' as status
         FROM vehicle_license_overview vl

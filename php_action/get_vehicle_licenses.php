@@ -49,6 +49,7 @@ try {
     $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
     $search = $_GET['search'] ?? '';
     $departmentId = $_GET['department_id'] ?? '';
+    $projectId = $_GET['project_id'] ?? '';
     $status = $_GET['status'] ?? '';
     $recordsPerPage = RECORDS_PER_PAGE;
     $offset = ($page - 1) * $recordsPerPage;
@@ -161,6 +162,18 @@ try {
             // Filter by department name
             $whereConditions[] = "d.department_name = ?";
             $params[] = $departmentId;
+        }
+    }
+    
+    // Project filter
+    if (!empty($projectId)) {
+        if (is_numeric($projectId)) {
+            $whereConditions[] = "vl.project_id = ?";
+            $params[] = $projectId;
+        } else {
+            // Filter by project name
+            $whereConditions[] = "p.project_name = ?";
+            $params[] = $projectId;
         }
     }
     

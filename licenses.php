@@ -174,6 +174,7 @@ $(document).ready(function() {
     
     // Initialize the page
     loadDepartments();
+    loadProjects();
     
     // Check for URL parameters to set filters (urlParams and typeFilter already declared above)
     const statusFilter = urlParams.get('status');
@@ -313,7 +314,7 @@ $(document).ready(function() {
     }
     
     // Filter changes for both tabs
-    $('#personalDepartmentFilter, #personalStatusFilter, #vehicleDepartmentFilter, #vehicleStatusFilter').on('change', function() {
+    $('#personalDepartmentFilter, #personalProjectFilter, #personalStatusFilter, #vehicleDepartmentFilter, #vehicleProjectFilter, #vehicleStatusFilter').on('change', function() {
         if (currentActiveTab === 'personal') {
             loadPersonalLicenses();
         } else {
@@ -335,6 +336,23 @@ $(document).ready(function() {
             });
     }
     
+    // Load projects for filter dropdowns
+    function loadProjects() {
+        $.get('php_action/get_unique_projects.php')
+            .done(function(response) {
+                if (response.success) {
+                    const options = '<option value="">جميع المشاريع</option>' + 
+                        response.data.map(project => {
+                            return `<option value="${project.project_name}">${project.project_name}</option>`;
+                        }).join('');
+                    $('#personalProjectFilter, #vehicleProjectFilter').html(options);
+                }
+            })
+            .fail(function() {
+                console.error('فشل في تحميل قائمة المشاريع');
+            });
+    }
+    
     // Load personal licenses
     function loadPersonalLicenses(page = 1) {
         currentPersonalPage = page;
@@ -343,6 +361,7 @@ $(document).ready(function() {
             page: page,
             search: $('#personalSearchInput').val(),
             department_id: $('#personalDepartmentFilter').val(),
+            project_id: $('#personalProjectFilter').val(),
             status: $('#personalStatusFilter').val()
         };
         
@@ -377,6 +396,7 @@ $(document).ready(function() {
             page: page,
             search: $('#vehicleSearchInput').val(),
             department_id: $('#vehicleDepartmentFilter').val(),
+            project_id: $('#vehicleProjectFilter').val(),
             status: $('#vehicleStatusFilter').val()
         };
         
@@ -775,6 +795,67 @@ $(document).ready(function() {
     .nav-tabs > li > a {
         margin-right: 0;
         margin-bottom: 1px;
+    }
+}
+
+/* تحسين تخطيط الفلاتر */
+.filters-row {
+    margin-bottom: 20px;
+}
+
+.filters-row .form-group {
+    margin-bottom: 15px;
+}
+
+.filters-row label {
+    font-weight: 500;
+    color: #555;
+    font-size: 12px;
+    margin-bottom: 5px !important;
+}
+
+.filters-row .btn-group {
+    width: 100%;
+}
+
+.filters-row .btn-group .btn {
+    margin-left: 5px;
+    border-radius: 4px !important;
+    font-size: 13px;
+}
+
+.filters-row .btn-group .btn:first-child {
+    margin-left: 0;
+}
+
+.filters-row .btn-group .btn-sm {
+    padding: 6px 12px;
+}
+
+/* تحسين استجابة الشاشات الصغيرة */
+@media (max-width: 768px) {
+    .filters-row .form-group {
+        margin-bottom: 15px;
+    }
+    
+    .filters-row .btn-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .filters-row .btn {
+        flex: 1;
+        min-width: 100px;
+        margin-left: 0 !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .filters-row .btn {
+        min-width: auto;
+        padding: 8px 10px;
+        font-size: 12px;
     }
 }
 </style>

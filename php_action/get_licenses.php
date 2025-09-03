@@ -129,6 +129,20 @@ try {
         }
     }
     
+    // Project filter
+    if (isset($_GET['project_id']) && !empty($_GET['project_id'])) {
+        $projectFilter = $_GET['project_id'];
+        if (is_numeric($projectFilter)) {
+            // Filter by project ID
+            $conditions[] = "pl.project_id = ?";
+            $params[] = $projectFilter;
+        } else {
+            // Filter by project name (no access check needed since dropdown is already filtered)
+            $conditions[] = "p.project_name = ?";
+            $params[] = $projectFilter;
+        }
+    }
+    
     if (isset($_GET['status']) && !empty($_GET['status'])) {
         switch ($_GET['status']) {
             case 'expired':

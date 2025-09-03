@@ -217,6 +217,40 @@ include 'includes/header.php';
     color: #3498db;
 }
 
+/* Preview send buttons */
+.preview-send-btn {
+    min-width: 80px;
+    font-weight: bold;
+    border-radius: 15px !important;
+    transition: all 0.3s ease;
+    text-shadow: none;
+    font-size: 11px;
+}
+
+.preview-send-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.preview-send-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.preview-send-btn:disabled,
+.btn-default.preview-send-btn {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Special styling for disabled buttons */
+.btn-default[disabled] {
+    background-color: #f8f9fa;
+    border-color: #e9ecef;
+    color: #6c757d;
+    font-size: 10px;
+}
+
 /* Project badge styling */
 .project-badge {
     background: linear-gradient(45deg, #17a2b8, #138496);
@@ -460,6 +494,7 @@ function displayPreview(response) {
                         <th style="text-align: center; vertical-align: middle;">رخص انتهت</th>
                         <th style="text-align: center; vertical-align: middle;">رخص ستنتهي قريباً</th>
                         <th style="text-align: center; vertical-align: middle;">سيتم الإرسال</th>
+                        <th style="text-align: center; vertical-align: middle; min-width: 100px;">إرسال</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -470,9 +505,19 @@ function displayPreview(response) {
             '<span class="label label-success"><i class="glyphicon glyphicon-ok"></i> نعم</span>' : 
             '<span class="label label-default"><i class="glyphicon glyphicon-remove"></i> لا</span>';
         
-        const emailText = item.email === 'لا يوجد بريد إلكتروني' ? 
-            '<span class="text-muted"><i class="glyphicon glyphicon-exclamation-sign"></i> لا يوجد</span>' : 
-            `<span style="color: #2c3e50;"><i class="glyphicon glyphicon-envelope"></i> ${item.email}</span>`;
+        // عرض إيميل الإدارة وإيميل المشروع
+        let emailText = '';
+        if (item.email === 'لا يوجد بريد إلكتروني') {
+            emailText = '<span class="text-muted"><i class="glyphicon glyphicon-exclamation-sign"></i> لا يوجد</span>';
+        } else {
+            // إيميل الإدارة
+            emailText = `<div style="margin-bottom: 3px;"><span style="color: #2c3e50; font-size: 10px;"><i class="glyphicon glyphicon-building"></i> إدارة: ${item.email}</span></div>`;
+            
+            // إيميل المشروع إن وجد
+            if (item.project_email && item.project_email.trim() !== '' && item.project_email !== 'لا يوجد بريد إلكتروني') {
+                emailText += `<div><span style="color: #8e44ad; font-size: 10px;"><i class="glyphicon glyphicon-briefcase"></i> مشروع: ${item.project_email}</span></div>`;
+            }
+        }
         
         const expiredBadge = item.expired_count > 0 ? 
             `<span class="label label-danger" style="font-size: 12px;">${item.expired_count}</span>` : 
@@ -488,6 +533,21 @@ function displayPreview(response) {
             `<span class="label label-info" style="font-size: 11px;">${item.project}</span>` : 
             '<span class="label label-default">-</span>';
         
+        // إنشاء زر الإرسال
+        const sendButton = item.will_send ? 
+            `<button type="button" class="btn btn-success btn-xs preview-send-btn" 
+                data-dept-id="${item.department_id || ''}" 
+                data-project-id="${item.project_id || ''}"
+                data-dept-name="${item.department}"
+                data-project-name="${item.project || ''}"
+                onclick="handlePreviewSend(this)"
+                title="إرسال إشعار لهذا القسم والمشروع">
+                <i class="glyphicon glyphicon-send"></i> إرسال
+            </button>` : 
+            `<button type="button" class="btn btn-default btn-xs" disabled title="لا يوجد رخص منتهية أو ستنتهي قريباً">
+                <i class="glyphicon glyphicon-ban-circle"></i> غير متاح
+            </button>`;
+        
         previewHtml += `
             <tr class="${rowClass}">
                 <td style="text-align: center; vertical-align: middle;"><span class="label label-primary department-badge" style="font-size: 11px;">${item.department}</span></td>
@@ -496,6 +556,7 @@ function displayPreview(response) {
                 <td style="text-align: center; vertical-align: middle;">${expiredBadge}</td>
                 <td style="text-align: center; vertical-align: middle;">${expiringBadge}</td>
                 <td style="text-align: center; vertical-align: middle;">${willSendText}</td>
+                <td style="text-align: center; vertical-align: middle; padding: 5px;">${sendButton}</td>
             </tr>
         `;
     });
@@ -654,6 +715,107 @@ function resendNotification(notificationId) {
 $(document).ready(function() {
     refreshNotificationLogs();
 });
+
+// Handle individual send button clicks (real functionality)
+function handlePreviewSend(buttonElement) {
+    // جلب البيانات من الزر
+    const deptId = $(buttonElement).data('dept-id');
+    const projectId = $(buttonElement).data('project-id');
+    const deptName = $(buttonElement).data('dept-name');
+    const projectName = $(buttonElement).data('project-name');
+    
+    // التحقق من وجود البيانات المطلوبة
+    if (!deptId || !projectId) {
+        alert('❌ خطأ: معرف القسم أو المشروع مفقود');
+        return;
+    }
+    
+    // رسالة تأكيد
+    const confirmMessage = `هل تريد إرسال إشعار إلى:\n\n📋 القسم: ${deptName}\n🏢 المشروع: ${projectName || 'غير محدد'}\n\n⚠️ سيتم الإرسال إلى:\n• إيميل الإدارة\n• إيميل المشروع (إن وجد)\n• إيميلات الـ CC\n\nهل تريد المتابعة؟`;
+    
+    if (!confirm(confirmMessage)) {
+        return;
+    }
+    
+    // تأثير بصري - تغيير الزر لحالة التحميل
+    const originalHtml = $(buttonElement).html();
+    $(buttonElement).prop('disabled', true)
+                   .removeClass('btn-success')
+                   .addClass('btn-warning')
+                   .html('<i class="glyphicon glyphicon-refresh glyphicon-spin"></i> جاري الإرسال...');
+    
+    // إرسال AJAX request
+    $.ajax({
+        url: 'php_action/send_individual_notification.php',
+        type: 'POST',
+        data: {
+            department_id: deptId,
+            project_id: projectId
+        },
+        dataType: 'json',
+        success: function(response) {
+            if (response.success) {
+                // عرض رسالة نجاح مفصلة
+                const details = response.details || {};
+                let successMessage = `✅ تم إرسال الإشعار بنجاح!\n\n`;
+                successMessage += `📋 القسم: ${details.department || deptName}\n`;
+                successMessage += `🏢 المشروع: ${details.project || projectName}\n`;
+                successMessage += `📊 إجمالي التراخيص: ${details.total_licenses || 0}\n`;
+                successMessage += `❌ منتهية: ${details.expired_count || 0}\n`;
+                successMessage += `⚠️ ستنتهي قريباً: ${details.expiring_count || 0}\n`;
+                successMessage += `📧 تم الإرسال إلى: ${details.recipients || 0} مستلم`;
+                if (details.cc_count > 0) {
+                    successMessage += `\n📎 CC: ${details.cc_count} مستلم`;
+                }
+                
+                alert(successMessage);
+                
+                // تحويل الزر لحالة تم الإرسال
+                $(buttonElement).removeClass('btn-warning')
+                               .addClass('btn-info')
+                               .html('<i class="glyphicon glyphicon-ok"></i> تم الإرسال')
+                               .prop('disabled', false);
+                
+                // إعادة تحديث المعاينة لتحديث البيانات
+                setTimeout(() => {
+                    previewNotifications();
+                }, 2000);
+                
+            } else {
+                // عرض رسالة خطأ
+                alert('❌ فشل في إرسال الإشعار:\n\n' + (response.message || 'خطأ غير معروف'));
+                
+                // إعادة الزر لحالته الأصلية
+                $(buttonElement).prop('disabled', false)
+                               .removeClass('btn-warning')
+                               .addClass('btn-success')
+                               .html(originalHtml);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error:', {xhr, status, error});
+            
+            let errorMessage = '❌ حدث خطأ في الاتصال:\n\n';
+            if (xhr.status === 0) {
+                errorMessage += 'فشل في الاتصال بالخادم';
+            } else if (xhr.status === 404) {
+                errorMessage += 'الملف المطلوب غير موجود (404)';
+            } else if (xhr.status === 500) {
+                errorMessage += 'خطأ في الخادم (500)';
+            } else {
+                errorMessage += `خطأ HTTP: ${xhr.status}\n${error}`;
+            }
+            
+            alert(errorMessage);
+            
+            // إعادة الزر لحالته الأصلية
+            $(buttonElement).prop('disabled', false)
+                           .removeClass('btn-warning')
+                           .addClass('btn-success')
+                           .html(originalHtml);
+        }
+    });
+}
 </script>
 
 <?php include 'includes/footer.php'; ?> 

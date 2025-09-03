@@ -1,27 +1,35 @@
 <!-- Vehicle Licenses Tab Content -->
-<div class="row" style="margin-bottom: 20px;">
-    <div class="col-md-3">
+<div class="row filters-row">
+    <div class="col-md-3 col-sm-12">
         <div class="form-group">
-            <label for="vehicleSearchInput" style="font-size: 12px; color: #666;">البحث برقم المركبة</label>
+            <label for="vehicleSearchInput" style="font-size: 12px; color: #666; margin-bottom: 5px;">البحث برقم المركبة</label>
             <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
                 <input type="text" id="vehicleSearchInput" class="form-control" 
-                       placeholder="مثال: 7894 ن ت ي" style="font-size: 16px; font-weight: bold;">
+                       placeholder="مثال: 7894 ن ت ي" style="font-size: 14px;">
             </div>
-            <small class="help-block">اكتب الأرقام والحروف معاً أو منفصلة</small>
+            <small class="help-block" style="margin-top: 2px;">اكتب الأرقام والحروف معاً أو منفصلة</small>
         </div>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-2 col-sm-4">
         <div class="form-group">
-            <label style="font-size: 12px; color: #666;">القسم</label>
+            <label style="font-size: 12px; color: #666; margin-bottom: 5px;">القسم</label>
             <select id="vehicleDepartmentFilter" class="form-control">
                 <option value="">جميع الأقسام</option>
             </select>
         </div>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-2 col-sm-4">
         <div class="form-group">
-            <label style="font-size: 12px; color: #666;">الحالة</label>
+            <label style="font-size: 12px; color: #666; margin-bottom: 5px;">المشروع</label>
+            <select id="vehicleProjectFilter" class="form-control">
+                <option value="">جميع المشاريع</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-md-2 col-sm-4">
+        <div class="form-group">
+            <label style="font-size: 12px; color: #666; margin-bottom: 5px;">الحالة</label>
             <select id="vehicleStatusFilter" class="form-control">
                 <option value="">جميع الحالات</option>
                 <option value="active">نشط</option>
@@ -30,14 +38,15 @@
             </select>
         </div>
     </div>
-    <div class="col-md-5">
-        <div style="margin-top: 18px;">
-            <div class="btn-group" role="group">
-                <a href="deleted_licenses.php?type=vehicle" class="btn btn-warning">
+    <div class="col-md-3 col-sm-12">
+        <div class="form-group">
+            <label style="font-size: 12px; color: #666; margin-bottom: 5px; opacity: 0;">&nbsp;</label>
+            <div class="btn-group" role="group" style="display: block; width: 100%;">
+                <a href="deleted_licenses.php?type=vehicle" class="btn btn-warning btn-sm">
                     <i class="glyphicon glyphicon-trash"></i> المحذوفة
                 </a>
                 <?php if ($canAddVehicle): ?>
-                <a href="add_license.php?type=vehicle" class="btn btn-success">
+                <a href="add_license.php?type=vehicle" class="btn btn-success btn-sm">
                     <i class="glyphicon glyphicon-plus"></i> إضافة رخصة مركبة
                 </a>
                 <?php endif; ?>

@@ -15,10 +15,19 @@ $hasVehicleView = hasPermission('vehicle_licenses_view');
 $hasPersonalView = hasPermission('personal_licenses_view');
 $hasGeneralView = hasPermission('licenses_view');
 
+// Improved logic for regular users
 if ($hasVehicleView || $hasPersonalView) {
     $canViewVehicle = $hasVehicleView;
     $canViewPersonal = $hasPersonalView;
 } else {
+    // For regular users who have general view permission
+    $canViewVehicle = $hasGeneralView;
+    $canViewPersonal = $hasGeneralView;
+}
+
+// Additional fallback for regular users
+if (!$canViewVehicle && !$canViewPersonal && $userRole === 'user') {
+    // Regular users can see both if they have general access
     $canViewVehicle = $hasGeneralView;
     $canViewPersonal = $hasGeneralView;
 }
@@ -62,7 +71,7 @@ include 'includes/header.php';
                 <div class="panel-body">
                     <form id="reportForm">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="reportType">نوع التقرير:</label>
                                     <select id="reportType" name="report_type" class="form-control" required>
@@ -84,7 +93,35 @@ include 'includes/header.php';
                                 </div>
                             </div>
                             
-                            <div class="col-md-6">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="departmentFilter">فلتر الإدارة:</label>
+                                    <select id="departmentFilter" name="department_id" class="form-control">
+                                        <option value="">-- كل الإدارات --</option>
+                                        <?php foreach ($departments as $dept): ?>
+                                            <option value="<?php echo $dept['department_id']; ?>">
+                                                <?php echo htmlspecialchars($dept['department_name']); ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="projectFilter">فلتر المشروع:</label>
+                                    <select id="projectFilter" name="project_id" class="form-control">
+                                        <option value="">-- كل المشاريع --</option>
+                                        <?php foreach ($projects as $project): ?>
+                                            <option value="<?php echo $project['project_id']; ?>">
+                                                <?php echo htmlspecialchars($project['project_name']); ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label>&nbsp;</label>
                                     <div>
@@ -299,6 +336,42 @@ include 'includes/header.php';
     margin-bottom: 0;
 }
 
+#reportTable th {
+    background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+    border-bottom: 2px solid #dee2e6;
+    font-weight: bold;
+    text-align: center;
+    padding: 12px 8px;
+    font-size: 13px;
+}
+
+#reportTable tbody tr {
+    transition: background-color 0.2s;
+}
+
+#reportTable tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+#reportTable tbody td {
+    padding: 10px 8px;
+    font-size: 12px;
+    vertical-align: middle;
+}
+
+/* تحسين عرض التواريخ */
+.date-cell {
+    white-space: nowrap;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+}
+
+/* تحسين عرض الأرقام */
+.number-cell {
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+}
+
 #reportTable thead th {
     background: linear-gradient(45deg, #34495e, #2c3e50);
     color: white;
@@ -459,7 +532,9 @@ function generateReport() {
         method: 'POST',
         dataType: 'json',
         data: {
-            report_type: reportType
+            report_type: reportType,
+            department_id: $('#departmentFilter').val(),
+            project_id: $('#projectFilter').val()
         },
         success: function(response) {
             if (response.success) {
@@ -577,7 +652,13 @@ function displayReport(data, summary) {
                 let cellClass = '';
                 
                 if (col.includes('date') && value) {
+                    cellClass = 'text-center date-cell';
                     value = formatDate(value);
+                } else if (col === 'license_number' || col === 'car_number' || col === 'license_id') {
+                    cellClass = 'text-center number-cell';
+                    if (value) {
+                        value = '<span style="background: #f8f9fa; padding: 2px 8px; border-radius: 3px; border: 1px solid #dee2e6;">' + value + '</span>';
+                    }
                 } else if (col === 'status') {
                     value = getStatusBadge(value);
                     cellClass = 'text-center';
@@ -612,6 +693,21 @@ function displayReport(data, summary) {
                         const vehicleColor = value.includes('عربية') ? '#17a2b8' : 
                                           value.includes('موتوسيكل') ? '#28a745' : '#6c757d';
                         value = '<span style="color: ' + vehicleColor + '; font-weight: bold;">' + value + '</span>';
+                    }
+                } else if (col === 'license_category') {
+                    cellClass = 'text-center';
+                    // Style license category
+                    if (value) {
+                        const categoryColor = value.includes('تصريح') ? '#dc3545' : '#17a2b8';
+                        value = '<span style="color: ' + categoryColor + '; font-weight: bold;">' + value + '</span>';
+                    }
+                } else if (col === 'inspection_year') {
+                    cellClass = 'text-center';
+                    // Style inspection year
+                    if (value && value !== '0' && value !== '') {
+                        value = '<span style="background: #e3f2fd; padding: 2px 6px; border-radius: 3px; color: #1976d2; font-weight: bold;">' + value + '</span>';
+                    } else {
+                        value = '<span style="color: #999;">-</span>';
                     }
                 } else if (col === 'department_name' || col === 'project_name') {
                     cellClass = 'small';
@@ -671,6 +767,8 @@ function getColumnLabel(col) {
         full_name: 'الاسم الكامل',
         car_number: 'رقم المركبة',
         vehicle_type: 'نوع المركبة',
+        license_category: 'فئة الرخصة',
+        inspection_year: 'سنة الفحص',
         department_name: 'القسم',
         project_name: 'المشروع',
         issue_date: 'تاريخ الإصدار',

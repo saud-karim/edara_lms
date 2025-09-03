@@ -19,6 +19,7 @@ try {
             d.department_email,
             p.project_id,
             p.project_name,
+            p.project_email,
             COUNT(*) as total_licenses,
             SUM(CASE WHEN license_data.expiration_date < CURDATE() THEN 1 ELSE 0 END) as expired_count,
             SUM(CASE WHEN license_data.expiration_date >= CURDATE() AND license_data.expiration_date <= DATE_ADD(CURDATE(), INTERVAL 30 DAY) THEN 1 ELSE 0 END) as expiring_count,
@@ -57,7 +58,7 @@ try {
         AND p.is_active = 1
         AND d.department_email IS NOT NULL
         AND d.department_email != ''
-        GROUP BY d.department_id, d.department_name, d.department_email, p.project_id, p.project_name
+        GROUP BY d.department_id, d.department_name, d.department_email, p.project_id, p.project_name, p.project_email
         HAVING total_licenses > 0
         ORDER BY d.department_name, p.project_name
     ");
@@ -107,9 +108,12 @@ try {
         
         // Keep individual rows for the table display
         $previewData[] = [
+            'department_id' => $dept['department_id'],
+            'project_id' => $dept['project_id'],
             'department' => $dept['department_name'],
             'project' => $dept['project_name'],
             'email' => $dept['department_email'],
+            'project_email' => $dept['project_email'] ?? null,
             'total_licenses' => $dept['total_licenses'],
             'expired_count' => $expiredCount,
             'expiring_count' => $expiringCount,
